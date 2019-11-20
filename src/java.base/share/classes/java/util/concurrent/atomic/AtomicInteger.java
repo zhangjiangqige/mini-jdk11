@@ -10,16 +10,7 @@ import java.util.function.IntUnaryOperator;
 @UsesObjectEquals
 public class AtomicInteger extends Number implements java.io.Serializable {
 
-    private static final long serialVersionUID = 6214790243416807050L;
-
-    private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe();
-
-    private static final long VALUE = U.objectFieldOffset(AtomicInteger.class, "value");
-
-    private volatile int value;
-
     public AtomicInteger(int initialValue) {
-        value = initialValue;
     }
 
     public AtomicInteger() {
@@ -35,7 +26,7 @@ public class AtomicInteger extends Number implements java.io.Serializable {
 
     public final boolean compareAndSet(int expectedValue, int newValue);
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public final boolean weakCompareAndSet(int expectedValue, int newValue);
 
     public final boolean weakCompareAndSetPlain(int expectedValue, int newValue);

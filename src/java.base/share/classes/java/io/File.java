@@ -23,107 +23,31 @@ import sun.security.action.GetPropertyAction;
 @AnnotatedFor({ "index", "interning", "lock", "nullness" })
 public class File implements Serializable, Comparable<File> {
 
-    private static final FileSystem fs = DefaultFileSystem.getFileSystem();
-
-    private final String path;
-
     private static enum PathStatus {
 
         INVALID, CHECKED
     }
 
-    private transient PathStatus status = null;
-
-    final boolean isInvalid();
-
-    private final transient int prefixLength;
-
-    int getPrefixLength();
-
-    public static final char separatorChar = fs.getSeparator();
+    public static final char separatorChar;
 
     @Interned
-    public static final String separator = "" + separatorChar;
+    public static final String separator;
 
-    public static final char pathSeparatorChar = fs.getPathSeparator();
+    public static final char pathSeparatorChar;
 
     @Interned
-    public static final String pathSeparator = "" + pathSeparatorChar;
-
-    private File(String pathname, int prefixLength) {
-        this.path = pathname;
-        this.prefixLength = prefixLength;
-    }
-
-    private File(String child, File parent) {
-        assert parent.path != null;
-        assert (!parent.path.equals(""));
-        this.path = fs.resolve(parent.path, child);
-        this.prefixLength = parent.prefixLength;
-    }
+    public static final String pathSeparator;
 
     public File(String pathname) {
-        if (pathname == null) {
-            throw new NullPointerException();
-        }
-        this.path = fs.normalize(pathname);
-        this.prefixLength = fs.prefixLength(this.path);
     }
 
     public File(@Nullable String parent, String child) {
-        if (child == null) {
-            throw new NullPointerException();
-        }
-        if (parent != null) {
-            if (parent.equals("")) {
-                this.path = fs.resolve(fs.getDefaultParent(), fs.normalize(child));
-            } else {
-                this.path = fs.resolve(fs.normalize(parent), fs.normalize(child));
-            }
-        } else {
-            this.path = fs.normalize(child);
-        }
-        this.prefixLength = fs.prefixLength(this.path);
     }
 
     public File(@Nullable File parent, String child) {
-        if (child == null) {
-            throw new NullPointerException();
-        }
-        if (parent != null) {
-            if (parent.path.equals("")) {
-                this.path = fs.resolve(fs.getDefaultParent(), fs.normalize(child));
-            } else {
-                this.path = fs.resolve(parent.path, fs.normalize(child));
-            }
-        } else {
-            this.path = fs.normalize(child);
-        }
-        this.prefixLength = fs.prefixLength(this.path);
     }
 
     public File(URI uri) {
-        if (!uri.isAbsolute())
-            throw new IllegalArgumentException("URI is not absolute");
-        if (uri.isOpaque())
-            throw new IllegalArgumentException("URI is not hierarchical");
-        String scheme = uri.getScheme();
-        if ((scheme == null) || !scheme.equalsIgnoreCase("file"))
-            throw new IllegalArgumentException("URI scheme is not \"file\"");
-        if (uri.getRawAuthority() != null)
-            throw new IllegalArgumentException("URI has an authority component");
-        if (uri.getRawFragment() != null)
-            throw new IllegalArgumentException("URI has a fragment component");
-        if (uri.getRawQuery() != null)
-            throw new IllegalArgumentException("URI has a query component");
-        String p = uri.getPath();
-        if (p.equals(""))
-            throw new IllegalArgumentException("URI path component is empty");
-        p = fs.fromURIPath(p);
-        if (File.separatorChar != '/')
-            p = p.replace('/', File.separatorChar);
-        this.path = fs.normalize(p);
-        this.prefixLength = fs.prefixLength(this.path);
     }
 
     public String getName();
@@ -148,8 +72,6 @@ public class File implements Serializable, Comparable<File> {
     public String getCanonicalPath() throws IOException;
 
     public File getCanonicalFile() throws IOException;
-
-    private static String slashify(String path, boolean isDirectory);
 
     @Deprecated
     public URL toURL() throws MalformedURLException;
@@ -227,22 +149,6 @@ public class File implements Serializable, Comparable<File> {
     @NonNegative
     public long getUsableSpace();
 
-    private static class TempDirectory {
-
-        private TempDirectory() {
-        }
-
-        private static final File tmpdir = new File(GetPropertyAction.privilegedGetProperty("java.io.tmpdir"));
-
-        static File location();
-
-        private static final SecureRandom random = new SecureRandom();
-
-        private static int shortenSubName(int subNameLength, int excess, int nameMin);
-
-        static File generateFile(String prefix, String suffix, File dir) throws IOException;
-    }
-
     public static File createTempFile(String prefix, @Nullable String suffix, @Nullable File directory) throws IOException;
 
     public static File createTempFile(String prefix, @Nullable String suffix) throws IOException;
@@ -258,20 +164,6 @@ public class File implements Serializable, Comparable<File> {
 
     @SideEffectFree
     public String toString(@GuardSatisfied File this);
-
-    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException;
-
-    private synchronized void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException;
-
-    private static final jdk.internal.misc.Unsafe UNSAFE = jdk.internal.misc.Unsafe.getUnsafe();
-
-    private static final long PATH_OFFSET = UNSAFE.objectFieldOffset(File.class, "path");
-
-    private static final long PREFIX_LENGTH_OFFSET = UNSAFE.objectFieldOffset(File.class, "prefixLength");
-
-    private static final long serialVersionUID = 301077366599181567L;
-
-    private transient volatile Path filePath;
 
     public Path toPath();
 }

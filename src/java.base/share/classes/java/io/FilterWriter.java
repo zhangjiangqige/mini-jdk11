@@ -11,8 +11,6 @@ public abstract class FilterWriter extends Writer {
     protected Writer out;
 
     protected FilterWriter(Writer out) {
-        super(out);
-        this.out = out;
     }
 
     public void write(int c) throws IOException;

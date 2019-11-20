@@ -19,13 +19,13 @@ import javax.swing.DefaultListSelectionModel;
 public class DefaultTreeSelectionModel implements Cloneable, Serializable, TreeSelectionModel {
 
     @Interned
-    public static final String SELECTION_MODE_PROPERTY = "selectionMode";
+    public static final String SELECTION_MODE_PROPERTY;
 
     protected SwingPropertyChangeSupport changeSupport;
 
     protected TreePath[] selection;
 
-    protected EventListenerList listenerList = new EventListenerList();
+    protected EventListenerList listenerList;
 
     protected transient RowMapper rowMapper;
 
@@ -39,19 +39,7 @@ public class DefaultTreeSelectionModel implements Cloneable, Serializable, TreeS
 
     protected int leadRow;
 
-    private Hashtable<TreePath, Boolean> uniquePaths;
-
-    private Hashtable<TreePath, Boolean> lastPaths;
-
-    private TreePath[] tempPaths;
-
     public DefaultTreeSelectionModel() {
-        listSelectionModel = new DefaultListSelectionModel();
-        selectionMode = DISCONTIGUOUS_TREE_SELECTION;
-        leadIndex = leadRow = -1;
-        uniquePaths = new Hashtable<TreePath, Boolean>();
-        lastPaths = new Hashtable<TreePath, Boolean>();
-        tempPaths = new TreePath[1];
     }
 
     public void setRowMapper(RowMapper newMapper);
@@ -59,8 +47,6 @@ public class DefaultTreeSelectionModel implements Cloneable, Serializable, TreeS
     public RowMapper getRowMapper();
 
     public void setSelectionMode(int mode);
-
-    private static int validateSelectionMode(int mode);
 
     public int getSelectionMode();
 
@@ -136,20 +122,4 @@ public class DefaultTreeSelectionModel implements Cloneable, Serializable, TreeS
     public String toString();
 
     public Object clone() throws CloneNotSupportedException;
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException;
-}
-
-class PathPlaceHolder {
-
-    protected boolean isNew;
-
-    protected TreePath path;
-
-    PathPlaceHolder(TreePath path, boolean isNew) {
-        this.path = path;
-        this.isNew = isNew;
-    }
 }

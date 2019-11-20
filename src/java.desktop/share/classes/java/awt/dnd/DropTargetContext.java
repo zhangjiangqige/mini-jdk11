@@ -18,33 +18,9 @@ import sun.awt.AWTAccessor.DropTargetContextAccessor;
 @UsesObjectEquals
 public class DropTargetContext implements Serializable {
 
-    private static final long serialVersionUID = -634158968993743371L;
-
-    static {
-        AWTAccessor.setDropTargetContextAccessor(new DropTargetContextAccessor() {
-
-            @Override
-            public void reset(DropTargetContext dtc) {
-                dtc.reset();
-            }
-
-            @Override
-            public void setDropTargetContextPeer(DropTargetContext dtc, DropTargetContextPeer dtcp) {
-                dtc.setDropTargetContextPeer(dtcp);
-            }
-        });
-    }
-
-    DropTargetContext(DropTarget dt) {
-        super();
-        dropTarget = dt;
-    }
-
     public DropTarget getDropTarget();
 
     public Component getComponent();
-
-    void reset();
 
     protected void setTargetActions(int actions);
 
@@ -68,19 +44,9 @@ public class DropTargetContext implements Serializable {
 
     protected Transferable getTransferable() throws InvalidDnDOperationException;
 
-    DropTargetContextPeer getDropTargetContextPeer();
-
-    void setDropTargetContextPeer(final DropTargetContextPeer dtcp);
-
     protected Transferable createTransferableProxy(Transferable t, boolean local);
 
     protected class TransferableProxy implements Transferable {
-
-        TransferableProxy(Transferable t, boolean local) {
-            proxy = new sun.awt.datatransfer.TransferableProxy(t, local);
-            transferable = t;
-            isLocal = local;
-        }
 
         public DataFlavor[] getTransferDataFlavors();
 
@@ -91,13 +57,5 @@ public class DropTargetContext implements Serializable {
         protected Transferable transferable;
 
         protected boolean isLocal;
-
-        private sun.awt.datatransfer.TransferableProxy proxy;
     }
-
-    private final DropTarget dropTarget;
-
-    private transient DropTargetContextPeer dropTargetContextPeer;
-
-    private transient Transferable transferable;
 }

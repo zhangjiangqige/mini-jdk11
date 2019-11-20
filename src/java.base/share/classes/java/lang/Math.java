@@ -16,16 +16,9 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @UsesObjectEquals
 public final class Math {
 
-    private Math() {
-    }
+    public static final double E;
 
-    public static final double E = 2.7182818284590452354;
-
-    public static final double PI = 3.14159265358979323846;
-
-    private static final double DEGREES_TO_RADIANS = 0.017453292519943295;
-
-    private static final double RADIANS_TO_DEGREES = 57.29577951308232;
+    public static final double PI;
 
     @Pure
     @HotSpotIntrinsicCandidate
@@ -98,11 +91,6 @@ public final class Math {
 
     @Pure
     public static long round(double a);
-
-    private static final class RandomNumberGeneratorHolder {
-
-        static final Random randomNumberGenerator = new Random();
-    }
 
     @Pure
     public static double random();
@@ -187,10 +175,6 @@ public final class Math {
     @Pure
     @PolyUpperBound
     public static long max(@PolyUpperBound long a, @PolyUpperBound long b);
-
-    private static final long negativeZeroFloatBits = Float.floatToRawIntBits(-0.0f);
-
-    private static final long negativeZeroDoubleBits = Double.doubleToRawLongBits(-0.0d);
 
     @Pure
     public static float max(float a, float b);
@@ -282,12 +266,4 @@ public final class Math {
 
     @Pure
     public static float scalb(float f, int scaleFactor);
-
-    static double twoToTheDoubleScaleUp = powerOfTwoD(512);
-
-    static double twoToTheDoubleScaleDown = powerOfTwoD(-512);
-
-    static double powerOfTwoD(int n);
-
-    static float powerOfTwoF(int n);
 }

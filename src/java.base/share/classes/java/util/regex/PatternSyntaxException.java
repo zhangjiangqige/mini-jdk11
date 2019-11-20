@@ -8,19 +8,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "lock", "nullness" })
 public class PatternSyntaxException extends IllegalArgumentException {
 
-    private static final long serialVersionUID = -3864639126226059218L;
-
-    private final String desc;
-
-    private final String pattern;
-
-    private final int index;
-
     @SideEffectFree
     public PatternSyntaxException(String desc, String regex, int index) {
-        this.desc = desc;
-        this.pattern = regex;
-        this.index = index;
     }
 
     @Pure

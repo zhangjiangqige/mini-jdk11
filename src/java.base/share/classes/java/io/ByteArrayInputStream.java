@@ -17,21 +17,14 @@ public class ByteArrayInputStream extends InputStream {
 
     protected int pos;
 
-    protected int mark = 0;
+    protected int mark;
 
     protected int count;
 
     public ByteArrayInputStream(byte[] buf) {
-        this.buf = buf;
-        this.pos = 0;
-        this.count = buf.length;
     }
 
     public ByteArrayInputStream(byte[] buf, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int length) {
-        this.buf = buf;
-        this.pos = offset;
-        this.count = Math.min(offset + length, buf.length);
-        this.mark = offset;
     }
 
     @GTENegativeOne

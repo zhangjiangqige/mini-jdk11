@@ -17,20 +17,10 @@ import java.io.Serializable;
 @UsesObjectEquals
 public class BeanContextChildSupport implements BeanContextChild, BeanContextServicesListener, Serializable {
 
-    static final long serialVersionUID = 6328947014421475877L;
-
     public BeanContextChildSupport() {
-        super();
-        beanContextChildPeer = this;
-        pcSupport = new PropertyChangeSupport(beanContextChildPeer);
-        vcSupport = new VetoableChangeSupport(beanContextChildPeer);
     }
 
     public BeanContextChildSupport(BeanContextChild bcc) {
-        super();
-        beanContextChildPeer = (bcc != null) ? bcc : this;
-        pcSupport = new PropertyChangeSupport(beanContextChildPeer);
-        vcSupport = new VetoableChangeSupport(beanContextChildPeer);
     }
 
     public synchronized void setBeanContext(BeanContext bc) throws PropertyVetoException;
@@ -62,10 +52,6 @@ public class BeanContextChildSupport implements BeanContextChild, BeanContextSer
     protected void releaseBeanContextResources();
 
     protected void initializeBeanContextResources();
-
-    private void writeObject(ObjectOutputStream oos) throws IOException;
-
-    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException;
 
     public BeanContextChild beanContextChildPeer;
 

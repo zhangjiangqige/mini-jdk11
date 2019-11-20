@@ -16,74 +16,13 @@ import java.security.AccessController;
 @UsesObjectEquals
 public class TrayIcon {
 
-    private Image image;
-
-    private String tooltip;
-
-    private PopupMenu popup;
-
-    private boolean autosize;
-
-    private int id;
-
-    private String actionCommand;
-
-    private transient TrayIconPeer peer;
-
-    transient MouseListener mouseListener;
-
-    transient MouseMotionListener mouseMotionListener;
-
-    transient ActionListener actionListener;
-
-    private final AccessControlContext acc = AccessController.getContext();
-
-    final AccessControlContext getAccessControlContext();
-
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-        AWTAccessor.setTrayIconAccessor(new AWTAccessor.TrayIconAccessor() {
-
-            public void addNotify(TrayIcon trayIcon) throws AWTException {
-                trayIcon.addNotify();
-            }
-
-            public void removeNotify(TrayIcon trayIcon) {
-                trayIcon.removeNotify();
-            }
-        });
-    }
-
-    private TrayIcon() throws UnsupportedOperationException, HeadlessException, SecurityException {
-        SystemTray.checkSystemTrayAllowed();
-        if (GraphicsEnvironment.isHeadless()) {
-            throw new HeadlessException();
-        }
-        if (!SystemTray.isSupported()) {
-            throw new UnsupportedOperationException();
-        }
-        SunToolkit.insertTargetMapping(this, AppContext.getAppContext());
-    }
-
     public TrayIcon(Image image) {
-        this();
-        if (image == null) {
-            throw new IllegalArgumentException("creating TrayIcon with null Image");
-        }
-        setImage(image);
     }
 
     public TrayIcon(Image image, String tooltip) {
-        this(image);
-        setToolTip(tooltip);
     }
 
     public TrayIcon(Image image, String tooltip, PopupMenu popup) {
-        this(image, tooltip);
-        setPopupMenu(popup);
     }
 
     public void setImage(Image image);
@@ -132,24 +71,4 @@ public class TrayIcon {
     public void displayMessage(String caption, String text, MessageType messageType);
 
     public Dimension getSize();
-
-    void addNotify() throws AWTException;
-
-    void removeNotify();
-
-    void setID(int id);
-
-    int getID();
-
-    void dispatchEvent(AWTEvent e);
-
-    void processEvent(AWTEvent e);
-
-    void processMouseEvent(MouseEvent e);
-
-    void processMouseMotionEvent(MouseEvent e);
-
-    void processActionEvent(ActionEvent e);
-
-    private static native void initIDs();
 }

@@ -9,20 +9,7 @@ import sun.management.MonitorInfoCompositeData;
 @AnnotatedFor({ "signature" })
 public class MonitorInfo extends LockInfo {
 
-    private int stackDepth;
-
-    private StackTraceElement stackFrame;
-
     public MonitorInfo(@BinaryName String className, int identityHashCode, int stackDepth, StackTraceElement stackFrame) {
-        super(className, identityHashCode);
-        if (stackDepth >= 0 && stackFrame == null) {
-            throw new IllegalArgumentException("Parameter stackDepth is " + stackDepth + " but stackFrame is null");
-        }
-        if (stackDepth < 0 && stackFrame != null) {
-            throw new IllegalArgumentException("Parameter stackDepth is " + stackDepth + " but stackFrame is not null");
-        }
-        this.stackDepth = stackDepth;
-        this.stackFrame = stackFrame;
     }
 
     public int getLockedStackDepth();

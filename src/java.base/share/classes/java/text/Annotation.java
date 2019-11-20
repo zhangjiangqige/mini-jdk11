@@ -8,12 +8,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public class Annotation {
 
     public Annotation(Object value) {
-        this.value = value;
     }
 
     public Object getValue();
 
     public String toString();
-
-    private Object value;
 }

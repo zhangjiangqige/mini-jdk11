@@ -12,7 +12,6 @@ public abstract class Pipe {
     public abstract static class SourceChannel extends AbstractSelectableChannel implements ReadableByteChannel, ScatteringByteChannel {
 
         protected SourceChannel(SelectorProvider provider) {
-            super(provider);
         }
 
         public final int validOps();
@@ -21,7 +20,6 @@ public abstract class Pipe {
     public abstract static class SinkChannel extends AbstractSelectableChannel implements WritableByteChannel, GatheringByteChannel {
 
         protected SinkChannel(SelectorProvider provider) {
-            super(provider);
         }
 
         public final int validOps();

@@ -61,13 +61,6 @@ import sun.nio.fs.AbstractFileSystemProvider;
 @UsesObjectEquals
 public final class Files {
 
-    private Files() {
-    }
-
-    private static FileSystemProvider provider(Path path);
-
-    private static Runnable asUncheckedRunnable(Closeable c);
-
     public static InputStream newInputStream(Path path, OpenOption... options) throws IOException;
 
     public static OutputStream newOutputStream(Path path, OpenOption... options) throws IOException;
@@ -76,32 +69,17 @@ public final class Files {
 
     public static SeekableByteChannel newByteChannel(Path path, OpenOption... options) throws IOException;
 
-    private static class AcceptAllFilter implements DirectoryStream.Filter<Path> {
-
-        private AcceptAllFilter() {
-        }
-
-        @Override
-        public boolean accept(Path entry);
-
-        static final AcceptAllFilter FILTER = new AcceptAllFilter();
-    }
-
     public static DirectoryStream<Path> newDirectoryStream(Path dir) throws IOException;
 
     public static DirectoryStream<Path> newDirectoryStream(Path dir, String glob) throws IOException;
 
     public static DirectoryStream<Path> newDirectoryStream(Path dir, DirectoryStream.Filter<? super Path> filter) throws IOException;
 
-    private static final Set<OpenOption> DEFAULT_CREATE_OPTIONS = Set.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
-
     public static Path createFile(Path path, FileAttribute<?>... attrs) throws IOException;
 
     public static Path createDirectory(Path dir, FileAttribute<?>... attrs) throws IOException;
 
     public static Path createDirectories(Path dir, FileAttribute<?>... attrs) throws IOException;
-
-    private static void createAndCheckIsDirectory(Path dir, FileAttribute<?>... attrs) throws IOException;
 
     public static Path createTempFile(Path dir, String prefix, String suffix, FileAttribute<?>... attrs) throws IOException;
 
@@ -130,17 +108,6 @@ public final class Files {
     public static boolean isSameFile(Path path, Path path2) throws IOException;
 
     public static boolean isHidden(Path path) throws IOException;
-
-    private static class FileTypeDetectors {
-
-        static final FileTypeDetector defaultFileTypeDetector = createDefaultFileTypeDetector();
-
-        static final List<FileTypeDetector> installedDetectors = loadInstalledDetectors();
-
-        private static FileTypeDetector createDefaultFileTypeDetector();
-
-        private static List<FileTypeDetector> loadInstalledDetectors();
-    }
 
     public static String probeContentType(Path path) throws IOException;
 
@@ -174,13 +141,9 @@ public final class Files {
 
     public static long size(Path path) throws IOException;
 
-    private static boolean followLinks(LinkOption... options);
-
     public static boolean exists(Path path, LinkOption... options);
 
     public static boolean notExists(Path path, LinkOption... options);
-
-    private static boolean isAccessible(Path path, AccessMode... modes);
 
     public static boolean isReadable(Path path);
 
@@ -191,8 +154,6 @@ public final class Files {
     public static Path walkFileTree(Path start, Set<FileVisitOption> options, int maxDepth, FileVisitor<? super Path> visitor) throws IOException;
 
     public static Path walkFileTree(Path start, FileVisitor<? super Path> visitor) throws IOException;
-
-    private static final int BUFFER_SIZE = 8192;
 
     public static BufferedReader newBufferedReader(Path path, Charset cs) throws IOException;
 
@@ -205,12 +166,6 @@ public final class Files {
     public static long copy(InputStream in, Path target, CopyOption... options) throws IOException;
 
     public static long copy(Path source, OutputStream out) throws IOException;
-
-    private static final int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
-
-    private static final jdk.internal.misc.JavaLangAccess JLA = jdk.internal.misc.SharedSecrets.getJavaLangAccess();
-
-    private static byte[] read(InputStream source, int initialSize) throws IOException;
 
     public static byte[] readAllBytes(Path path) throws IOException;
 
@@ -241,10 +196,6 @@ public final class Files {
     public static Stream<Path> find(Path start, int maxDepth, BiPredicate<Path, BasicFileAttributes> matcher, FileVisitOption... options) throws IOException;
 
     public static Stream<String> lines(Path path, Charset cs) throws IOException;
-
-    private static Stream<String> createFileChannelLinesStream(FileChannel fc, Charset cs) throws IOException;
-
-    private static Stream<String> createBufferedReaderLinesStream(BufferedReader br);
 
     public static Stream<String> lines(Path path) throws IOException;
 }

@@ -30,11 +30,8 @@ public class Beans {
     @SuppressWarnings("deprecation")
     public static Object instantiate(ClassLoader cls, String beanName, BeanContext beanContext) throws IOException, ClassNotFoundException;
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public static Object instantiate(ClassLoader cls, String beanName, BeanContext beanContext, AppletInitializer initializer) throws IOException, ClassNotFoundException;
-
-    @SuppressWarnings("unchecked")
-    private static void unsafeBeanContextAdd(BeanContext beanContext, Object res);
 
     public static Object getInstanceOf(Object bean, Class<?> targetType);
 
@@ -47,85 +44,4 @@ public class Beans {
     public static void setDesignTime(boolean isDesignTime) throws SecurityException;
 
     public static void setGuiAvailable(boolean isGuiAvailable) throws SecurityException;
-}
-
-class ObjectInputStreamWithLoader extends ObjectInputStream {
-
-    private ClassLoader loader;
-
-    public ObjectInputStreamWithLoader(InputStream in, ClassLoader loader) throws IOException, StreamCorruptedException {
-        super(in);
-        if (loader == null) {
-            throw new IllegalArgumentException("Illegal null argument to ObjectInputStreamWithLoader");
-        }
-        this.loader = loader;
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected Class resolveClass(ObjectStreamClass classDesc) throws IOException, ClassNotFoundException;
-}
-
-@Deprecated(since = "9")
-class BeansAppletContext implements AppletContext {
-
-    Applet target;
-
-    Hashtable<URL, Object> imageCache = new Hashtable<>();
-
-    BeansAppletContext(Applet target) {
-        this.target = target;
-    }
-
-    public AudioClip getAudioClip(URL url);
-
-    public synchronized Image getImage(URL url);
-
-    public Applet getApplet(String name);
-
-    public Enumeration<Applet> getApplets();
-
-    public void showDocument(URL url);
-
-    public void showDocument(URL url, String target);
-
-    public void showStatus(String status);
-
-    public void setStream(String key, InputStream stream) throws IOException;
-
-    public InputStream getStream(String key);
-
-    public Iterator<String> getStreamKeys();
-}
-
-@Deprecated(since = "9")
-class BeansAppletStub implements AppletStub {
-
-    transient boolean active;
-
-    transient Applet target;
-
-    transient AppletContext context;
-
-    transient URL codeBase;
-
-    transient URL docBase;
-
-    BeansAppletStub(Applet target, AppletContext context, URL codeBase, URL docBase) {
-        this.target = target;
-        this.context = context;
-        this.codeBase = codeBase;
-        this.docBase = docBase;
-    }
-
-    public boolean isActive();
-
-    public URL getDocumentBase();
-
-    public URL getCodeBase();
-
-    public String getParameter(String name);
-
-    public AppletContext getAppletContext();
-
-    public void appletResize(int width, int height);
 }

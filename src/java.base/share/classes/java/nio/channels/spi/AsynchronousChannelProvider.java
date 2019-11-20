@@ -15,24 +15,7 @@ import java.security.PrivilegedAction;
 @UsesObjectEquals
 public abstract class AsynchronousChannelProvider {
 
-    private static Void checkPermission();
-
-    private AsynchronousChannelProvider(Void ignore) {
-    }
-
     protected AsynchronousChannelProvider() {
-        this(checkPermission());
-    }
-
-    private static class ProviderHolder {
-
-        static final AsynchronousChannelProvider provider = load();
-
-        private static AsynchronousChannelProvider load();
-
-        private static AsynchronousChannelProvider loadProviderFromProperty();
-
-        private static AsynchronousChannelProvider loadProviderAsService();
     }
 
     public static AsynchronousChannelProvider provider();

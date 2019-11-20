@@ -40,66 +40,9 @@ import sun.awt.AWTAccessor;
 @SuppressWarnings("serial")
 public class UIManager implements Serializable {
 
-    private static class LAFState {
-
-        Properties swingProps;
-
-        private UIDefaults[] tables = new UIDefaults[2];
-
-        boolean initialized = false;
-
-        boolean focusPolicyInitialized = false;
-
-        MultiUIDefaults multiUIDefaults = new MultiUIDefaults(tables);
-
-        LookAndFeel lookAndFeel;
-
-        LookAndFeel multiLookAndFeel = null;
-
-        Vector<LookAndFeel> auxLookAndFeels = null;
-
-        SwingPropertyChangeSupport changeSupport;
-
-        LookAndFeelInfo[] installedLAFs;
-
-        UIDefaults getLookAndFeelDefaults();
-
-        void setLookAndFeelDefaults(UIDefaults x);
-
-        UIDefaults getSystemDefaults();
-
-        void setSystemDefaults(UIDefaults x);
-
-        public synchronized SwingPropertyChangeSupport getPropertyChangeSupport(boolean create);
-    }
-
-    private static final Object classLock = new Object();
-
-    private static LAFState getLAFState();
-
-    private static final String defaultLAFKey = "swing.defaultlaf";
-
-    private static final String auxiliaryLAFsKey = "swing.auxiliarylaf";
-
-    private static final String multiplexingLAFKey = "swing.plaf.multiplexinglaf";
-
-    private static final String installedLAFsKey = "swing.installedlafs";
-
-    private static final String disableMnemonicKey = "swing.disablenavaids";
-
-    private static String makeInstalledLAFKey(String laf, String attr);
-
-    private static String makeSwingPropertiesFilename();
-
     public static class LookAndFeelInfo {
 
-        private String name;
-
-        private String className;
-
         public LookAndFeelInfo(String name, String className) {
-            this.name = name;
-            this.className = className;
         }
 
         public String getName();
@@ -107,27 +50,6 @@ public class UIManager implements Serializable {
         public String getClassName();
 
         public String toString();
-    }
-
-    private static LookAndFeelInfo[] installedLAFs;
-
-    static {
-        ArrayList<LookAndFeelInfo> iLAFs = new ArrayList<LookAndFeelInfo>(4);
-        iLAFs.add(new LookAndFeelInfo("Metal", "javax.swing.plaf.metal.MetalLookAndFeel"));
-        iLAFs.add(new LookAndFeelInfo("Nimbus", "javax.swing.plaf.nimbus.NimbusLookAndFeel"));
-        iLAFs.add(new LookAndFeelInfo("CDE/Motif", "com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
-        OSInfo.OSType osType = AccessController.doPrivileged(OSInfo.getOSTypeAction());
-        if (osType == OSInfo.OSType.WINDOWS) {
-            iLAFs.add(new LookAndFeelInfo("Windows", "com.sun.java.swing.plaf.windows.WindowsLookAndFeel"));
-            if (Toolkit.getDefaultToolkit().getDesktopProperty("win.xpstyle.themeActive") != null) {
-                iLAFs.add(new LookAndFeelInfo("Windows Classic", "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel"));
-            }
-        } else if (osType == OSInfo.OSType.MACOSX) {
-            iLAFs.add(new LookAndFeelInfo("Mac OS X", "com.apple.laf.AquaLookAndFeel"));
-        } else {
-            iLAFs.add(new LookAndFeelInfo("GTK+", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"));
-        }
-        installedLAFs = iLAFs.toArray(new LookAndFeelInfo[iLAFs.size()]);
     }
 
     public static LookAndFeelInfo[] getInstalledLookAndFeels();
@@ -176,8 +98,6 @@ public class UIManager implements Serializable {
 
     public static String getString(Object key, Locale l);
 
-    static String getString(Object key, Component c);
-
     public static int getInt(Object key);
 
     public static int getInt(Object key, Locale l);
@@ -204,9 +124,6 @@ public class UIManager implements Serializable {
 
     public static UIDefaults getLookAndFeelDefaults();
 
-    @SuppressWarnings("deprecation")
-    private static LookAndFeel getMultiLookAndFeel();
-
     public static void addAuxiliaryLookAndFeel(LookAndFeel laf);
 
     public static boolean removeAuxiliaryLookAndFeel(LookAndFeel laf);
@@ -218,24 +135,4 @@ public class UIManager implements Serializable {
     public static void removePropertyChangeListener(PropertyChangeListener listener);
 
     public static PropertyChangeListener[] getPropertyChangeListeners();
-
-    private static Properties loadSwingProperties();
-
-    private static void checkProperty(Properties props, String key);
-
-    private static void initializeInstalledLAFs(Properties swingProps);
-
-    private static void initializeDefaultLAF(Properties swingProps);
-
-    @SuppressWarnings("deprecation")
-    private static void initializeAuxiliaryLAFs(Properties swingProps);
-
-    private static void initializeSystemDefaults(Properties swingProps);
-
-    private static void maybeInitialize();
-
-    @SuppressWarnings("deprecation")
-    private static void maybeInitializeFocusPolicy(JComponent comp);
-
-    private static void initialize();
 }

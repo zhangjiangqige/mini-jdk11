@@ -17,14 +17,7 @@ public enum LiteralKind {
     ALL,
     PRIMITIVE;
 
-    public static List<LiteralKind> allLiteralKinds() {
-        List<LiteralKind> list = new ArrayList<>(Arrays.asList(values()));
-        list.remove(ALL);
-        list.remove(PRIMITIVE);
-        return list;
-    }
+    public static List<LiteralKind> allLiteralKinds();
 
-    public static List<LiteralKind> primitiveLiteralKinds() {
-        return new ArrayList<>(Arrays.asList(INT, LONG, FLOAT, DOUBLE, BOOLEAN, CHAR));
-    }
+    public static List<LiteralKind> primitiveLiteralKinds();
 }

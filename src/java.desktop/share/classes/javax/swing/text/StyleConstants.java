@@ -11,76 +11,76 @@ import javax.swing.Icon;
 public class StyleConstants {
 
     @Interned
-    public static final String ComponentElementName = "component";
+    public static final String ComponentElementName;
 
     @Interned
-    public static final String IconElementName = "icon";
+    public static final String IconElementName;
 
-    public static final Object NameAttribute = new StyleConstants("name");
+    public static final Object NameAttribute;
 
-    public static final Object ResolveAttribute = new StyleConstants("resolver");
+    public static final Object ResolveAttribute;
 
-    public static final Object ModelAttribute = new StyleConstants("model");
+    public static final Object ModelAttribute;
 
     public String toString();
 
-    public static final Object BidiLevel = new CharacterConstants("bidiLevel");
+    public static final Object BidiLevel;
 
-    public static final Object FontFamily = new FontConstants("family");
+    public static final Object FontFamily;
 
-    public static final Object Family = FontFamily;
+    public static final Object Family;
 
-    public static final Object FontSize = new FontConstants("size");
+    public static final Object FontSize;
 
-    public static final Object Size = FontSize;
+    public static final Object Size;
 
-    public static final Object Bold = new FontConstants("bold");
+    public static final Object Bold;
 
-    public static final Object Italic = new FontConstants("italic");
+    public static final Object Italic;
 
-    public static final Object Underline = new CharacterConstants("underline");
+    public static final Object Underline;
 
-    public static final Object StrikeThrough = new CharacterConstants("strikethrough");
+    public static final Object StrikeThrough;
 
-    public static final Object Superscript = new CharacterConstants("superscript");
+    public static final Object Superscript;
 
-    public static final Object Subscript = new CharacterConstants("subscript");
+    public static final Object Subscript;
 
-    public static final Object Foreground = new ColorConstants("foreground");
+    public static final Object Foreground;
 
-    public static final Object Background = new ColorConstants("background");
+    public static final Object Background;
 
-    public static final Object ComponentAttribute = new CharacterConstants("component");
+    public static final Object ComponentAttribute;
 
-    public static final Object IconAttribute = new CharacterConstants("icon");
+    public static final Object IconAttribute;
 
-    public static final Object ComposedTextAttribute = new StyleConstants("composed text");
+    public static final Object ComposedTextAttribute;
 
-    public static final Object FirstLineIndent = new ParagraphConstants("FirstLineIndent");
+    public static final Object FirstLineIndent;
 
-    public static final Object LeftIndent = new ParagraphConstants("LeftIndent");
+    public static final Object LeftIndent;
 
-    public static final Object RightIndent = new ParagraphConstants("RightIndent");
+    public static final Object RightIndent;
 
-    public static final Object LineSpacing = new ParagraphConstants("LineSpacing");
+    public static final Object LineSpacing;
 
-    public static final Object SpaceAbove = new ParagraphConstants("SpaceAbove");
+    public static final Object SpaceAbove;
 
-    public static final Object SpaceBelow = new ParagraphConstants("SpaceBelow");
+    public static final Object SpaceBelow;
 
-    public static final Object Alignment = new ParagraphConstants("Alignment");
+    public static final Object Alignment;
 
-    public static final Object TabSet = new ParagraphConstants("TabSet");
+    public static final Object TabSet;
 
-    public static final Object Orientation = new ParagraphConstants("Orientation");
+    public static final Object Orientation;
 
-    public static final int ALIGN_LEFT = 0;
+    public static final int ALIGN_LEFT;
 
-    public static final int ALIGN_CENTER = 1;
+    public static final int ALIGN_CENTER;
 
-    public static final int ALIGN_RIGHT = 2;
+    public static final int ALIGN_RIGHT;
 
-    public static final int ALIGN_JUSTIFIED = 3;
+    public static final int ALIGN_JUSTIFIED;
 
     public static int getBidiLevel(AttributeSet a);
 
@@ -166,39 +166,15 @@ public class StyleConstants {
 
     public static void setTabSet(MutableAttributeSet a, TabSet tabs);
 
-    static Object[] keys = { NameAttribute, ResolveAttribute, BidiLevel, FontFamily, FontSize, Bold, Italic, Underline, StrikeThrough, Superscript, Subscript, Foreground, Background, ComponentAttribute, IconAttribute, FirstLineIndent, LeftIndent, RightIndent, LineSpacing, SpaceAbove, SpaceBelow, Alignment, TabSet, Orientation, ModelAttribute, ComposedTextAttribute };
-
-    StyleConstants(String representation) {
-        this.representation = representation;
-    }
-
-    private String representation;
-
     public static class ParagraphConstants extends StyleConstants implements AttributeSet.ParagraphAttribute {
-
-        private ParagraphConstants(String representation) {
-            super(representation);
-        }
     }
 
     public static class CharacterConstants extends StyleConstants implements AttributeSet.CharacterAttribute {
-
-        private CharacterConstants(String representation) {
-            super(representation);
-        }
     }
 
     public static class ColorConstants extends StyleConstants implements AttributeSet.ColorAttribute, AttributeSet.CharacterAttribute {
-
-        private ColorConstants(String representation) {
-            super(representation);
-        }
     }
 
     public static class FontConstants extends StyleConstants implements AttributeSet.FontAttribute, AttributeSet.CharacterAttribute {
-
-        private FontConstants(String representation) {
-            super(representation);
-        }
     }
 }

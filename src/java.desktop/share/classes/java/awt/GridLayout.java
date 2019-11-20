@@ -7,32 +7,13 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @UsesObjectEquals
 public class GridLayout implements LayoutManager, java.io.Serializable {
 
-    private static final long serialVersionUID = -7411804673224730901L;
-
-    int hgap;
-
-    int vgap;
-
-    int rows;
-
-    int cols;
-
     public GridLayout() {
-        this(1, 0, 0, 0);
     }
 
     public GridLayout(int rows, int cols) {
-        this(rows, cols, 0, 0);
     }
 
     public GridLayout(int rows, int cols, int hgap, int vgap) {
-        if ((rows == 0) && (cols == 0)) {
-            throw new IllegalArgumentException("rows and cols cannot both be zero");
-        }
-        this.rows = rows;
-        this.cols = cols;
-        this.hgap = hgap;
-        this.vgap = vgap;
     }
 
     public int getRows();

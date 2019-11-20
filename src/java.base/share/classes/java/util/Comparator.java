@@ -18,25 +18,6 @@ import java.util.Comparators;
 @FunctionalInterface
 public interface Comparator<T> {
 
-    int compare(T o1, T o2);
-
-    @Pure
-    boolean equals(@GuardSatisfied Comparator<T> this, @GuardSatisfied @Nullable Object obj);
-
-    default Comparator<T> reversed();
-
-    default Comparator<T> thenComparing(Comparator<? super T> other);
-
-    default <U> Comparator<T> thenComparing(Function<? super T, ? extends U> keyExtractor, Comparator<? super U> keyComparator);
-
-    default <U extends Comparable<? super U>> Comparator<T> thenComparing(Function<? super T, ? extends U> keyExtractor);
-
-    default Comparator<T> thenComparingInt(ToIntFunction<? super T> keyExtractor);
-
-    default Comparator<T> thenComparingLong(ToLongFunction<? super T> keyExtractor);
-
-    default Comparator<T> thenComparingDouble(ToDoubleFunction<? super T> keyExtractor);
-
     public static <T extends Comparable<? super T>> Comparator<T> reverseOrder();
 
     @SuppressWarnings("unchecked")

@@ -9,8 +9,4 @@ import java.security.ProtectionDomain;
 
 @AnnotatedFor({ "nullness", "signature" })
 public interface ClassFileTransformer {
-
-    default byte @Nullable [] transform(@Nullable ClassLoader loader, @InternalForm String className, @Nullable Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException;
-
-    default byte[] transform(Module module, ClassLoader loader, @InternalForm String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException;
 }

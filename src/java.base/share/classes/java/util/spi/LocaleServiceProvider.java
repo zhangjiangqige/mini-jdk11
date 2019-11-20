@@ -8,13 +8,7 @@ import java.util.Locale;
 @UsesObjectEquals
 public abstract class LocaleServiceProvider {
 
-    private static Void checkPermission();
-
-    private LocaleServiceProvider(Void ignore) {
-    }
-
     protected LocaleServiceProvider() {
-        this(checkPermission());
     }
 
     public abstract Locale[] getAvailableLocales();

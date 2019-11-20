@@ -11,8 +11,6 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @UsesObjectEquals
 public class Adler32 implements Checksum {
 
-    private int adler = 1;
-
     public Adler32() {
     }
 
@@ -30,16 +28,4 @@ public class Adler32 implements Checksum {
 
     @Override
     public long getValue();
-
-    private static native int update(int adler, int b);
-
-    @HotSpotIntrinsicCandidate
-    private static native int updateBytes(int adler, byte[] b, int off, int len);
-
-    @HotSpotIntrinsicCandidate
-    private static native int updateByteBuffer(int adler, long addr, int off, int len);
-
-    static {
-        ZipUtils.loadLibrary();
-    }
 }

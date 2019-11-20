@@ -24,9 +24,6 @@ public abstract class FileChannel extends AbstractInterruptibleChannel implement
 
     public static FileChannel open(Path path, Set<? extends OpenOption> options, FileAttribute<?>... attrs) throws IOException;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static final FileAttribute<?>[] NO_ATTRIBUTES = new FileAttribute[0];
-
     public static FileChannel open(Path path, OpenOption... options) throws IOException;
 
     @GTENegativeOne
@@ -73,17 +70,11 @@ public abstract class FileChannel extends AbstractInterruptibleChannel implement
 
     public static class MapMode {
 
-        public static final MapMode READ_ONLY = new MapMode("READ_ONLY");
+        public static final MapMode READ_ONLY;
 
-        public static final MapMode READ_WRITE = new MapMode("READ_WRITE");
+        public static final MapMode READ_WRITE;
 
-        public static final MapMode PRIVATE = new MapMode("PRIVATE");
-
-        private final String name;
-
-        private MapMode(String name) {
-            this.name = name;
-        }
+        public static final MapMode PRIVATE;
 
         public String toString();
     }

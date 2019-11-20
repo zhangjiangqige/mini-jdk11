@@ -15,12 +15,7 @@ public class FilterOutputStream extends OutputStream {
 
     protected OutputStream out;
 
-    private volatile boolean closed;
-
-    private final Object closeLock = new Object();
-
     public FilterOutputStream(@Nullable OutputStream out) {
-        this.out = out;
     }
 
     @Override

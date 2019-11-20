@@ -11,6 +11,5 @@ public class PhantomReference<T> extends Reference<T> {
     public T get(@GuardSatisfied PhantomReference<T> this);
 
     public PhantomReference(T referent, ReferenceQueue<? super T> q) {
-        super(referent, q);
     }
 }

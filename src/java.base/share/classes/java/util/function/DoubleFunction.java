@@ -5,6 +5,4 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "lock", "nullness" })
 @FunctionalInterface
 public interface DoubleFunction<R> {
-
-    R apply(double value);
 }

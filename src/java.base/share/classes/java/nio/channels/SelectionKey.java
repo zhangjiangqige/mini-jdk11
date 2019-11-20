@@ -29,13 +29,13 @@ public abstract class SelectionKey {
 
     public abstract int readyOps();
 
-    public static final int OP_READ = 1 << 0;
+    public static final int OP_READ;
 
-    public static final int OP_WRITE = 1 << 2;
+    public static final int OP_WRITE;
 
-    public static final int OP_CONNECT = 1 << 3;
+    public static final int OP_CONNECT;
 
-    public static final int OP_ACCEPT = 1 << 4;
+    public static final int OP_ACCEPT;
 
     public final boolean isReadable();
 
@@ -44,10 +44,6 @@ public abstract class SelectionKey {
     public final boolean isConnectable();
 
     public final boolean isAcceptable();
-
-    private volatile Object attachment;
-
-    private static final AtomicReferenceFieldUpdater<SelectionKey, Object> attachmentUpdater = AtomicReferenceFieldUpdater.newUpdater(SelectionKey.class, Object.class, "attachment");
 
     public final Object attach(Object ob);
 

@@ -24,6 +24,4 @@ public abstract class Number implements java.io.Serializable {
 
     @Pure
     public short shortValue(@GuardSatisfied Number this);
-
-    private static final long serialVersionUID = -8742448824652078965L;
 }

@@ -26,83 +26,6 @@ import java.util.function.Supplier;
 @AnnotatedFor({ "lock", "nullness" })
 public interface DoubleStream extends BaseStream<Double, DoubleStream> {
 
-    DoubleStream filter(DoublePredicate predicate);
-
-    DoubleStream map(DoubleUnaryOperator mapper);
-
-    <U> Stream<U> mapToObj(DoubleFunction<? extends U> mapper);
-
-    IntStream mapToInt(DoubleToIntFunction mapper);
-
-    LongStream mapToLong(DoubleToLongFunction mapper);
-
-    DoubleStream flatMap(DoubleFunction<? extends DoubleStream> mapper);
-
-    DoubleStream distinct();
-
-    DoubleStream sorted();
-
-    DoubleStream peek(DoubleConsumer action);
-
-    DoubleStream limit(long maxSize);
-
-    DoubleStream skip(long n);
-
-    default DoubleStream takeWhile(DoublePredicate predicate);
-
-    default DoubleStream dropWhile(DoublePredicate predicate);
-
-    void forEach(DoubleConsumer action);
-
-    void forEachOrdered(DoubleConsumer action);
-
-    @SideEffectFree
-    double[] toArray();
-
-    double reduce(double identity, DoubleBinaryOperator op);
-
-    OptionalDouble reduce(DoubleBinaryOperator op);
-
-    <R> R collect(Supplier<R> supplier, ObjDoubleConsumer<R> accumulator, BiConsumer<R, R> combiner);
-
-    double sum();
-
-    OptionalDouble min();
-
-    OptionalDouble max();
-
-    long count();
-
-    OptionalDouble average();
-
-    DoubleSummaryStatistics summaryStatistics();
-
-    boolean anyMatch(DoublePredicate predicate);
-
-    boolean allMatch(DoublePredicate predicate);
-
-    boolean noneMatch(DoublePredicate predicate);
-
-    OptionalDouble findFirst();
-
-    OptionalDouble findAny();
-
-    Stream<Double> boxed();
-
-    @Override
-    DoubleStream sequential();
-
-    @Override
-    DoubleStream parallel();
-
-    @SideEffectFree
-    @Override
-    PrimitiveIterator.OfDouble iterator();
-
-    @SideEffectFree
-    @Override
-    Spliterator.OfDouble spliterator();
-
     public static Builder builder();
 
     public static DoubleStream empty();
@@ -120,12 +43,5 @@ public interface DoubleStream extends BaseStream<Double, DoubleStream> {
     public static DoubleStream concat(DoubleStream a, DoubleStream b);
 
     public interface Builder extends DoubleConsumer {
-
-        @Override
-        void accept(double t);
-
-        default Builder add(DoubleStream.@GuardSatisfied Builder this, double t);
-
-        DoubleStream build();
     }
 }

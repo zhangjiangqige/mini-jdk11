@@ -8,9 +8,6 @@ import java.util.function.Supplier;
 @AnnotatedFor({ "nullness" })
 public final class StreamSupport {
 
-    private StreamSupport() {
-    }
-
     public static <T> Stream<T> stream(Spliterator<T> spliterator, boolean parallel);
 
     public static <T> Stream<T> stream(Supplier<? extends Spliterator<T>> supplier, int characteristics, boolean parallel);

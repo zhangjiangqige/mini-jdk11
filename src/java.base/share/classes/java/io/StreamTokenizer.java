@@ -12,85 +12,26 @@ import java.util.Arrays;
 @UsesObjectEquals
 public class StreamTokenizer {
 
-    private Reader reader = null;
+    public int ttype;
 
-    private InputStream input = null;
+    public static final int TT_EOF;
 
-    private char[] buf = new char[20];
+    public static final int TT_EOL;
 
-    private int peekc = NEED_CHAR;
+    public static final int TT_NUMBER;
 
-    private static final int NEED_CHAR = Integer.MAX_VALUE;
-
-    private static final int SKIP_LF = Integer.MAX_VALUE - 1;
-
-    private boolean pushedBack;
-
-    private boolean forceLower;
-
-    private int LINENO = 1;
-
-    private boolean eolIsSignificantP = false;
-
-    private boolean slashSlashCommentsP = false;
-
-    private boolean slashStarCommentsP = false;
-
-    private byte[] ctype = new byte[256];
-
-    private static final byte CT_WHITESPACE = 1;
-
-    private static final byte CT_DIGIT = 2;
-
-    private static final byte CT_ALPHA = 4;
-
-    private static final byte CT_QUOTE = 8;
-
-    private static final byte CT_COMMENT = 16;
-
-    public int ttype = TT_NOTHING;
-
-    public static final int TT_EOF = -1;
-
-    public static final int TT_EOL = '\n';
-
-    public static final int TT_NUMBER = -2;
-
-    public static final int TT_WORD = -3;
-
-    private static final int TT_NOTHING = -4;
+    public static final int TT_WORD;
 
     @Nullable
     public String sval;
 
     public double nval;
 
-    private StreamTokenizer() {
-        wordChars('a', 'z');
-        wordChars('A', 'Z');
-        wordChars(128 + 32, 255);
-        whitespaceChars(0, ' ');
-        commentChar('/');
-        quoteChar('"');
-        quoteChar('\'');
-        parseNumbers();
-    }
-
     @Deprecated
     public StreamTokenizer(InputStream is) {
-        this();
-        if (is == null) {
-            throw new NullPointerException();
-        }
-        input = is;
     }
 
     public StreamTokenizer(Reader r) {
-        this();
-        if (r == null) {
-            throw new NullPointerException();
-        }
-        reader = r;
     }
 
     public void resetSyntax();
@@ -116,8 +57,6 @@ public class StreamTokenizer {
     public void slashSlashComments(boolean flag);
 
     public void lowerCaseMode(boolean fl);
-
-    private int read() throws IOException;
 
     public int nextToken() throws IOException;
 

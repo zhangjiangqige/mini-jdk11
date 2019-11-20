@@ -31,164 +31,25 @@ import static jdk.internal.logger.DefaultLoggerFinder.isSystem;
 @UsesObjectEquals
 public class Logger {
 
-    private static final Handler[] emptyHandlers = new Handler[0];
-
-    private static final int offValue = Level.OFF.intValue();
-
-    static final String SYSTEM_LOGGER_RB_NAME = "sun.util.logging.resources.logging";
-
-    private static final class LoggerBundle {
-
-        final String resourceBundleName;
-
-        final ResourceBundle userBundle;
-
-        private LoggerBundle(String resourceBundleName, ResourceBundle bundle) {
-            this.resourceBundleName = resourceBundleName;
-            this.userBundle = bundle;
-        }
-
-        boolean isSystemBundle();
-
-        static LoggerBundle get(String name, ResourceBundle bundle);
-    }
-
-    private static final LoggerBundle SYSTEM_BUNDLE = new LoggerBundle(SYSTEM_LOGGER_RB_NAME, null);
-
-    private static final LoggerBundle NO_RESOURCE_BUNDLE = new LoggerBundle(null, null);
-
-    private static final class RbAccess {
-
-        static final JavaUtilResourceBundleAccess RB_ACCESS = SharedSecrets.getJavaUtilResourceBundleAccess();
-    }
-
-    private static final class ConfigurationData {
-
-        private volatile ConfigurationData delegate;
-
-        volatile boolean useParentHandlers;
-
-        volatile Filter filter;
-
-        volatile Level levelObject;
-
-        volatile int levelValue;
-
-        final CopyOnWriteArrayList<Handler> handlers = new CopyOnWriteArrayList<>();
-
-        ConfigurationData() {
-            delegate = this;
-            useParentHandlers = true;
-            levelValue = Level.INFO.intValue();
-        }
-
-        void setUseParentHandlers(boolean flag);
-
-        void setFilter(Filter f);
-
-        void setLevelObject(Level l);
-
-        void setLevelValue(int v);
-
-        void addHandler(Handler h);
-
-        void removeHandler(Handler h);
-
-        ConfigurationData merge(Logger systemPeer);
-    }
-
-    private volatile ConfigurationData config;
-
-    @Nullable
-    private volatile LogManager manager;
-
-    @Nullable
-    private String name;
-
-    private volatile LoggerBundle loggerBundle = NO_RESOURCE_BUNDLE;
-
-    private boolean anonymous;
-
-    @Nullable
-    private ResourceBundle catalog;
-
-    @Nullable
-    private String catalogName;
-
-    @Nullable
-    private Locale catalogLocale;
-
-    private static final Object treeLock = new Object();
-
-    @Nullable
-    private volatile Logger parent;
-
-    @Nullable
-    private ArrayList<LogManager.LoggerWeakRef> kids;
-
-    private WeakReference<Module> callerModuleRef;
-
-    private final boolean isSystemLogger;
-
     @Interned
-    public static final String GLOBAL_LOGGER_NAME = "global";
+    public static final String GLOBAL_LOGGER_NAME;
 
     @Pure
     public static final Logger getGlobal();
 
     @Deprecated
-    public static final Logger global = new Logger(GLOBAL_LOGGER_NAME);
+    public static final Logger global;
 
     protected Logger(@Nullable String name, @Nullable @BinaryName String resourceBundleName) {
-        this(name, resourceBundleName, null, LogManager.getLogManager(), false);
     }
-
-    Logger(String name, String resourceBundleName, Module caller, LogManager manager, boolean isSystemLogger) {
-        this.manager = manager;
-        this.isSystemLogger = isSystemLogger;
-        this.config = new ConfigurationData();
-        this.name = name;
-        setupResourceInfo(resourceBundleName, caller);
-    }
-
-    final void mergeWithSystemLogger(Logger system);
-
-    private void setCallerModuleRef(Module callerModule);
-
-    private Module getCallerModule();
-
-    private Logger(String name) {
-        this.name = name;
-        this.isSystemLogger = true;
-        config = new ConfigurationData();
-    }
-
-    void setLogManager(@GuardSatisfied Logger this, LogManager manager);
-
-    private void checkPermission() throws SecurityException;
-
-    private static class SystemLoggerHelper {
-
-        static boolean disableCallerCheck = getBooleanProperty("sun.util.logging.disableCallerCheck");
-
-        private static boolean getBooleanProperty(final String key);
-    }
-
-    private static Logger demandLogger(String name, @Nullable String resourceBundleName, Class<?> caller);
 
     @Pure
     @CallerSensitive
     public static Logger getLogger(String name);
 
-    private static Logger getLogger(String name, Class<?> callerClass);
-
     @Pure
     @CallerSensitive
     public static Logger getLogger(String name, @Nullable String resourceBundleName);
-
-    private static Logger getLogger(String name, String resourceBundleName, Class<?> callerClass);
-
-    static Logger getPlatformLogger(String name);
 
     @Pure
     public static Logger getAnonymousLogger();
@@ -214,9 +75,6 @@ public class Logger {
 
     @SideEffectFree
     public void log(@GuardSatisfied Logger this, LogRecord record);
-
-    @SideEffectFree
-    private void doLog(@GuardSatisfied Logger this, LogRecord lr);
 
     @SideEffectFree
     public void log(@GuardSatisfied Logger this, @GuardSatisfied Level level, @Nullable String msg);
@@ -253,11 +111,6 @@ public class Logger {
 
     @SideEffectFree
     public void logp(@GuardSatisfied Logger this, Level level, @Nullable String sourceClass, @Nullable String sourceMethod, @Nullable Throwable thrown, Supplier<String> msgSupplier);
-
-    @SideEffectFree
-    private void doLog(@GuardSatisfied Logger this, @GuardSatisfied LogRecord lr, @Nullable String rbname);
-
-    private void doLog(LogRecord lr, ResourceBundle rb);
 
     @SideEffectFree
     @Deprecated
@@ -345,8 +198,6 @@ public class Logger {
 
     public void setLevel(@GuardSatisfied Logger this, @Nullable Level newLevel) throws SecurityException;
 
-    final boolean isLevelInitialized();
-
     @Pure
     @Nullable
     public Level getLevel(@GuardSatisfied Logger this);
@@ -365,19 +216,10 @@ public class Logger {
     @SideEffectFree
     public Handler[] getHandlers(@GuardSatisfied Logger this);
 
-    Handler[] accessCheckedHandlers();
-
     public void setUseParentHandlers(@GuardSatisfied Logger this, boolean useParentHandlers);
 
     @Pure
     public boolean getUseParentHandlers(@GuardSatisfied Logger this);
-
-    @Nullable
-    private synchronized ResourceBundle findResourceBundle(@Nullable String name, boolean useCallersModule);
-
-    private void setupResourceInfo(@GuardSatisfied Logger this, @Nullable String name, @Nullable Class<?> caller);
-
-    private synchronized void setupResourceInfo(String name, Module callerModule);
 
     public void setResourceBundle(ResourceBundle bundle);
 
@@ -386,12 +228,4 @@ public class Logger {
     public Logger getParent(@GuardSatisfied Logger this);
 
     public void setParent(@GuardSatisfied Logger this, @GuardSatisfied Logger parent);
-
-    private void doSetParent(@GuardSatisfied Logger this, @GuardSatisfied Logger newParent);
-
-    final void removeChildLogger(@GuardSatisfied Logger this, LogManager.LoggerWeakRef child);
-
-    private void updateEffectiveLevel(@GuardSatisfied Logger this);
-
-    private LoggerBundle getEffectiveLoggerBundle();
 }

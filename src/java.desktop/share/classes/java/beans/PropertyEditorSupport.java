@@ -9,14 +9,9 @@ import java.beans.*;
 public class PropertyEditorSupport implements PropertyEditor {
 
     public PropertyEditorSupport() {
-        setSource(this);
     }
 
     public PropertyEditorSupport(Object source) {
-        if (source == null) {
-            throw new NullPointerException();
-        }
-        setSource(source);
     }
 
     public Object getSource();
@@ -48,13 +43,4 @@ public class PropertyEditorSupport implements PropertyEditor {
     public synchronized void removePropertyChangeListener(PropertyChangeListener listener);
 
     public void firePropertyChange();
-
-    @SuppressWarnings("unchecked")
-    private <T> java.util.Vector<T> unsafeClone(java.util.Vector<T> v);
-
-    private Object value;
-
-    private Object source;
-
-    private java.util.Vector<PropertyChangeListener> listeners;
 }

@@ -16,21 +16,14 @@ import java.util.Objects;
 @UsesObjectEquals
 public abstract class Reader implements Readable, Closeable {
 
-    private static final int TRANSFER_BUFFER_SIZE = 8192;
-
     public static Reader nullReader();
 
     protected Object lock;
 
     protected Reader() {
-        this.lock = this;
     }
 
     protected Reader(Object lock) {
-        if (lock == null) {
-            throw new NullPointerException();
-        }
-        this.lock = lock;
     }
 
     @GTENegativeOne
@@ -46,10 +39,6 @@ public abstract class Reader implements Readable, Closeable {
     @GTENegativeOne
     @LTEqLengthOf({ "#1" })
     public abstract int read(@GuardSatisfied Reader this, char[] cbuf, @IndexOrHigh({ "#1" }) int off, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int len) throws IOException;
-
-    private static final int maxSkipBufferSize = 8192;
-
-    private char[] skipBuffer = null;
 
     @NonNegative
     public long skip(@GuardSatisfied Reader this, @NonNegative long n) throws IOException;

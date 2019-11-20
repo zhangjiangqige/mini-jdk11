@@ -9,17 +9,7 @@ import java.io.StringReader;
 @UsesObjectEquals
 public class StringSelection implements Transferable, ClipboardOwner {
 
-    private static final int STRING = 0;
-
-    private static final int PLAIN_TEXT = 1;
-
-    @SuppressWarnings("deprecation")
-    private static final DataFlavor[] flavors = { DataFlavor.stringFlavor, DataFlavor.plainTextFlavor };
-
-    private String data;
-
     public StringSelection(String data) {
-        this.data = data;
     }
 
     public DataFlavor[] getTransferDataFlavors();

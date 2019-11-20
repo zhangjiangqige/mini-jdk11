@@ -13,18 +13,6 @@ import java.util.ServiceLoader;
 @UsesObjectEquals
 public class RMIClassLoader {
 
-    private static final RMIClassLoaderSpi defaultProvider = newDefaultProviderInstance();
-
-    private static final RMIClassLoaderSpi provider = AccessController.doPrivileged(new PrivilegedAction<RMIClassLoaderSpi>() {
-
-        public RMIClassLoaderSpi run() {
-            return initializeProvider();
-        }
-    });
-
-    private RMIClassLoader() {
-    }
-
     @Deprecated
     public static Class<?> loadClass(String name) throws MalformedURLException, ClassNotFoundException;
 
@@ -44,8 +32,4 @@ public class RMIClassLoader {
 
     @Deprecated
     public static Object getSecurityContext(ClassLoader loader);
-
-    private static RMIClassLoaderSpi newDefaultProviderInstance();
-
-    private static RMIClassLoaderSpi initializeProvider();
 }

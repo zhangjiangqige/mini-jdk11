@@ -5,7 +5,4 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 @AnnotatedFor("nullness")
 public interface URLStreamHandlerFactory {
-
-    @Nullable
-    URLStreamHandler createURLStreamHandler(String protocol);
 }

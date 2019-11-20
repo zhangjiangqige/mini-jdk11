@@ -10,10 +10,7 @@ import java.io.*;
 @AnnotatedFor({ "nullness", "index", "signedness" })
 public class PipedOutputStream extends OutputStream {
 
-    private PipedInputStream sink;
-
     public PipedOutputStream(PipedInputStream snk) throws IOException {
-        connect(snk);
     }
 
     public PipedOutputStream() {

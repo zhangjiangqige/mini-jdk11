@@ -8,16 +8,7 @@ import java.math.BigInteger;
 @UsesObjectEquals
 public class DSAParameterSpec implements AlgorithmParameterSpec, java.security.interfaces.DSAParams {
 
-    BigInteger p;
-
-    BigInteger q;
-
-    BigInteger g;
-
     public DSAParameterSpec(BigInteger p, BigInteger q, BigInteger g) {
-        this.p = p;
-        this.q = q;
-        this.g = g;
     }
 
     public BigInteger getP();

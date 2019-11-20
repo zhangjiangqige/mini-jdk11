@@ -95,369 +95,23 @@ import static sun.java2d.pipe.hw.ExtendedBufferCapabilities.VSyncType.VSYNC_ON;
 @UIType
 public abstract class Component implements ImageObserver, MenuContainer, Serializable {
 
-    private static final PlatformLogger log = PlatformLogger.getLogger("java.awt.Component");
+    public static final float TOP_ALIGNMENT;
 
-    private static final PlatformLogger eventLog = PlatformLogger.getLogger("java.awt.event.Component");
+    public static final float CENTER_ALIGNMENT;
 
-    private static final PlatformLogger focusLog = PlatformLogger.getLogger("java.awt.focus.Component");
+    public static final float BOTTOM_ALIGNMENT;
 
-    private static final PlatformLogger mixingLog = PlatformLogger.getLogger("java.awt.mixing.Component");
+    public static final float LEFT_ALIGNMENT;
 
-    transient volatile ComponentPeer peer;
-
-    transient Container parent;
-
-    transient AppContext appContext;
-
-    int x;
-
-    int y;
-
-    int width;
-
-    int height;
-
-    Color foreground;
-
-    Color background;
-
-    volatile Font font;
-
-    Font peerFont;
-
-    Cursor cursor;
-
-    Locale locale;
-
-    private transient volatile GraphicsConfiguration graphicsConfig;
-
-    transient BufferStrategy bufferStrategy = null;
-
-    boolean ignoreRepaint = false;
-
-    boolean visible = true;
-
-    boolean enabled = true;
-
-    private volatile boolean valid = false;
-
-    DropTarget dropTarget;
-
-    Vector<PopupMenu> popups;
-
-    private String name;
-
-    private boolean nameExplicitlySet = false;
-
-    private boolean focusable = true;
-
-    private static final int FOCUS_TRAVERSABLE_UNKNOWN = 0;
-
-    private static final int FOCUS_TRAVERSABLE_DEFAULT = 1;
-
-    private static final int FOCUS_TRAVERSABLE_SET = 2;
-
-    private int isFocusTraversableOverridden = FOCUS_TRAVERSABLE_UNKNOWN;
-
-    Set<AWTKeyStroke>[] focusTraversalKeys;
-
-    private static final String[] focusTraversalKeyPropertyNames = { "forwardFocusTraversalKeys", "backwardFocusTraversalKeys", "upCycleFocusTraversalKeys", "downCycleFocusTraversalKeys" };
-
-    private boolean focusTraversalKeysEnabled = true;
-
-    static final Object LOCK = new AWTTreeLock();
-
-    static class AWTTreeLock {
-    }
-
-    private transient volatile AccessControlContext acc = AccessController.getContext();
-
-    Dimension minSize;
-
-    boolean minSizeSet;
-
-    Dimension prefSize;
-
-    boolean prefSizeSet;
-
-    Dimension maxSize;
-
-    boolean maxSizeSet;
-
-    transient ComponentOrientation componentOrientation = ComponentOrientation.UNKNOWN;
-
-    boolean newEventsOnly = false;
-
-    transient ComponentListener componentListener;
-
-    transient FocusListener focusListener;
-
-    transient HierarchyListener hierarchyListener;
-
-    transient HierarchyBoundsListener hierarchyBoundsListener;
-
-    transient KeyListener keyListener;
-
-    transient MouseListener mouseListener;
-
-    transient MouseMotionListener mouseMotionListener;
-
-    transient MouseWheelListener mouseWheelListener;
-
-    transient InputMethodListener inputMethodListener;
-
-    static final String actionListenerK = "actionL";
-
-    static final String adjustmentListenerK = "adjustmentL";
-
-    static final String componentListenerK = "componentL";
-
-    static final String containerListenerK = "containerL";
-
-    static final String focusListenerK = "focusL";
-
-    static final String itemListenerK = "itemL";
-
-    static final String keyListenerK = "keyL";
-
-    static final String mouseListenerK = "mouseL";
-
-    static final String mouseMotionListenerK = "mouseMotionL";
-
-    static final String mouseWheelListenerK = "mouseWheelL";
-
-    static final String textListenerK = "textL";
-
-    static final String ownedWindowK = "ownedL";
-
-    static final String windowListenerK = "windowL";
-
-    static final String inputMethodListenerK = "inputMethodL";
-
-    static final String hierarchyListenerK = "hierarchyL";
-
-    static final String hierarchyBoundsListenerK = "hierarchyBoundsL";
-
-    static final String windowStateListenerK = "windowStateL";
-
-    static final String windowFocusListenerK = "windowFocusL";
-
-    long eventMask = AWTEvent.INPUT_METHODS_ENABLED_MASK;
-
-    static boolean isInc;
-
-    static int incRate;
-
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-        String s = java.security.AccessController.doPrivileged(new GetPropertyAction("awt.image.incrementaldraw"));
-        isInc = (s == null || s.equals("true"));
-        s = java.security.AccessController.doPrivileged(new GetPropertyAction("awt.image.redrawrate"));
-        incRate = (s != null) ? Integer.parseInt(s) : 100;
-    }
-
-    public static final float TOP_ALIGNMENT = 0.0f;
-
-    public static final float CENTER_ALIGNMENT = 0.5f;
-
-    public static final float BOTTOM_ALIGNMENT = 1.0f;
-
-    public static final float LEFT_ALIGNMENT = 0.0f;
-
-    public static final float RIGHT_ALIGNMENT = 1.0f;
-
-    private static final long serialVersionUID = -7644114512714619750L;
-
-    private PropertyChangeSupport changeSupport;
-
-    private transient Object objectLock = new Object();
-
-    Object getObjectLock();
-
-    final AccessControlContext getAccessControlContext();
-
-    boolean isPacked = false;
-
-    private int boundsOp = ComponentPeer.DEFAULT_OPERATION;
+    public static final float RIGHT_ALIGNMENT;
 
     public enum BaselineResizeBehavior {
 
         CONSTANT_ASCENT, CONSTANT_DESCENT, CENTER_OFFSET, OTHER
     }
 
-    private transient Region compoundShape = null;
-
-    private transient Region mixingCutoutRegion = null;
-
-    private transient boolean isAddNotifyComplete = false;
-
-    int getBoundsOp();
-
-    void setBoundsOp(int op);
-
-    transient boolean backgroundEraseDisabled;
-
-    static {
-        AWTAccessor.setComponentAccessor(new AWTAccessor.ComponentAccessor() {
-
-            public void setBackgroundEraseDisabled(Component comp, boolean disabled) {
-                comp.backgroundEraseDisabled = disabled;
-            }
-
-            public boolean getBackgroundEraseDisabled(Component comp) {
-                return comp.backgroundEraseDisabled;
-            }
-
-            public Rectangle getBounds(Component comp) {
-                return new Rectangle(comp.x, comp.y, comp.width, comp.height);
-            }
-
-            public void setGraphicsConfiguration(Component comp, GraphicsConfiguration gc) {
-                comp.setGraphicsConfiguration(gc);
-            }
-
-            public void requestFocus(Component comp, FocusEvent.Cause cause) {
-                comp.requestFocus(cause);
-            }
-
-            public boolean canBeFocusOwner(Component comp) {
-                return comp.canBeFocusOwner();
-            }
-
-            public boolean isVisible(Component comp) {
-                return comp.isVisible_NoClientCode();
-            }
-
-            public void setRequestFocusController(RequestFocusController requestController) {
-                Component.setRequestFocusController(requestController);
-            }
-
-            public AppContext getAppContext(Component comp) {
-                return comp.appContext;
-            }
-
-            public void setAppContext(Component comp, AppContext appContext) {
-                comp.appContext = appContext;
-            }
-
-            public Container getParent(Component comp) {
-                return comp.getParent_NoClientCode();
-            }
-
-            public void setParent(Component comp, Container parent) {
-                comp.parent = parent;
-            }
-
-            public void setSize(Component comp, int width, int height) {
-                comp.width = width;
-                comp.height = height;
-            }
-
-            public Point getLocation(Component comp) {
-                return comp.location_NoClientCode();
-            }
-
-            public void setLocation(Component comp, int x, int y) {
-                comp.x = x;
-                comp.y = y;
-            }
-
-            public boolean isEnabled(Component comp) {
-                return comp.isEnabledImpl();
-            }
-
-            public boolean isDisplayable(Component comp) {
-                return comp.peer != null;
-            }
-
-            public Cursor getCursor(Component comp) {
-                return comp.getCursor_NoClientCode();
-            }
-
-            @SuppressWarnings("unchecked")
-            public <T extends ComponentPeer> T getPeer(Component comp) {
-                return (T) comp.peer;
-            }
-
-            public void setPeer(Component comp, ComponentPeer peer) {
-                comp.peer = peer;
-            }
-
-            public boolean isLightweight(Component comp) {
-                return (comp.peer instanceof LightweightPeer);
-            }
-
-            public boolean getIgnoreRepaint(Component comp) {
-                return comp.ignoreRepaint;
-            }
-
-            public int getWidth(Component comp) {
-                return comp.width;
-            }
-
-            public int getHeight(Component comp) {
-                return comp.height;
-            }
-
-            public int getX(Component comp) {
-                return comp.x;
-            }
-
-            public int getY(Component comp) {
-                return comp.y;
-            }
-
-            public Color getForeground(Component comp) {
-                return comp.foreground;
-            }
-
-            public Color getBackground(Component comp) {
-                return comp.background;
-            }
-
-            public void setBackground(Component comp, Color background) {
-                comp.background = background;
-            }
-
-            public Font getFont(Component comp) {
-                return comp.getFont_NoClientCode();
-            }
-
-            public void processEvent(Component comp, AWTEvent e) {
-                comp.processEvent(e);
-            }
-
-            public AccessControlContext getAccessControlContext(Component comp) {
-                return comp.getAccessControlContext();
-            }
-
-            public void revalidateSynchronously(Component comp) {
-                comp.revalidateSynchronously();
-            }
-
-            @Override
-            public void createBufferStrategy(Component comp, int numBuffers, BufferCapabilities caps) throws AWTException {
-                comp.createBufferStrategy(numBuffers, caps);
-            }
-
-            @Override
-            public BufferStrategy getBufferStrategy(Component comp) {
-                return comp.getBufferStrategy();
-            }
-        });
-    }
-
     protected Component() {
-        appContext = AppContext.getAppContext();
     }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    void initializeFocusTraversalKeys();
-
-    String constructComponentName();
 
     public String getName();
 
@@ -465,37 +119,15 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     public Container getParent();
 
-    final Container getParent_NoClientCode();
-
-    Container getContainer();
-
     public synchronized void setDropTarget(DropTarget dt);
 
     public synchronized DropTarget getDropTarget();
 
     public GraphicsConfiguration getGraphicsConfiguration();
 
-    final GraphicsConfiguration getGraphicsConfiguration_NoClientCode();
-
-    void setGraphicsConfiguration(GraphicsConfiguration gc);
-
-    final boolean updateGraphicsData(GraphicsConfiguration gc);
-
-    private boolean updateSelfGraphicsData(GraphicsConfiguration gc);
-
-    boolean updateChildGraphicsData(GraphicsConfiguration gc);
-
-    void checkGD(String stringID);
-
     public final Object getTreeLock();
 
-    final void checkTreeLock();
-
     public Toolkit getToolkit();
-
-    final Toolkit getToolkitImpl();
-
-    final ComponentFactory getComponentFactory();
 
     public boolean isValid();
 
@@ -504,25 +136,11 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     @Transient
     public boolean isVisible();
 
-    final boolean isVisible_NoClientCode();
-
-    boolean isRecursivelyVisible();
-
-    private Rectangle getRecursivelyVisibleBounds();
-
-    Point pointRelativeToComponent(Point absolute);
-
-    Component findUnderMouseInWindow(PointerInfo pi);
-
     public Point getMousePosition() throws HeadlessException;
-
-    boolean isSameOrAncestorOf(Component comp, boolean allowChildren);
 
     public boolean isShowing();
 
     public boolean isEnabled();
-
-    final boolean isEnabledImpl();
 
     public void setEnabled(boolean b);
 
@@ -547,12 +165,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     @Deprecated
     public void show(boolean b);
 
-    boolean containsFocus();
-
-    void clearMostRecentFocusOwnerOnHide();
-
-    void clearCurrentFocusCycleRootOnHide();
-
     @Deprecated
     public void hide();
 
@@ -573,8 +185,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     @Transient
     public Font getFont();
 
-    final Font getFont_NoClientCode();
-
     public void setFont(Font f);
 
     public boolean isFontSet();
@@ -589,12 +199,8 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     public Point getLocationOnScreen();
 
-    final Point getLocationOnScreen_NoTreeLock();
-
     @Deprecated
     public Point location();
-
-    private Point location_NoClientCode();
 
     public void setLocation(int x, int y);
 
@@ -627,13 +233,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     @Deprecated
     public void reshape(int x, int y, int width, int height);
-
-    private void repaintParentIfNeeded(int oldX, int oldY, int oldWidth, int oldHeight);
-
-    private void reshapeNativePeer(int x, int y, int width, int height, int op);
-
-    @SuppressWarnings("deprecation")
-    private void notifyNewBounds(boolean resized, boolean moved);
 
     public void setBounds(Rectangle r);
 
@@ -696,27 +295,15 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     public void invalidate();
 
-    void invalidateParent();
-
-    final void invalidateIfValid();
-
     public void revalidate();
 
-    final void revalidateSynchronously();
-
     public Graphics getGraphics();
-
-    final Graphics getGraphics_NoClientCode();
 
     public FontMetrics getFontMetrics(Font font);
 
     public void setCursor(Cursor cursor);
 
-    final void updateCursorImmediately();
-
     public Cursor getCursor();
-
-    final Cursor getCursor_NoClientCode();
 
     public boolean isCursorSet();
 
@@ -725,10 +312,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     public void update(Graphics g);
 
     public void paintAll(Graphics g);
-
-    void lightweightPaint(Graphics g);
-
-    void paintHeavyweightComponents(Graphics g);
 
     @SafeEffect
     public void repaint();
@@ -745,12 +328,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     public void print(Graphics g);
 
     public void printAll(Graphics g);
-
-    void lightweightPrint(Graphics g);
-
-    void printHeavyweightComponents(Graphics g);
-
-    private Insets getInsets_NoClientCode();
 
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h);
 
@@ -770,24 +347,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     public int checkImage(Image image, int width, int height, ImageObserver observer);
 
-    void createBufferStrategy(int numBuffers);
-
-    void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws AWTException;
-
-    private class ProxyCapabilities extends ExtendedBufferCapabilities {
-
-        private BufferCapabilities orig;
-
-        private ProxyCapabilities(BufferCapabilities orig) {
-            super(orig.getFrontBufferCapabilities(), orig.getBackBufferCapabilities(), orig.getFlipContents() == BufferCapabilities.FlipContents.BACKGROUND ? BufferCapabilities.FlipContents.BACKGROUND : BufferCapabilities.FlipContents.COPIED);
-            this.orig = orig;
-        }
-    }
-
-    BufferStrategy getBufferStrategy();
-
-    Image getBackBuffer();
-
     protected class FlipBufferStrategy extends BufferStrategy {
 
         protected int numBuffers;
@@ -800,29 +359,15 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
         protected boolean validatedContents;
 
-        int width;
-
-        int height;
-
         @SuppressWarnings("deprecation")
         protected FlipBufferStrategy(int numBuffers, BufferCapabilities caps) throws AWTException {
-            if (!(Component.this instanceof Window) && !(Component.this instanceof Canvas) && !(Component.this instanceof Applet)) {
-                throw new ClassCastException("Component must be a Canvas or Window or Applet");
-            }
-            this.numBuffers = numBuffers;
-            this.caps = caps;
-            createBuffers(numBuffers, caps);
         }
 
         protected void createBuffers(int numBuffers, BufferCapabilities caps) throws AWTException;
 
-        private void updateInternalBuffers();
-
         protected Image getBackBuffer();
 
         protected void flip(BufferCapabilities.FlipContents flipAction);
-
-        void flipSubRegion(int x1, int y1, int x2, int y2, BufferCapabilities.FlipContents flipAction);
 
         protected void destroyBuffers();
 
@@ -832,15 +377,11 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
         protected void revalidate();
 
-        void revalidate(boolean checkSize);
-
         public boolean contentsLost();
 
         public boolean contentsRestored();
 
         public void show();
-
-        void showSubRegion(int x1, int y1, int x2, int y2);
 
         public void dispose();
     }
@@ -857,11 +398,7 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
         protected int height;
 
-        private Insets insets;
-
         protected BltBufferStrategy(int numBuffers, BufferCapabilities caps) {
-            this.caps = caps;
-            createBackBuffers(numBuffers - 1);
         }
 
         public void dispose();
@@ -872,60 +409,13 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
         public Graphics getDrawGraphics();
 
-        Image getBackBuffer();
-
         public void show();
-
-        void showSubRegion(int x1, int y1, int x2, int y2);
 
         protected void revalidate();
 
-        void revalidate(boolean checkSize);
-
         public boolean contentsLost();
 
         public boolean contentsRestored();
-    }
-
-    private class FlipSubRegionBufferStrategy extends FlipBufferStrategy implements SubRegionShowable {
-
-        protected FlipSubRegionBufferStrategy(int numBuffers, BufferCapabilities caps) throws AWTException {
-            super(numBuffers, caps);
-        }
-
-        public void show(int x1, int y1, int x2, int y2);
-
-        public boolean showIfNotLost(int x1, int y1, int x2, int y2);
-    }
-
-    private class BltSubRegionBufferStrategy extends BltBufferStrategy implements SubRegionShowable {
-
-        protected BltSubRegionBufferStrategy(int numBuffers, BufferCapabilities caps) {
-            super(numBuffers, caps);
-        }
-
-        public void show(int x1, int y1, int x2, int y2);
-
-        public boolean showIfNotLost(int x1, int y1, int x2, int y2);
-    }
-
-    private class SingleBufferStrategy extends BufferStrategy {
-
-        private BufferCapabilities caps;
-
-        public SingleBufferStrategy(BufferCapabilities caps) {
-            this.caps = caps;
-        }
-
-        public BufferCapabilities getCapabilities();
-
-        public Graphics getDrawGraphics();
-
-        public boolean contentsLost();
-
-        public boolean contentsRestored();
-
-        public void show();
     }
 
     public void setIgnoreRepaint(boolean ignoreRepaint);
@@ -950,20 +440,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     public void deliverEvent(Event e);
 
     public final void dispatchEvent(AWTEvent e);
-
-    @SuppressWarnings("deprecation")
-    void dispatchEventImpl(AWTEvent e);
-
-    void autoProcessMouseWheel(MouseWheelEvent e);
-
-    @SuppressWarnings("deprecation")
-    boolean dispatchMouseWheelToAncestor(MouseWheelEvent e);
-
-    boolean areInputMethodsEnabled();
-
-    boolean eventEnabled(AWTEvent e);
-
-    boolean eventTypeEnabled(int type);
 
     @Deprecated
     public boolean postEvent(Event e);
@@ -990,15 +466,7 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     public void removeHierarchyBoundsListener(HierarchyBoundsListener l);
 
-    int numListening(long mask);
-
-    int countHierarchyMembers();
-
-    int createHierarchyEvents(int id, Component changed, Container changedParent, long changeFlags, boolean enabledOnToolkit);
-
     public synchronized HierarchyBoundsListener[] getHierarchyBoundsListeners();
-
-    void adjustListeningChildrenOnParent(long mask, int num);
 
     public synchronized void addKeyListener(KeyListener l);
 
@@ -1041,20 +509,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     protected final void disableEvents(long eventsToDisable);
 
-    transient sun.awt.EventQueueItem[] eventCache;
-
-    private transient boolean coalescingEnabled = checkCoalescing();
-
-    private static final Map<Class<?>, Boolean> coalesceMap = new java.util.WeakHashMap<Class<?>, Boolean>();
-
-    private boolean checkCoalescing();
-
-    private static final Class<?>[] coalesceEventsParams = { AWTEvent.class, AWTEvent.class };
-
-    private static boolean isCoalesceEventsOverriden(Class<?> clazz);
-
-    final boolean isCoalescingEnabled();
-
     protected AWTEvent coalesceEvents(AWTEvent existingEvent, AWTEvent newEvent);
 
     protected void processEvent(AWTEvent e);
@@ -1070,8 +524,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     protected void processMouseMotionEvent(MouseEvent e);
 
     protected void processMouseWheelEvent(MouseWheelEvent e);
-
-    boolean postsOldMouseEvents();
 
     protected void processInputMethodEvent(InputMethodEvent e);
 
@@ -1126,15 +578,9 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     public void setFocusable(boolean focusable);
 
-    final boolean isFocusTraversableOverridden();
-
     public void setFocusTraversalKeys(int id, Set<? extends AWTKeyStroke> keystrokes);
 
     public Set<AWTKeyStroke> getFocusTraversalKeys(int id);
-
-    final void setFocusTraversalKeys_NoIDCheck(int id, Set<? extends AWTKeyStroke> keystrokes);
-
-    final Set<AWTKeyStroke> getFocusTraversalKeys_NoIDCheck(int id);
 
     public boolean areFocusTraversalKeysSet(int id);
 
@@ -1156,54 +602,22 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     protected boolean requestFocusInWindow(boolean temporary);
 
-    boolean requestFocusInWindow(boolean temporary, FocusEvent.Cause cause);
-
-    final boolean requestFocusHelper(boolean temporary, boolean focusedWindowChangeAllowed);
-
-    final boolean requestFocusHelper(boolean temporary, boolean focusedWindowChangeAllowed, FocusEvent.Cause cause);
-
-    private boolean isRequestFocusAccepted(boolean temporary, boolean focusedWindowChangeAllowed, FocusEvent.Cause cause);
-
-    private static RequestFocusController requestFocusController = new DummyRequestFocusController();
-
-    private static class DummyRequestFocusController implements RequestFocusController {
-
-        public boolean acceptRequestFocus(Component from, Component to, boolean temporary, boolean focusedWindowChangeAllowed, FocusEvent.Cause cause);
-    }
-
-    static synchronized void setRequestFocusController(RequestFocusController requestController);
-
     public Container getFocusCycleRootAncestor();
 
     public boolean isFocusCycleRoot(Container container);
-
-    Container getTraversalRoot();
 
     public void transferFocus();
 
     @Deprecated
     public void nextFocus();
 
-    boolean transferFocus(boolean clearOnFailure);
-
-    @SuppressWarnings("deprecation")
-    final Component getNextFocusCandidate();
-
     public void transferFocusBackward();
-
-    boolean transferFocusBackward(boolean clearOnFailure);
 
     public void transferFocusUpCycle();
 
     public boolean hasFocus();
 
     public boolean isFocusOwner();
-
-    private boolean autoFocusTransferOnDisposal = true;
-
-    void setAutoFocusTransferOnDisposal(boolean value);
-
-    boolean isAutoFocusTransferOnDisposal();
 
     public void add(PopupMenu popup);
 
@@ -1223,8 +637,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
     public void list(PrintWriter out);
 
     public void list(PrintWriter out, int indent);
-
-    final Container getNativeContainer();
 
     public void addPropertyChangeListener(PropertyChangeListener listener);
 
@@ -1256,50 +668,26 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
 
     public void firePropertyChange(String propertyName, double oldValue, double newValue);
 
-    private int componentSerializedDataVersion = 4;
-
-    private void doSwingSerialization();
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
-
     public void setComponentOrientation(ComponentOrientation o);
 
     public ComponentOrientation getComponentOrientation();
 
     public void applyComponentOrientation(ComponentOrientation orientation);
 
-    final boolean canBeFocusOwner();
-
-    final boolean canBeFocusOwnerRecursively();
-
-    final void relocateComponent();
-
-    Window getContainingWindow();
-
-    private static native void initIDs();
-
-    protected AccessibleContext accessibleContext = null;
+    protected AccessibleContext accessibleContext;
 
     public AccessibleContext getAccessibleContext();
 
     protected abstract class AccessibleAWTComponent extends AccessibleContext implements Serializable, AccessibleComponent {
 
-        private static final long serialVersionUID = 642321655757800191L;
-
         protected AccessibleAWTComponent() {
         }
 
-        private transient volatile int propertyListenersCount = 0;
+        protected ComponentListener accessibleAWTComponentHandler;
 
-        protected ComponentListener accessibleAWTComponentHandler = null;
-
-        protected FocusListener accessibleAWTFocusHandler = null;
+        protected FocusListener accessibleAWTFocusHandler;
 
         protected class AccessibleAWTComponentHandler implements ComponentListener, Serializable {
-
-            private static final long serialVersionUID = -1009684107426231869L;
 
             public void componentHidden(ComponentEvent e);
 
@@ -1311,8 +699,6 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
         }
 
         protected class AccessibleAWTFocusHandler implements FocusListener, Serializable {
-
-            private static final long serialVersionUID = 3150908257351582233L;
 
             public void focusGained(FocusEvent event);
 
@@ -1398,55 +784,5 @@ public abstract class Component implements ImageObserver, MenuContainer, Seriali
         public void removeFocusListener(FocusListener l);
     }
 
-    int getAccessibleIndexInParent();
-
-    AccessibleStateSet getAccessibleStateSet();
-
-    static boolean isInstanceOf(Object obj, String className);
-
-    final boolean areBoundsValid();
-
-    void applyCompoundShape(Region shape);
-
-    private Region getAppliedShape();
-
-    Point getLocationOnWindow();
-
-    final Region getNormalShape();
-
-    Region getOpaqueShape();
-
-    final int getSiblingIndexAbove();
-
-    final ComponentPeer getHWPeerAboveMe();
-
-    final int getSiblingIndexBelow();
-
-    final boolean isNonOpaqueForMixing();
-
-    private Region calculateCurrentShape();
-
-    void applyCurrentShape();
-
-    final void subtractAndApplyShape(Region s);
-
-    private void applyCurrentShapeBelowMe();
-
-    final void subtractAndApplyShapeBelowMe();
-
-    void mixOnShowing();
-
-    void mixOnHiding(boolean isLightweight);
-
-    void mixOnReshaping();
-
-    void mixOnZOrderChanging(int oldZorder, int newZorder);
-
-    void mixOnValidating();
-
-    final boolean isMixingNeeded();
-
     public void setMixingCutoutShape(Shape shape);
-
-    void updateZOrder();
 }

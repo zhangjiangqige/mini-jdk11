@@ -14,18 +14,10 @@ import java.util.function.UnaryOperator;
 @UsesObjectEquals
 public class AtomicReferenceArray<E> implements java.io.Serializable {
 
-    private static final long serialVersionUID = -6209656149925076980L;
-
-    private static final VarHandle AA = MethodHandles.arrayElementVarHandle(Object[].class);
-
-    private final Object[] array;
-
     public AtomicReferenceArray(int length) {
-        array = new Object[length];
     }
 
     public AtomicReferenceArray(E[] array) {
-        this.array = Arrays.copyOf(array, array.length, Object[].class);
     }
 
     public final int length();
@@ -42,7 +34,7 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
 
     public final boolean compareAndSet(int i, E expectedValue, E newValue);
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public final boolean weakCompareAndSet(int i, E expectedValue, E newValue);
 
     public final boolean weakCompareAndSetPlain(int i, E expectedValue, E newValue);
@@ -56,8 +48,6 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
     public final E accumulateAndGet(int i, E x, BinaryOperator<E> accumulatorFunction);
 
     public String toString();
-
-    private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException;
 
     public final E getPlain(int i);
 

@@ -12,54 +12,10 @@ import jdk.internal.vm.annotation.ReservedStackAccess;
 @AnnotatedFor("lock")
 public class ReentrantLock implements Lock, java.io.Serializable {
 
-    private static final long serialVersionUID = 7373984872572414699L;
-
-    private final Sync sync;
-
-    abstract static class Sync extends AbstractQueuedSynchronizer {
-
-        private static final long serialVersionUID = -5179523762034025860L;
-
-        @ReservedStackAccess
-        final boolean nonfairTryAcquire(int acquires);
-
-        @ReservedStackAccess
-        protected final boolean tryRelease(int releases);
-
-        protected final boolean isHeldExclusively();
-
-        final ConditionObject newCondition();
-
-        final Thread getOwner();
-
-        final int getHoldCount();
-
-        final boolean isLocked();
-
-        private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException;
-    }
-
-    static final class NonfairSync extends Sync {
-
-        private static final long serialVersionUID = 7316153563782823691L;
-
-        protected final boolean tryAcquire(int acquires);
-    }
-
-    static final class FairSync extends Sync {
-
-        private static final long serialVersionUID = -3000897897090466540L;
-
-        @ReservedStackAccess
-        protected final boolean tryAcquire(int acquires);
-    }
-
     public ReentrantLock() {
-        sync = new NonfairSync();
     }
 
     public ReentrantLock(boolean fair) {
-        sync = fair ? new FairSync() : new NonfairSync();
     }
 
     @EnsuresLockHeld({ "this" })

@@ -9,20 +9,7 @@ import java.util.*;
 @UsesObjectEquals
 public final class PosixFilePermissions {
 
-    private PosixFilePermissions() {
-    }
-
-    private static void writeBits(StringBuilder sb, boolean r, boolean w, boolean x);
-
     public static String toString(Set<PosixFilePermission> perms);
-
-    private static boolean isSet(char c, char setValue);
-
-    private static boolean isR(char c);
-
-    private static boolean isW(char c);
-
-    private static boolean isX(char c);
 
     public static Set<PosixFilePermission> fromString(String perms);
 

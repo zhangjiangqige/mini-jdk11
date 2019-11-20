@@ -36,59 +36,7 @@ import sun.awt.SunToolkit;
 @UsesObjectEquals
 public class InputContext extends java.awt.im.InputContext implements ComponentListener, WindowListener {
 
-    private static final PlatformLogger log = PlatformLogger.getLogger("sun.awt.im.InputContext");
-
-    private InputMethodLocator inputMethodLocator;
-
-    private InputMethod inputMethod;
-
-    private boolean inputMethodCreationFailed;
-
-    private HashMap<InputMethodLocator, InputMethod> usedInputMethods;
-
-    private Component currentClientComponent;
-
-    private Component awtFocussedComponent;
-
-    private boolean isInputMethodActive;
-
-    private Subset[] characterSubsets = null;
-
-    private boolean compositionAreaHidden = false;
-
-    private static InputContext inputMethodWindowContext;
-
-    private static InputMethod previousInputMethod = null;
-
-    private boolean clientWindowNotificationEnabled = false;
-
-    private Window clientWindowListened;
-
-    private Rectangle clientWindowLocation = null;
-
-    private HashMap<InputMethod, Boolean> perInputMethodState;
-
-    private static AWTKeyStroke inputMethodSelectionKey;
-
-    private static boolean inputMethodSelectionKeyInitialized = false;
-
-    private static final String inputMethodSelectionKeyPath = "/java/awt/im/selectionKey";
-
-    private static final String inputMethodSelectionKeyCodeName = "keyCode";
-
-    private static final String inputMethodSelectionKeyModifiersName = "modifiers";
-
     protected InputContext() {
-        InputMethodManager imm = InputMethodManager.getInstance();
-        synchronized (InputContext.class) {
-            if (!inputMethodSelectionKeyInitialized) {
-                inputMethodSelectionKeyInitialized = true;
-                if (imm.hasMultipleInputMethods()) {
-                    initializeInputMethodSelectionKey();
-                }
-            }
-        }
-        selectInputMethod(imm.getDefaultKeyboardLocale());
     }
 
     public synchronized boolean selectInputMethod(Locale locale);
@@ -101,22 +49,6 @@ public class InputContext extends java.awt.im.InputContext implements ComponentL
 
     @SuppressWarnings("fallthrough")
     public void dispatchEvent(AWTEvent event);
-
-    private void focusGained(Component source);
-
-    private void activateInputMethod(boolean updateCompositionArea);
-
-    static Window getComponentWindow(Component component);
-
-    private void focusLost(Component source, boolean isTemporary);
-
-    private boolean checkInputMethodSelectionKey(KeyEvent event);
-
-    private void deactivateInputMethod(boolean isTemporary);
-
-    synchronized void changeInputMethod(InputMethodLocator newLocator);
-
-    Component getClientComponent();
 
     public synchronized void removeNotify(Component component);
 
@@ -132,25 +64,7 @@ public class InputContext extends java.awt.im.InputContext implements ComponentL
 
     public void disableNativeIM();
 
-    private synchronized InputMethod getInputMethod();
-
-    private InputMethod getInputMethodInstance();
-
-    private void logCreationFailed(Throwable throwable);
-
-    InputMethodLocator getInputMethodLocator();
-
     public synchronized void endComposition();
-
-    synchronized void enableClientWindowNotification(InputMethod requester, boolean enable);
-
-    private synchronized void notifyClientWindowChange(Window window);
-
-    private synchronized void addClientWindowListeners();
-
-    private synchronized void removeClientWindowListeners();
-
-    private boolean addedClientWindowListeners();
 
     public void componentResized(ComponentEvent e);
 
@@ -173,8 +87,4 @@ public class InputContext extends java.awt.im.InputContext implements ComponentL
     public void windowActivated(WindowEvent e);
 
     public void windowDeactivated(WindowEvent e);
-
-    private void initializeInputMethodSelectionKey();
-
-    private AWTKeyStroke getInputMethodSelectionKeyStroke(Preferences root);
 }

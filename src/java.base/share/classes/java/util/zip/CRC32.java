@@ -12,8 +12,6 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @UsesObjectEquals
 public class CRC32 implements Checksum {
 
-    private int crc;
-
     public CRC32() {
     }
 
@@ -31,25 +29,4 @@ public class CRC32 implements Checksum {
 
     @Override
     public long getValue();
-
-    @HotSpotIntrinsicCandidate
-    private static native int update(int crc, int b);
-
-    private static int updateBytes(int crc, byte[] b, int off, int len);
-
-    @HotSpotIntrinsicCandidate
-    private static native int updateBytes0(int crc, byte[] b, int off, int len);
-
-    private static void updateBytesCheck(byte[] b, int off, int len);
-
-    private static int updateByteBuffer(int alder, long addr, int off, int len);
-
-    @HotSpotIntrinsicCandidate
-    private static native int updateByteBuffer0(int alder, long addr, int off, int len);
-
-    private static void updateByteBufferCheck(long addr);
-
-    static {
-        ZipUtils.loadLibrary();
-    }
 }

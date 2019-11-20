@@ -15,7 +15,7 @@ import java.util.ServiceConfigurationError;
 public class StartTlsRequest implements ExtendedRequest {
 
     @Interned
-    public static final String OID = "1.3.6.1.4.1.1466.20037";
+    public static final String OID;
 
     public StartTlsRequest() {
     }
@@ -25,12 +25,4 @@ public class StartTlsRequest implements ExtendedRequest {
     public byte[] getEncodedValue();
 
     public ExtendedResponse createExtendedResponse(String id, byte[] berValue, int offset, int length) throws NamingException;
-
-    private ConfigurationException wrapException(Exception e);
-
-    private final ClassLoader getContextClassLoader();
-
-    private final static boolean privilegedHasNext(final Iterator<StartTlsResponse> iter);
-
-    private static final long serialVersionUID = 4441679576360753397L;
 }

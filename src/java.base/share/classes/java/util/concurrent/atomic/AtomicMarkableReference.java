@@ -9,24 +9,7 @@ import java.lang.invoke.VarHandle;
 @UsesObjectEquals
 public class AtomicMarkableReference<V> {
 
-    private static class Pair<T> {
-
-        final T reference;
-
-        final boolean mark;
-
-        private Pair(T reference, boolean mark) {
-            this.reference = reference;
-            this.mark = mark;
-        }
-
-        static <T> Pair<T> of(T reference, boolean mark);
-    }
-
-    private volatile Pair<V> pair;
-
     public AtomicMarkableReference(V initialRef, boolean initialMark) {
-        pair = Pair.of(initialRef, initialMark);
     }
 
     public V getReference();
@@ -42,17 +25,4 @@ public class AtomicMarkableReference<V> {
     public void set(V newReference, boolean newMark);
 
     public boolean attemptMark(V expectedReference, boolean newMark);
-
-    private static final VarHandle PAIR;
-
-    static {
-        try {
-            MethodHandles.Lookup l = MethodHandles.lookup();
-            PAIR = l.findVarHandle(AtomicMarkableReference.class, "pair", Pair.class);
-        } catch (ReflectiveOperationException e) {
-            throw new ExceptionInInitializerError(e);
-        }
-    }
-
-    private boolean casPair(Pair<V> cmp, Pair<V> val);
 }

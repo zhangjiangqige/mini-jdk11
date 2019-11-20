@@ -37,7 +37,6 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
         }
 
         public Float(float x1, float y1, float ctrlx1, float ctrly1, float ctrlx2, float ctrly2, float x2, float y2) {
-            setCurve(x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
         }
 
         public double getX1();
@@ -69,8 +68,6 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
         public void setCurve(float x1, float y1, float ctrlx1, float ctrly1, float ctrlx2, float ctrly2, float x2, float y2);
 
         public Rectangle2D getBounds2D();
-
-        private static final long serialVersionUID = -1272015596714244385L;
     }
 
     public static class Double extends CubicCurve2D implements Serializable {
@@ -95,7 +92,6 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
         }
 
         public Double(double x1, double y1, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double x2, double y2) {
-            setCurve(x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
         }
 
         public double getX1();
@@ -125,8 +121,6 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
         public void setCurve(double x1, double y1, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double x2, double y2);
 
         public Rectangle2D getBounds2D();
-
-        private static final long serialVersionUID = -4202960122839707295L;
     }
 
     protected CubicCurve2D() {
@@ -188,26 +182,6 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
 
     public static int solveCubic(double[] eqn, double[] res);
 
-    private static int fixRoots(double[] eqn, double[] res, int num);
-
-    private static double refineRootWithHint(double[] eqn, double min, double max, double t);
-
-    private static double bisectRootWithHint(double[] eqn, double x0, double xe, double hint);
-
-    private static double bisectRoot(double[] eqn, double x0, double xe);
-
-    private static boolean inInterval(double t, double min, double max);
-
-    private static boolean within(double x, double y, double err);
-
-    private static boolean iszero(double x, double err);
-
-    private static boolean oppositeSigns(double x1, double x2);
-
-    private static double solveEqn(double[] eqn, int order, double t);
-
-    private static double getRootUpperBound(double[] eqn);
-
     public boolean contains(double x, double y);
 
     public boolean contains(Point2D p);
@@ -217,8 +191,6 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
     public boolean intersects(Rectangle2D r);
 
     public boolean contains(double x, double y, double w, double h);
-
-    private int rectCrossings(double x, double y, double w, double h);
 
     public boolean contains(Rectangle2D r);
 

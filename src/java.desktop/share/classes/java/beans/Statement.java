@@ -21,31 +21,8 @@ import static sun.reflect.misc.ReflectUtil.checkPackageAccess;
 @UsesObjectEquals
 public class Statement {
 
-    private static Object[] emptyArray = new Object[] {};
-
-    static ExceptionListener defaultExceptionListener = new ExceptionListener() {
-
-        public void exceptionThrown(Exception e) {
-            System.err.println(e);
-            System.err.println("Continuing ...");
-        }
-    };
-
-    private final AccessControlContext acc = AccessController.getContext();
-
-    private final Object target;
-
-    private final String methodName;
-
-    private final Object[] arguments;
-
-    ClassLoader loader;
-
     @ConstructorProperties({ "target", "methodName", "arguments" })
     public Statement(Object target, String methodName, Object[] arguments) {
-        this.target = target;
-        this.methodName = methodName;
-        this.arguments = (arguments == null) ? emptyArray : arguments.clone();
     }
 
     public Object getTarget();
@@ -56,13 +33,5 @@ public class Statement {
 
     public void execute() throws Exception;
 
-    Object invoke() throws Exception;
-
-    private Object invokeInternal() throws Exception;
-
-    String instanceName(Object instance);
-
     public String toString();
-
-    static Method getMethod(Class<?> type, String name, Class<?>... args);
 }

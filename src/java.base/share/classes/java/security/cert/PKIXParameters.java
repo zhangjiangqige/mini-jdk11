@@ -18,54 +18,10 @@ import java.util.Set;
 @UsesObjectEquals
 public class PKIXParameters implements CertPathParameters {
 
-    private Set<TrustAnchor> unmodTrustAnchors;
-
-    private Date date;
-
-    private List<PKIXCertPathChecker> certPathCheckers;
-
-    private String sigProvider;
-
-    private boolean revocationEnabled = true;
-
-    private Set<String> unmodInitialPolicies;
-
-    private boolean explicitPolicyRequired = false;
-
-    private boolean policyMappingInhibited = false;
-
-    private boolean anyPolicyInhibited = false;
-
-    private boolean policyQualifiersRejected = true;
-
-    private List<CertStore> certStores;
-
-    private CertSelector certSelector;
-
     public PKIXParameters(Set<TrustAnchor> trustAnchors) throws InvalidAlgorithmParameterException {
-        setTrustAnchors(trustAnchors);
-        this.unmodInitialPolicies = Collections.<String>emptySet();
-        this.certPathCheckers = new ArrayList<>();
-        this.certStores = new ArrayList<>();
     }
 
     public PKIXParameters(KeyStore keystore) throws KeyStoreException, InvalidAlgorithmParameterException {
-        if (keystore == null)
-            throw new NullPointerException("the keystore parameter must be " + "non-null");
-        Set<TrustAnchor> hashSet = new HashSet<>();
-        Enumeration<String> aliases = keystore.aliases();
-        while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
-            if (keystore.isCertificateEntry(alias)) {
-                Certificate cert = keystore.getCertificate(alias);
-                if (cert instanceof X509Certificate)
-                    hashSet.add(new TrustAnchor((X509Certificate) cert, null));
-            }
-        }
-        setTrustAnchors(hashSet);
-        this.unmodInitialPolicies = Collections.<String>emptySet();
-        this.certPathCheckers = new ArrayList<>();
-        this.certStores = new ArrayList<>();
     }
 
     public Set<TrustAnchor> getTrustAnchors();

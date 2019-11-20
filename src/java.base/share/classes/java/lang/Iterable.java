@@ -9,10 +9,4 @@ import java.util.function.Consumer;
 
 @AnnotatedFor({ "lock", "nullness" })
 public interface Iterable<T> {
-
-    Iterator<T> iterator();
-
-    default void forEach(Consumer<? super T> action);
-
-    default Spliterator<T> spliterator();
 }

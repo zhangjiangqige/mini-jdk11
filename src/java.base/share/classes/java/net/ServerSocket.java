@@ -18,59 +18,17 @@ import java.util.Collections;
 @UsesObjectEquals
 public class ServerSocket implements java.io.Closeable {
 
-    private boolean created = false;
-
-    private boolean bound = false;
-
-    private boolean closed = false;
-
-    private Object closeLock = new Object();
-
-    private SocketImpl impl;
-
-    private boolean oldImpl = false;
-
-    ServerSocket(SocketImpl impl) {
-        this.impl = impl;
-        impl.setServerSocket(this);
-    }
-
     public ServerSocket() throws IOException {
-        setImpl();
     }
 
     public ServerSocket(int port) throws IOException {
-        this(port, 50, null);
     }
 
     public ServerSocket(int port, int backlog) throws IOException {
-        this(port, backlog, null);
     }
 
     public ServerSocket(int port, int backlog, InetAddress bindAddr) throws IOException {
-        setImpl();
-        if (port < 0 || port > 0xFFFF)
-            throw new IllegalArgumentException("Port value out of range: " + port);
-        if (backlog < 1)
-            backlog = 50;
-        try {
-            bind(new InetSocketAddress(bindAddr, port), backlog);
-        } catch (SecurityException e) {
-            close();
-            throw e;
-        } catch (IOException e) {
-            close();
-            throw e;
-        }
     }
-
-    SocketImpl getImpl() throws SocketException;
-
-    private void checkOldImpl();
-
-    private void setImpl();
-
-    void createImpl() throws SocketException;
 
     public void bind(SocketAddress endpoint) throws IOException;
 
@@ -104,12 +62,6 @@ public class ServerSocket implements java.io.Closeable {
 
     public String toString();
 
-    void setBound();
-
-    void setCreated();
-
-    private static SocketImplFactory factory = null;
-
     public static synchronized void setSocketFactory(SocketImplFactory fac) throws IOException;
 
     public synchronized void setReceiveBufferSize(int size) throws SocketException;
@@ -122,29 +74,5 @@ public class ServerSocket implements java.io.Closeable {
 
     public <T> T getOption(SocketOption<T> name) throws IOException;
 
-    private static Set<SocketOption<?>> options;
-
-    private static boolean optionsSet = false;
-
     public Set<SocketOption<?>> supportedOptions();
-
-    static {
-        SharedSecrets.setJavaNetSocketAccess(new JavaNetSocketAccess() {
-
-            @Override
-            public ServerSocket newServerSocket(SocketImpl impl) {
-                return new ServerSocket(impl);
-            }
-
-            @Override
-            public SocketImpl newSocketImpl(Class<? extends SocketImpl> implClass) {
-                try {
-                    Constructor<? extends SocketImpl> ctor = implClass.getDeclaredConstructor();
-                    return ctor.newInstance();
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    throw new AssertionError(e);
-                }
-            }
-        });
-    }
 }

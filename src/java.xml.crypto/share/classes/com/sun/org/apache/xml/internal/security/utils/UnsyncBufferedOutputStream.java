@@ -14,16 +14,9 @@ public class UnsyncBufferedOutputStream extends FilterOutputStream {
     protected int count;
 
     public UnsyncBufferedOutputStream(OutputStream out) {
-        super(out);
-        buffer = new byte[8192];
     }
 
     public UnsyncBufferedOutputStream(OutputStream out, int size) {
-        super(out);
-        if (size <= 0) {
-            throw new IllegalArgumentException("size must be > 0");
-        }
-        buffer = new byte[size];
     }
 
     @Override
@@ -34,6 +27,4 @@ public class UnsyncBufferedOutputStream extends FilterOutputStream {
 
     @Override
     public void write(int oneByte) throws IOException;
-
-    private void flushInternal() throws IOException;
 }

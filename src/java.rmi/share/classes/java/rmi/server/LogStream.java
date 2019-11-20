@@ -9,28 +9,6 @@ import java.util.*;
 @Deprecated
 public class LogStream extends PrintStream {
 
-    private static Map<String, LogStream> known = new HashMap<>(5);
-
-    private static PrintStream defaultStream = System.err;
-
-    private String name;
-
-    private OutputStream logOut;
-
-    private OutputStreamWriter logWriter;
-
-    private StringBuffer buffer = new StringBuffer();
-
-    private ByteArrayOutputStream bufOut;
-
-    @Deprecated
-    private LogStream(String name, OutputStream out) {
-        super(new ByteArrayOutputStream());
-        bufOut = (ByteArrayOutputStream) super.out;
-        this.name = name;
-        setOutputStream(out);
-    }
-
     @Deprecated
     public static LogStream log(String name);
 
@@ -55,11 +33,11 @@ public class LogStream extends PrintStream {
     @Deprecated
     public String toString();
 
-    public static final int SILENT = 0;
+    public static final int SILENT;
 
-    public static final int BRIEF = 10;
+    public static final int BRIEF;
 
-    public static final int VERBOSE = 20;
+    public static final int VERBOSE;
 
     @Deprecated
     public static int parseLevel(String s);

@@ -12,53 +12,6 @@ import java.io.Serializable;
 @UsesObjectEquals
 public class ScrollPaneAdjustable implements Adjustable, Serializable {
 
-    private ScrollPane sp;
-
-    private int orientation;
-
-    private int value;
-
-    private int minimum;
-
-    private int maximum;
-
-    private int visibleAmount;
-
-    private transient boolean isAdjusting;
-
-    private int unitIncrement = 1;
-
-    private int blockIncrement = 1;
-
-    private AdjustmentListener adjustmentListener;
-
-    private static final String SCROLLPANE_ONLY = "Can be set by scrollpane only";
-
-    private static native void initIDs();
-
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-        AWTAccessor.setScrollPaneAdjustableAccessor(new AWTAccessor.ScrollPaneAdjustableAccessor() {
-
-            public void setTypedValue(final ScrollPaneAdjustable adj, final int v, final int type) {
-                adj.setTypedValue(v, type);
-            }
-        });
-    }
-
-    private static final long serialVersionUID = -3359745691033257079L;
-
-    ScrollPaneAdjustable(ScrollPane sp, AdjustmentListener l, int orientation) {
-        this.sp = sp;
-        this.orientation = orientation;
-        addAdjustmentListener(l);
-    }
-
-    void setSpan(int min, int max, int visible);
-
     public int getOrientation();
 
     public void setMinimum(int min);
@@ -86,8 +39,6 @@ public class ScrollPaneAdjustable implements Adjustable, Serializable {
     public boolean getValueIsAdjusting();
 
     public void setValue(int v);
-
-    private void setTypedValue(int v, int type);
 
     public int getValue();
 

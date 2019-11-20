@@ -34,31 +34,15 @@ import jdk.internal.util.xml.PropertiesDefaultHandler;
 @AnnotatedFor({ "index", "lock", "nullness", "propkey" })
 public class Properties extends Hashtable<Object, Object> {
 
-    private static final long serialVersionUID = 4112578634029874840L;
-
-    private static final Unsafe UNSAFE = Unsafe.getUnsafe();
-
     protected volatile Properties defaults;
 
-    private transient volatile ConcurrentHashMap<Object, Object> map;
-
     public Properties() {
-        this(null, 8);
     }
 
     public Properties(int initialCapacity) {
-        this(null, initialCapacity);
     }
 
     public Properties(Properties defaults) {
-        this(defaults, 8);
-    }
-
-    private Properties(Properties defaults, int initialCapacity) {
-        super((Void) null);
-        map = new ConcurrentHashMap<>(initialCapacity);
-        this.defaults = defaults;
-        UNSAFE.storeFence();
     }
 
     @Nullable
@@ -68,51 +52,12 @@ public class Properties extends Hashtable<Object, Object> {
 
     public synchronized void load(InputStream inStream) throws IOException;
 
-    private void load0(LineReader lr) throws IOException;
-
-    class LineReader {
-
-        public LineReader(InputStream inStream) {
-            this.inStream = inStream;
-            inByteBuf = new byte[8192];
-        }
-
-        public LineReader(Reader reader) {
-            this.reader = reader;
-            inCharBuf = new char[8192];
-        }
-
-        byte[] inByteBuf;
-
-        char[] inCharBuf;
-
-        char[] lineBuf = new char[1024];
-
-        int inLimit = 0;
-
-        int inOff = 0;
-
-        InputStream inStream;
-
-        Reader reader;
-
-        int readLine() throws IOException;
-    }
-
-    private String loadConvert(char[] in, int off, int len, char[] convtBuf);
-
-    private String saveConvert(String theString, boolean escapeSpace, boolean escapeUnicode);
-
-    private static void writeComments(BufferedWriter bw, String comments) throws IOException;
-
     @Deprecated
     public void save(OutputStream out, @Nullable String comments);
 
     public void store(Writer writer, @Nullable String comments) throws IOException;
 
     public void store(OutputStream out, @Nullable String comments) throws IOException;
-
-    private void store0(BufferedWriter bw, String comments, boolean escUnicode) throws IOException;
 
     public synchronized void loadFromXML(InputStream in) throws IOException, InvalidPropertiesFormatException;
 
@@ -137,14 +82,6 @@ public class Properties extends Hashtable<Object, Object> {
     public void list(PrintStream out);
 
     public void list(PrintWriter out);
-
-    private void enumerate(Map<String, Object> h);
-
-    private void enumerateStringProperties(Map<String, String> h);
-
-    private static char toHex(int nibble);
-
-    private static final char[] hexDigit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
     @Override
     public int size();
@@ -194,54 +131,6 @@ public class Properties extends Hashtable<Object, Object> {
     @Override
     public Set<Map.Entry<@KeyFor("this") Object, Object>> entrySet();
 
-    private static class EntrySet implements Set<Map.Entry<Object, Object>> {
-
-        private Set<Map.Entry<Object, Object>> entrySet;
-
-        private EntrySet(Set<Map.Entry<Object, Object>> entrySet) {
-            this.entrySet = entrySet;
-        }
-
-        @Override
-        public int size();
-
-        @Override
-        public boolean isEmpty();
-
-        @Override
-        public boolean contains(Object o);
-
-        @Override
-        public Object[] toArray();
-
-        @Override
-        public <T> T[] toArray(T[] a);
-
-        @Override
-        public void clear();
-
-        @Override
-        public boolean remove(Object o);
-
-        @Override
-        public boolean add(Map.Entry<Object, Object> e);
-
-        @Override
-        public boolean addAll(Collection<? extends Map.Entry<Object, Object>> c);
-
-        @Override
-        public boolean containsAll(Collection<?> c);
-
-        @Override
-        public boolean removeAll(Collection<?> c);
-
-        @Override
-        public boolean retainAll(Collection<?> c);
-
-        @Override
-        public Iterator<Map.Entry<Object, Object>> iterator();
-    }
-
     @Override
     public synchronized boolean equals(Object o);
 
@@ -286,10 +175,4 @@ public class Properties extends Hashtable<Object, Object> {
 
     @Override
     public synchronized Object clone();
-
-    @Override
-    void writeHashtable(ObjectOutputStream s) throws IOException;
-
-    @Override
-    void readHashtable(ObjectInputStream s) throws IOException, ClassNotFoundException;
 }

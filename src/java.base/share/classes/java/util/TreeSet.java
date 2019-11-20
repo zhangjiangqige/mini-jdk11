@@ -13,30 +13,16 @@ import org.checkerframework.framework.qual.CFComment;
 @AnnotatedFor({ "lock", "nullness" })
 public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>, Cloneable, java.io.Serializable {
 
-    private transient NavigableMap<E, Object> m;
-
-    private static final Object PRESENT = new Object();
-
-    TreeSet(NavigableMap<E, Object> m) {
-        this.m = m;
-    }
-
     public TreeSet() {
-        this(new TreeMap<>());
     }
 
     public TreeSet(Comparator<? super E> comparator) {
-        this(new TreeMap<>(comparator));
     }
 
     public TreeSet(Collection<? extends E> c) {
-        this();
-        addAll(c);
     }
 
     public TreeSet(SortedSet<E> s) {
-        this(s.comparator());
-        addAll(s);
     }
 
     @SideEffectFree
@@ -114,11 +100,5 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>, Clone
     @SuppressWarnings("unchecked")
     public Object clone(@GuardSatisfied TreeSet<E> this);
 
-    private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException;
-
-    private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException;
-
     public Spliterator<E> spliterator();
-
-    private static final long serialVersionUID = -2479143000061671589L;
 }

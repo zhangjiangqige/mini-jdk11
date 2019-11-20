@@ -9,25 +9,4 @@ import java.util.concurrent.TimeUnit;
 
 @AnnotatedFor({ "lock" })
 public interface Lock {
-
-    @EnsuresLockHeld({ "this" })
-    @ReleasesNoLocks
-    void lock();
-
-    @EnsuresLockHeld({ "this" })
-    @ReleasesNoLocks
-    void lockInterruptibly() throws InterruptedException;
-
-    @EnsuresLockHeldIf(expression = { "this" }, result = true)
-    @ReleasesNoLocks
-    boolean tryLock();
-
-    @EnsuresLockHeldIf(expression = { "this" }, result = true)
-    @ReleasesNoLocks
-    boolean tryLock(long time, TimeUnit unit) throws InterruptedException;
-
-    @MayReleaseLocks
-    void unlock();
-
-    Condition newCondition();
 }

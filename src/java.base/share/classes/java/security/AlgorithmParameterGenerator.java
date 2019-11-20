@@ -9,16 +9,7 @@ import java.util.Objects;
 @UsesObjectEquals
 public class AlgorithmParameterGenerator {
 
-    private Provider provider;
-
-    private AlgorithmParameterGeneratorSpi paramGenSpi;
-
-    private String algorithm;
-
     protected AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi paramGenSpi, Provider provider, String algorithm) {
-        this.paramGenSpi = paramGenSpi;
-        this.provider = provider;
-        this.algorithm = algorithm;
     }
 
     public final String getAlgorithm();

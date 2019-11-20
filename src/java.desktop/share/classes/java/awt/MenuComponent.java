@@ -23,81 +23,8 @@ import sun.awt.ComponentFactory;
 @UsesObjectEquals
 public abstract class MenuComponent implements java.io.Serializable {
 
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-    }
-
-    transient volatile MenuComponentPeer peer;
-
-    transient volatile MenuContainer parent;
-
-    private transient volatile AppContext appContext;
-
-    private volatile Font font;
-
-    private volatile String name;
-
-    private volatile boolean nameExplicitlySet;
-
-    volatile boolean newEventsOnly;
-
-    private transient volatile AccessControlContext acc = AccessController.getContext();
-
-    final AccessControlContext getAccessControlContext();
-
-    static final String actionListenerK = Component.actionListenerK;
-
-    static final String itemListenerK = Component.itemListenerK;
-
-    private static final long serialVersionUID = -4536902356223894379L;
-
-    static {
-        AWTAccessor.setMenuComponentAccessor(new AWTAccessor.MenuComponentAccessor() {
-
-            @Override
-            public AppContext getAppContext(MenuComponent menuComp) {
-                return menuComp.appContext;
-            }
-
-            @Override
-            public void setAppContext(MenuComponent menuComp, AppContext appContext) {
-                menuComp.appContext = appContext;
-            }
-
-            @Override
-            @SuppressWarnings("unchecked")
-            public <T extends MenuComponentPeer> T getPeer(MenuComponent menuComp) {
-                return (T) menuComp.peer;
-            }
-
-            @Override
-            public MenuContainer getParent(MenuComponent menuComp) {
-                return menuComp.parent;
-            }
-
-            @Override
-            public void setParent(MenuComponent menuComp, MenuContainer menuContainer) {
-                menuComp.parent = menuContainer;
-            }
-
-            @Override
-            public Font getFont_NoClientCode(MenuComponent menuComp) {
-                return menuComp.getFont_NoClientCode();
-            }
-        });
-    }
-
     public MenuComponent() throws HeadlessException {
-        GraphicsEnvironment.checkHeadless();
-        appContext = AppContext.getAppContext();
     }
-
-    String constructComponentName();
-
-    final ComponentFactory getComponentFactory();
 
     public String getName();
 
@@ -105,11 +32,7 @@ public abstract class MenuComponent implements java.io.Serializable {
 
     public MenuContainer getParent();
 
-    final MenuContainer getParent_NoClientCode();
-
     public Font getFont();
-
-    final Font getFont_NoClientCode();
 
     public void setFont(Font f);
 
@@ -120,10 +43,6 @@ public abstract class MenuComponent implements java.io.Serializable {
 
     public final void dispatchEvent(AWTEvent e);
 
-    void dispatchEventImpl(AWTEvent e);
-
-    boolean eventEnabled(AWTEvent e);
-
     protected void processEvent(AWTEvent e);
 
     protected String paramString();
@@ -132,17 +51,9 @@ public abstract class MenuComponent implements java.io.Serializable {
 
     protected final Object getTreeLock();
 
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException, HeadlessException;
-
-    private static native void initIDs();
-
-    AccessibleContext accessibleContext = null;
-
     public AccessibleContext getAccessibleContext();
 
     protected abstract class AccessibleAWTMenuComponent extends AccessibleContext implements java.io.Serializable, AccessibleComponent, AccessibleSelection {
-
-        private static final long serialVersionUID = -4269533416223798698L;
 
         protected AccessibleAWTMenuComponent() {
         }
@@ -237,10 +148,4 @@ public abstract class MenuComponent implements java.io.Serializable {
 
         public void selectAllAccessibleSelection();
     }
-
-    int getAccessibleIndexInParent();
-
-    int getAccessibleChildIndex(MenuComponent child);
-
-    AccessibleStateSet getAccessibleStateSet();
 }

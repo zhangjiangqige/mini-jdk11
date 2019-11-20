@@ -42,8 +42,6 @@ public abstract class Process {
 
     public CompletableFuture<Process> onExit();
 
-    private Process waitForInternal();
-
     public ProcessHandle toHandle();
 
     public ProcessHandle.Info info();
@@ -51,14 +49,4 @@ public abstract class Process {
     public Stream<ProcessHandle> children();
 
     public Stream<ProcessHandle> descendants();
-
-    static class PipeInputStream extends FileInputStream {
-
-        PipeInputStream(FileDescriptor fd) {
-            super(fd);
-        }
-
-        @Override
-        public long skip(long n) throws IOException;
-    }
 }

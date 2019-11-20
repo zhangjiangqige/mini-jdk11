@@ -7,15 +7,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @UsesObjectEquals
 public class SwitchPoint {
 
-    private static final MethodHandle K_true = MethodHandles.constant(boolean.class, true), K_false = MethodHandles.constant(boolean.class, false);
-
-    private final MutableCallSite mcs;
-
-    private final MethodHandle mcsInvoker;
-
     public SwitchPoint() {
-        this.mcs = new MutableCallSite(K_true);
-        this.mcsInvoker = mcs.dynamicInvoker();
     }
 
     public boolean hasBeenInvalidated();

@@ -11,23 +11,7 @@ import sun.text.normalizer.NormalizerBase;
 @UsesObjectEquals
 public final class CollationElementIterator {
 
-    public static final int NULLORDER = 0xffffffff;
-
-    CollationElementIterator(String sourceText, RuleBasedCollator owner) {
-        this.owner = owner;
-        ordering = owner.getTables();
-        if (sourceText.length() != 0) {
-            NormalizerBase.Mode mode = CollatorUtilities.toNormalizerMode(owner.getDecomposition());
-            text = new NormalizerBase(sourceText, mode);
-        }
-    }
-
-    CollationElementIterator(CharacterIterator sourceText, RuleBasedCollator owner) {
-        this.owner = owner;
-        ordering = owner.getTables();
-        NormalizerBase.Mode mode = CollatorUtilities.toNormalizerMode(owner.getDecomposition());
-        text = new NormalizerBase(sourceText, mode);
-    }
+    public static final int NULLORDER;
 
     public void reset();
 
@@ -41,8 +25,6 @@ public final class CollationElementIterator {
 
     public static final short tertiaryOrder(int order);
 
-    final int strengthOrder(int order);
-
     @SuppressWarnings("deprecation")
     public void setOffset(int newOffset);
 
@@ -53,36 +35,4 @@ public final class CollationElementIterator {
     public void setText(String source);
 
     public void setText(CharacterIterator source);
-
-    private static final boolean isThaiPreVowel(int ch);
-
-    private static final boolean isThaiBaseConsonant(int ch);
-
-    private static final boolean isLaoPreVowel(int ch);
-
-    private static final boolean isLaoBaseConsonant(int ch);
-
-    private int[] makeReorderedBuffer(int colFirst, int lastValue, int[] lastExpansion, boolean forward);
-
-    static final boolean isIgnorable(int order);
-
-    private int nextContractChar(int ch);
-
-    private int prevContractChar(int ch);
-
-    static final int UNMAPPEDCHARVALUE = 0x7FFF0000;
-
-    private NormalizerBase text = null;
-
-    private int[] buffer = null;
-
-    private int expIndex = 0;
-
-    private StringBuffer key = new StringBuffer(5);
-
-    private int swapOrder = 0;
-
-    private RBCollationTables ordering;
-
-    private RuleBasedCollator owner;
 }

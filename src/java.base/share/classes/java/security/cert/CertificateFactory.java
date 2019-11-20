@@ -18,16 +18,7 @@ import sun.security.jca.GetInstance.Instance;
 @UsesObjectEquals
 public class CertificateFactory {
 
-    private String type;
-
-    private Provider provider;
-
-    private CertificateFactorySpi certFacSpi;
-
     protected CertificateFactory(CertificateFactorySpi certFacSpi, Provider provider, String type) {
-        this.certFacSpi = certFacSpi;
-        this.provider = provider;
-        this.type = type;
     }
 
     public static final CertificateFactory getInstance(String type) throws CertificateException;

@@ -14,27 +14,15 @@ public class CharArrayReader extends Reader {
 
     protected int pos;
 
-    protected int markedPos = 0;
+    protected int markedPos;
 
     protected int count;
 
     public CharArrayReader(char[] buf) {
-        this.buf = buf;
-        this.pos = 0;
-        this.count = buf.length;
     }
 
     public CharArrayReader(char[] buf, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int length) {
-        if ((offset < 0) || (offset > buf.length) || (length < 0) || ((offset + length) < 0)) {
-            throw new IllegalArgumentException();
-        }
-        this.buf = buf;
-        this.pos = offset;
-        this.count = Math.min(offset + length, buf.length);
-        this.markedPos = offset;
     }
-
-    private void ensureOpen() throws IOException;
 
     @GTENegativeOne
     public int read() throws IOException;

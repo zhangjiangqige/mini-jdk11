@@ -13,16 +13,7 @@ import sun.awt.image.ImagingLib;
 @UsesObjectEquals
 public class LookupOp implements BufferedImageOp, RasterOp {
 
-    private LookupTable ltable;
-
-    private int numComponents;
-
-    RenderingHints hints;
-
     public LookupOp(LookupTable lookup, RenderingHints hints) {
-        this.ltable = lookup;
-        this.hints = hints;
-        numComponents = ltable.getNumComponents();
     }
 
     public final LookupTable getTable();
@@ -42,8 +33,4 @@ public class LookupOp implements BufferedImageOp, RasterOp {
     public final Point2D getPoint2D(Point2D srcPt, Point2D dstPt);
 
     public final RenderingHints getRenderingHints();
-
-    private void byteFilter(ByteLookupTable lookup, Raster src, WritableRaster dst, int width, int height, int numBands);
-
-    private void shortFilter(ShortLookupTable lookup, Raster src, WritableRaster dst, int width, int height, int numBands);
 }

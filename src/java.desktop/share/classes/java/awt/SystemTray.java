@@ -17,27 +17,6 @@ import sun.awt.SunToolkit;
 @UsesObjectEquals
 public class SystemTray {
 
-    private static SystemTray systemTray;
-
-    private int currentIconID = 0;
-
-    private transient SystemTrayPeer peer;
-
-    private static final TrayIcon[] EMPTY_TRAY_ARRAY = new TrayIcon[0];
-
-    static {
-        AWTAccessor.setSystemTrayAccessor(new AWTAccessor.SystemTrayAccessor() {
-
-            public void firePropertyChange(SystemTray tray, String propertyName, Object oldValue, Object newValue) {
-                tray.firePropertyChange(propertyName, oldValue, newValue);
-            }
-        });
-    }
-
-    private SystemTray() {
-        addNotify();
-    }
-
     public static SystemTray getSystemTray();
 
     public static boolean isSupported();
@@ -55,14 +34,4 @@ public class SystemTray {
     public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
 
     public synchronized PropertyChangeListener[] getPropertyChangeListeners(String propertyName);
-
-    private void firePropertyChange(String propertyName, Object oldValue, Object newValue);
-
-    private synchronized PropertyChangeSupport getCurrentChangeSupport();
-
-    synchronized void addNotify();
-
-    static void checkSystemTrayAllowed();
-
-    private static void initializeSystemTrayIfNeeded();
 }

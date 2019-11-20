@@ -14,13 +14,7 @@ import java.util.Map.Entry;
 @UsesObjectEquals
 public class VetoableChangeSupport implements Serializable {
 
-    private VetoableChangeListenerMap map = new VetoableChangeListenerMap();
-
     public VetoableChangeSupport(Object sourceBean) {
-        if (sourceBean == null) {
-            throw new NullPointerException();
-        }
-        source = sourceBean;
     }
 
     public void addVetoableChangeListener(VetoableChangeListener listener);
@@ -44,27 +38,4 @@ public class VetoableChangeSupport implements Serializable {
     public void fireVetoableChange(PropertyChangeEvent event) throws PropertyVetoException;
 
     public boolean hasListeners(String propertyName);
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
-
-    private Object source;
-
-    private static final ObjectStreamField[] serialPersistentFields = { new ObjectStreamField("children", Hashtable.class), new ObjectStreamField("source", Object.class), new ObjectStreamField("vetoableChangeSupportSerializedDataVersion", Integer.TYPE) };
-
-    static final long serialVersionUID = -5090210921595982017L;
-
-    private static final class VetoableChangeListenerMap extends ChangeListenerMap<VetoableChangeListener> {
-
-        private static final VetoableChangeListener[] EMPTY = {};
-
-        @Override
-        protected VetoableChangeListener[] newArray(int length);
-
-        @Override
-        protected VetoableChangeListener newProxy(String name, VetoableChangeListener listener);
-
-        public VetoableChangeListener extract(VetoableChangeListener listener);
-    }
 }

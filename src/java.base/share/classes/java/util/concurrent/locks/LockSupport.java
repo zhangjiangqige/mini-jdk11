@@ -8,11 +8,6 @@ import jdk.internal.misc.Unsafe;
 @UsesObjectEquals
 public class LockSupport {
 
-    private LockSupport() {
-    }
-
-    private static void setBlocker(Thread t, Object arg);
-
     public static void unpark(Thread thread);
 
     public static void park(Object blocker);
@@ -28,16 +23,4 @@ public class LockSupport {
     public static void parkNanos(long nanos);
 
     public static void parkUntil(long deadline);
-
-    static final int nextSecondarySeed();
-
-    static final long getThreadId(Thread thread);
-
-    private static final Unsafe U = Unsafe.getUnsafe();
-
-    private static final long PARKBLOCKER = U.objectFieldOffset(Thread.class, "parkBlocker");
-
-    private static final long SECONDARY = U.objectFieldOffset(Thread.class, "threadLocalRandomSecondarySeed");
-
-    private static final long TID = U.objectFieldOffset(Thread.class, "tid");
 }

@@ -19,8 +19,6 @@ public abstract class RowFilter<M, I> {
         BEFORE, AFTER, EQUAL, NOT_EQUAL
     }
 
-    private static void checkIndices(int[] columns);
-
     public static <M, I> RowFilter<M, I> regexFilter(@Regex String regex, int... indices);
 
     public static <M, I> RowFilter<M, I> dateFilter(ComparisonType type, Date date, int... indices);
@@ -49,120 +47,5 @@ public abstract class RowFilter<M, I> {
         public String getStringValue(int index);
 
         public abstract I getIdentifier();
-    }
-
-    private abstract static class GeneralFilter<M, I> extends RowFilter<M, I> {
-
-        private int[] columns;
-
-        GeneralFilter(int[] columns) {
-            checkIndices(columns);
-            this.columns = columns;
-        }
-
-        @Override
-        public boolean include(Entry<? extends M, ? extends I> value);
-
-        protected abstract boolean include(Entry<? extends M, ? extends I> value, int index);
-    }
-
-    private static class RegexFilter<M, I> extends GeneralFilter<M, I> {
-
-        private Matcher matcher;
-
-        RegexFilter(Pattern regex, int[] columns) {
-            super(columns);
-            if (regex == null) {
-                throw new IllegalArgumentException("Pattern must be non-null");
-            }
-            matcher = regex.matcher("");
-        }
-
-        @Override
-        protected boolean include(Entry<? extends M, ? extends I> value, int index);
-    }
-
-    private static class DateFilter<M, I> extends GeneralFilter<M, I> {
-
-        private long date;
-
-        private ComparisonType type;
-
-        DateFilter(ComparisonType type, long date, int[] columns) {
-            super(columns);
-            if (type == null) {
-                throw new IllegalArgumentException("type must be non-null");
-            }
-            this.type = type;
-            this.date = date;
-        }
-
-        @Override
-        protected boolean include(Entry<? extends M, ? extends I> value, int index);
-    }
-
-    private static class NumberFilter<M, I> extends GeneralFilter<M, I> {
-
-        private boolean isComparable;
-
-        private Number number;
-
-        private ComparisonType type;
-
-        NumberFilter(ComparisonType type, Number number, int[] columns) {
-            super(columns);
-            if (type == null || number == null) {
-                throw new IllegalArgumentException("type and number must be non-null");
-            }
-            this.type = type;
-            this.number = number;
-            isComparable = (number instanceof Comparable);
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        protected boolean include(Entry<? extends M, ? extends I> value, int index);
-
-        private int longCompare(Number o);
-    }
-
-    private static class OrFilter<M, I> extends RowFilter<M, I> {
-
-        List<RowFilter<? super M, ? super I>> filters;
-
-        OrFilter(Iterable<? extends RowFilter<? super M, ? super I>> filters) {
-            this.filters = new ArrayList<RowFilter<? super M, ? super I>>();
-            for (RowFilter<? super M, ? super I> filter : filters) {
-                if (filter == null) {
-                    throw new IllegalArgumentException("Filter must be non-null");
-                }
-                this.filters.add(filter);
-            }
-        }
-
-        public boolean include(Entry<? extends M, ? extends I> value);
-    }
-
-    private static class AndFilter<M, I> extends OrFilter<M, I> {
-
-        AndFilter(Iterable<? extends RowFilter<? super M, ? super I>> filters) {
-            super(filters);
-        }
-
-        public boolean include(Entry<? extends M, ? extends I> value);
-    }
-
-    private static class NotFilter<M, I> extends RowFilter<M, I> {
-
-        private RowFilter<M, I> filter;
-
-        NotFilter(RowFilter<M, I> filter) {
-            if (filter == null) {
-                throw new IllegalArgumentException("filter must be non-null");
-            }
-            this.filter = filter;
-        }
-
-        public boolean include(Entry<? extends M, ? extends I> value);
     }
 }

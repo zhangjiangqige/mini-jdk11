@@ -15,18 +15,10 @@ public class BufferedOutputStream extends FilterOutputStream {
     protected int count;
 
     public BufferedOutputStream(OutputStream out) {
-        this(out, 8192);
     }
 
     public BufferedOutputStream(OutputStream out, @Positive int size) {
-        super(out);
-        if (size <= 0) {
-            throw new IllegalArgumentException("Buffer size <= 0");
-        }
-        buf = new byte[size];
     }
-
-    private void flushBuffer() throws IOException;
 
     @Override
     public synchronized void write(@PolySigned int b) throws IOException;

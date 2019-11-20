@@ -14,27 +14,19 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public final class StringBuilder extends AbstractStringBuilder implements java.io.Serializable, Comparable<StringBuilder>, CharSequence {
 
-    static final long serialVersionUID = 4383685877147921099L;
-
     @HotSpotIntrinsicCandidate
     public StringBuilder() {
-        super(16);
     }
 
     @HotSpotIntrinsicCandidate
     public StringBuilder(@NonNegative int capacity) {
-        super(capacity);
     }
 
     @HotSpotIntrinsicCandidate
     public StringBuilder(String str) {
-        super(str.length() + 16);
-        append(str);
     }
 
     public StringBuilder(CharSequence seq) {
-        this(seq.length() + 16);
-        append(seq);
     }
 
     @Override
@@ -156,8 +148,4 @@ public final class StringBuilder extends AbstractStringBuilder implements java.i
     @Override
     @HotSpotIntrinsicCandidate
     public String toString(@GuardSatisfied StringBuilder this);
-
-    private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException;
-
-    private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException;
 }

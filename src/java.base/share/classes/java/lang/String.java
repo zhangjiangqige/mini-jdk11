@@ -48,149 +48,67 @@ import jdk.internal.vm.annotation.Stable;
 @AnnotatedFor({ "formatter", "index", "interning", "lock", "nullness", "regex", "signature", "signedness" })
 public final class String implements java.io.Serializable, Comparable<String>, CharSequence {
 
-    @Stable
-    private final byte[] value;
-
-    private final byte coder;
-
-    private int hash;
-
-    private static final long serialVersionUID = -6849794470754667710L;
-
-    static final boolean COMPACT_STRINGS;
-
-    static {
-        COMPACT_STRINGS = true;
-    }
-
-    private static final ObjectStreamField[] serialPersistentFields = new ObjectStreamField[0];
-
     @SideEffectFree
     public String() {
-        this.value = "".value;
-        this.coder = "".coder;
     }
 
     @SideEffectFree
     @HotSpotIntrinsicCandidate
     public String(String original) {
-        this.value = original.value;
-        this.coder = original.coder;
-        this.hash = original.hash;
     }
 
     @SideEffectFree
     public String(char @GuardSatisfied [] value) {
-        this(value, 0, value.length, null);
     }
 
     @SideEffectFree
     public String(char @GuardSatisfied [] value, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int count) {
-        this(value, offset, count, rangeCheck(value, offset, count));
     }
-
-    private static Void rangeCheck(char[] value, int offset, int count);
 
     @SideEffectFree
     public String(int @GuardSatisfied [] codePoints, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int count) {
-        checkBoundsOffCount(offset, count, codePoints.length);
-        if (count == 0) {
-            this.value = "".value;
-            this.coder = "".coder;
-            return;
-        }
-        if (COMPACT_STRINGS) {
-            byte[] val = StringLatin1.toBytes(codePoints, offset, count);
-            if (val != null) {
-                this.coder = LATIN1;
-                this.value = val;
-                return;
-            }
-        }
-        this.coder = UTF16;
-        this.value = StringUTF16.toBytes(codePoints, offset, count);
     }
 
     @SideEffectFree
-    @Deprecated(since = "1.1")
+    @Deprecated()
     public String(byte @GuardSatisfied [] ascii, int hibyte, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int count) {
-        checkBoundsOffCount(offset, count, ascii.length);
-        if (count == 0) {
-            this.value = "".value;
-            this.coder = "".coder;
-            return;
-        }
-        if (COMPACT_STRINGS && (byte) hibyte == 0) {
-            this.value = Arrays.copyOfRange(ascii, offset, offset + count);
-            this.coder = LATIN1;
-        } else {
-            hibyte <<= 8;
-            byte[] val = StringUTF16.newBytesFor(count);
-            for (int i = 0; i < count; i++) {
-                StringUTF16.putChar(val, i, hibyte | (ascii[offset++] & 0xff));
-            }
-            this.value = val;
-            this.coder = UTF16;
-        }
     }
 
     @SideEffectFree
-    @Deprecated(since = "1.1")
+    @Deprecated()
     public String(byte @GuardSatisfied [] ascii, int hibyte) {
-        this(ascii, hibyte, 0, ascii.length);
     }
 
     @SideEffectFree
     public String(@PolySigned byte @GuardSatisfied [] bytes, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int length, String charsetName) throws UnsupportedEncodingException {
-        if (charsetName == null)
-            throw new NullPointerException("charsetName");
-        checkBoundsOffCount(offset, length, bytes.length);
-        StringCoding.Result ret = StringCoding.decode(charsetName, bytes, offset, length);
-        this.value = ret.value;
-        this.coder = ret.coder;
     }
 
     @SideEffectFree
     public String(@PolySigned byte @GuardSatisfied [] bytes, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int length, Charset charset) {
-        if (charset == null)
-            throw new NullPointerException("charset");
-        checkBoundsOffCount(offset, length, bytes.length);
-        StringCoding.Result ret = StringCoding.decode(charset, bytes, offset, length);
-        this.value = ret.value;
-        this.coder = ret.coder;
     }
 
     @SideEffectFree
     public String(@PolySigned byte @GuardSatisfied [] bytes, String charsetName) throws UnsupportedEncodingException {
-        this(bytes, 0, bytes.length, charsetName);
     }
 
     @SideEffectFree
     public String(@PolySigned byte @GuardSatisfied [] bytes, Charset charset) {
-        this(bytes, 0, bytes.length, charset);
     }
 
     @SideEffectFree
     public String(@PolySigned byte @GuardSatisfied [] bytes, @IndexOrHigh({ "#1" }) int offset, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int length) {
-        checkBoundsOffCount(offset, length, bytes.length);
-        StringCoding.Result ret = StringCoding.decode(bytes, offset, length);
-        this.value = ret.value;
-        this.coder = ret.coder;
     }
 
     @SideEffectFree
     public String(@PolySigned byte @GuardSatisfied [] bytes) {
-        this(bytes, 0, bytes.length);
     }
 
     @SideEffectFree
     public String(@GuardSatisfied StringBuffer buffer) {
-        this(buffer.toString());
     }
 
     @SideEffectFree
     public String(@GuardSatisfied StringBuilder builder) {
-        this(builder, null);
     }
 
     @Pure
@@ -221,7 +139,7 @@ public final class String implements java.io.Serializable, Comparable<String>, C
 
     public void getChars(@IndexOrHigh({ "this" }) int srcBegin, @IndexOrHigh({ "this" }) int srcEnd, char @GuardSatisfied [] dst, @IndexOrHigh({ "#3" }) int dstBegin);
 
-    @Deprecated(since = "1.1")
+    @Deprecated()
     public void getBytes(@IndexOrHigh({ "this" }) int srcBegin, @IndexOrHigh({ "this" }) int srcEnd, byte @GuardSatisfied [] dst, @IndexOrHigh({ "#3" }) int dstBegin);
 
     @SideEffectFree
@@ -242,8 +160,6 @@ public final class String implements java.io.Serializable, Comparable<String>, C
     @Pure
     public boolean contentEquals(@GuardSatisfied StringBuffer sb);
 
-    private boolean nonSyncContentEquals(AbstractStringBuilder sb);
-
     @Pure
     public boolean contentEquals(@GuardSatisfied CharSequence cs);
 
@@ -254,16 +170,7 @@ public final class String implements java.io.Serializable, Comparable<String>, C
     @Pure
     public int compareTo(String anotherString);
 
-    public static final Comparator<String> CASE_INSENSITIVE_ORDER = new CaseInsensitiveComparator();
-
-    private static class CaseInsensitiveComparator implements Comparator<String>, java.io.Serializable {
-
-        private static final long serialVersionUID = 8575799808933029326L;
-
-        public int compare(String s1, String s2);
-
-        private Object readResolve();
-    }
+    public static final Comparator<String> CASE_INSENSITIVE_ORDER;
 
     @Pure
     public int compareToIgnoreCase(String str);
@@ -312,8 +219,6 @@ public final class String implements java.io.Serializable, Comparable<String>, C
     @SubstringIndexFor(value = { "this" }, offset = { "#1.length()-1" })
     public int indexOf(String str, int fromIndex);
 
-    static int indexOf(byte[] src, byte srcCoder, int srcCount, String tgtStr, int fromIndex);
-
     @Pure
     @LTEqLengthOf({ "this" })
     @SubstringIndexFor(value = { "this" }, offset = { "#1.length()-1" })
@@ -323,8 +228,6 @@ public final class String implements java.io.Serializable, Comparable<String>, C
     @LTEqLengthOf({ "this" })
     @SubstringIndexFor(value = { "this" }, offset = { "#1.length()-1" })
     public int lastIndexOf(String str, int fromIndex);
-
-    static int lastIndexOf(byte[] src, byte srcCoder, int srcCount, String tgtStr, int fromIndex);
 
     @SideEffectFree
     public String substring(@IndexOrHigh({ "this" }) int beginIndex);
@@ -386,8 +289,6 @@ public final class String implements java.io.Serializable, Comparable<String>, C
     public String stripTrailing();
 
     public boolean isBlank();
-
-    private int indexOfNonWhitespace();
 
     public Stream<String> lines();
 
@@ -457,71 +358,4 @@ public final class String implements java.io.Serializable, Comparable<String>, C
     public native String intern(@PolySignature @PolyRegex String this);
 
     public String repeat(int count);
-
-    void getBytes(byte[] dst, int dstBegin, byte coder);
-
-    String(char[] value, int off, int len, Void sig) {
-        if (len == 0) {
-            this.value = "".value;
-            this.coder = "".coder;
-            return;
-        }
-        if (COMPACT_STRINGS) {
-            byte[] val = StringUTF16.compress(value, off, len);
-            if (val != null) {
-                this.value = val;
-                this.coder = LATIN1;
-                return;
-            }
-        }
-        this.coder = UTF16;
-        this.value = StringUTF16.toBytes(value, off, len);
-    }
-
-    String(AbstractStringBuilder asb, Void sig) {
-        byte[] val = asb.getValue();
-        int length = asb.length();
-        if (asb.isLatin1()) {
-            this.coder = LATIN1;
-            this.value = Arrays.copyOfRange(val, 0, length);
-        } else {
-            if (COMPACT_STRINGS) {
-                byte[] buf = StringUTF16.compress(val, 0, length);
-                if (buf != null) {
-                    this.coder = LATIN1;
-                    this.value = buf;
-                    return;
-                }
-            }
-            this.coder = UTF16;
-            this.value = Arrays.copyOfRange(val, 0, length << 1);
-        }
-    }
-
-    String(byte[] value, byte coder) {
-        this.value = value;
-        this.coder = coder;
-    }
-
-    byte coder();
-
-    byte[] value();
-
-    private boolean isLatin1();
-
-    @Native
-    static final byte LATIN1 = 0;
-
-    @Native
-    static final byte UTF16 = 1;
-
-    static void checkIndex(int index, int length);
-
-    static void checkOffset(int offset, int length);
-
-    static void checkBoundsOffCount(int offset, int count, int length);
-
-    static void checkBoundsBeginEnd(int begin, int end, int length);
-
-    static String valueOfCodePoint(int codePoint);
 }

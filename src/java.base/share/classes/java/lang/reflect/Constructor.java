@@ -28,61 +28,9 @@ import java.util.StringJoiner;
 @Covariant({ 0 })
 public final class Constructor<T> extends Executable {
 
-    private Class<T> clazz;
-
-    private int slot;
-
-    private Class<?>[] parameterTypes;
-
-    private Class<?>[] exceptionTypes;
-
-    private int modifiers;
-
-    private transient String signature;
-
-    private transient ConstructorRepository genericInfo;
-
-    private byte[] annotations;
-
-    private byte[] parameterAnnotations;
-
-    private GenericsFactory getFactory();
-
-    @Override
-    ConstructorRepository getGenericInfo();
-
-    private volatile ConstructorAccessor constructorAccessor;
-
-    private Constructor<T> root;
-
-    @Override
-    Constructor<T> getRoot();
-
-    Constructor(Class<T> declaringClass, Class<?>[] parameterTypes, Class<?>[] checkedExceptions, int modifiers, int slot, String signature, byte[] annotations, byte[] parameterAnnotations) {
-        this.clazz = declaringClass;
-        this.parameterTypes = parameterTypes;
-        this.exceptionTypes = checkedExceptions;
-        this.modifiers = modifiers;
-        this.slot = slot;
-        this.signature = signature;
-        this.annotations = annotations;
-        this.parameterAnnotations = parameterAnnotations;
-    }
-
-    Constructor<T> copy();
-
     @Override
     @CallerSensitive
     public void setAccessible(boolean flag);
-
-    @Override
-    void checkCanSetAccessible(Class<?> caller);
-
-    @Override
-    boolean hasGenericInformation();
-
-    @Override
-    byte[] getAnnotationBytes();
 
     @Override
     public Class<T> getDeclaringClass();
@@ -96,12 +44,6 @@ public final class Constructor<T> extends Executable {
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public TypeVariable<Constructor<T>>[] getTypeParameters();
-
-    @Override
-    Class<?>[] getSharedParameterTypes();
-
-    @Override
-    Class<?>[] getSharedExceptionTypes();
 
     @Override
     public Class<?>[] getParameterTypes();
@@ -127,16 +69,7 @@ public final class Constructor<T> extends Executable {
     public String toString(@GuardSatisfied Constructor<T> this);
 
     @Override
-    void specificToStringHeader(StringBuilder sb);
-
-    @Override
-    String toShortString();
-
-    @Override
     public String toGenericString();
-
-    @Override
-    void specificToGenericStringHeader(StringBuilder sb);
 
     @CallerSensitive
     @ForceInline
@@ -151,29 +84,12 @@ public final class Constructor<T> extends Executable {
     @Override
     public boolean isSynthetic(@GuardSatisfied Constructor<T> this);
 
-    private ConstructorAccessor acquireConstructorAccessor();
-
-    ConstructorAccessor getConstructorAccessor();
-
-    void setConstructorAccessor(ConstructorAccessor accessor);
-
-    int getSlot();
-
-    String getSignature();
-
-    byte[] getRawAnnotations();
-
-    byte[] getRawParameterAnnotations();
-
     public <T extends Annotation> T getAnnotation(Class<T> annotationClass);
 
     public Annotation[] getDeclaredAnnotations();
 
     @Override
     public Annotation[][] getParameterAnnotations();
-
-    @Override
-    boolean handleParameterNumberMismatch(int resultLength, int numParameters);
 
     @Override
     public AnnotatedType getAnnotatedReturnType();

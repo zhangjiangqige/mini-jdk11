@@ -10,11 +10,7 @@ import java.io.IOException;
 @AnnotatedFor({ "index", "signedness" })
 public class CheckedOutputStream extends FilterOutputStream {
 
-    private Checksum cksum;
-
     public CheckedOutputStream(OutputStream out, Checksum cksum) {
-        super(out);
-        this.cksum = cksum;
     }
 
     public void write(int b) throws IOException;

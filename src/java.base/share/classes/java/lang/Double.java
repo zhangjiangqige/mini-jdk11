@@ -11,28 +11,28 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @AnnotatedFor({ "nullness", "index" })
 public final class Double extends Number implements Comparable<Double> {
 
-    public static final double POSITIVE_INFINITY = 1.0 / 0.0;
+    public static final double POSITIVE_INFINITY;
 
-    public static final double NEGATIVE_INFINITY = -1.0 / 0.0;
+    public static final double NEGATIVE_INFINITY;
 
-    public static final double NaN = 0.0d / 0.0;
+    public static final double NaN;
 
-    public static final double MAX_VALUE = 0x1.fffffffffffffP+1023;
+    public static final double MAX_VALUE;
 
-    public static final double MIN_NORMAL = 0x1.0p-1022;
+    public static final double MIN_NORMAL;
 
-    public static final double MIN_VALUE = 0x0.0000000000001P-1022;
+    public static final double MIN_VALUE;
 
-    public static final int MAX_EXPONENT = 1023;
+    public static final int MAX_EXPONENT;
 
-    public static final int MIN_EXPONENT = -1022;
+    public static final int MIN_EXPONENT;
 
-    public static final int SIZE = 64;
+    public static final int SIZE;
 
-    public static final int BYTES = SIZE / Byte.SIZE;
+    public static final int BYTES;
 
     @SuppressWarnings("unchecked")
-    public static final Class<Double> TYPE = (Class<Double>) Class.getPrimitiveClass("double");
+    public static final Class<Double> TYPE;
 
     @SideEffectFree
     public static String toString(double d);
@@ -58,16 +58,12 @@ public final class Double extends Number implements Comparable<Double> {
 
     public static boolean isFinite(double d);
 
-    private final double value;
-
-    @Deprecated(since = "9")
+    @Deprecated()
     public Double(double value) {
-        this.value = value;
     }
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public Double(String s) throws NumberFormatException {
-        value = parseDouble(s);
     }
 
     @Pure
@@ -130,6 +126,4 @@ public final class Double extends Number implements Comparable<Double> {
     public static double max(double a, double b);
 
     public static double min(double a, double b);
-
-    private static final long serialVersionUID = -9172774392245257468L;
 }

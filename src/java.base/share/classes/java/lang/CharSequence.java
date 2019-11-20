@@ -20,14 +20,6 @@ import java.util.stream.StreamSupport;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public interface CharSequence {
 
-    @LengthOf({ "this" })
-    @Pure
-    int length(@GuardSatisfied CharSequence this);
-
-    char charAt(@IndexFor({ "this" }) int index);
-
-    CharSequence subSequence(@IndexOrHigh({ "this" }) int start, @IndexOrHigh({ "this" }) int end);
-
     @SideEffectFree
     @SameLen({ "this" })
     public String toString(@GuardSatisfied CharSequence this);

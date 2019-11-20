@@ -12,11 +12,7 @@ import java.io.IOException;
 @AnnotatedFor({ "index" })
 public class CheckedInputStream extends FilterInputStream {
 
-    private Checksum cksum;
-
     public CheckedInputStream(InputStream in, Checksum cksum) {
-        super(in);
-        this.cksum = cksum;
     }
 
     public int read() throws IOException;

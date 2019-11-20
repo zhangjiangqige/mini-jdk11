@@ -17,17 +17,14 @@ public class InputSource {
 
     @SideEffectFree
     public InputSource(String systemId) {
-        setSystemId(systemId);
     }
 
     @SideEffectFree
     public InputSource(InputStream byteStream) {
-        setByteStream(byteStream);
     }
 
     @SideEffectFree
     public InputSource(Reader characterStream) {
-        setCharacterStream(characterStream);
     }
 
     public void setPublicId(@Nullable String publicId);
@@ -61,21 +58,4 @@ public class InputSource {
     public Reader getCharacterStream();
 
     public boolean isEmpty();
-
-    private boolean isStreamEmpty();
-
-    @Nullable
-    private String publicId;
-
-    @Nullable
-    private String systemId;
-
-    @Nullable
-    private InputStream byteStream;
-
-    @Nullable
-    private String encoding;
-
-    @Nullable
-    private Reader characterStream;
 }

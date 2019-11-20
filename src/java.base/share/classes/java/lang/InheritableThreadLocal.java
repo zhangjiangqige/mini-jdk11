@@ -10,8 +10,4 @@ import java.lang.ref.*;
 public class InheritableThreadLocal<@Nullable T> extends ThreadLocal<T> {
 
     protected T childValue(T parentValue);
-
-    ThreadLocalMap getMap(Thread t);
-
-    void createMap(Thread t, T firstValue);
 }

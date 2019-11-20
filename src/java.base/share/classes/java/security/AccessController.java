@@ -10,9 +10,6 @@ import jdk.internal.reflect.Reflection;
 @UsesObjectEquals
 public final class AccessController {
 
-    private AccessController() {
-    }
-
     @CallerSensitive
     public static native <T> T doPrivileged(PrivilegedAction<T> action);
 
@@ -34,19 +31,6 @@ public final class AccessController {
     @CallerSensitive
     public static <T> T doPrivilegedWithCombiner(PrivilegedExceptionAction<T> action) throws PrivilegedActionException;
 
-    private static AccessControlContext preserveCombiner(DomainCombiner combiner, Class<?> caller);
-
-    private static AccessControlContext createWrapper(DomainCombiner combiner, Class<?> caller, AccessControlContext parent, AccessControlContext context, Permission[] perms);
-
-    private static class AccHolder {
-
-        static final AccessControlContext innocuousAcc = new AccessControlContext(new ProtectionDomain[] { new ProtectionDomain(null, null) });
-    }
-
-    private static AccessControlContext getInnocuousAcc();
-
-    private static ProtectionDomain getCallerPD(final Class<?> caller);
-
     @CallerSensitive
     public static native <T> T doPrivileged(PrivilegedExceptionAction<T> action, AccessControlContext context) throws PrivilegedActionException;
 
@@ -55,10 +39,6 @@ public final class AccessController {
 
     @CallerSensitive
     public static <T> T doPrivilegedWithCombiner(PrivilegedExceptionAction<T> action, AccessControlContext context, Permission... perms) throws PrivilegedActionException;
-
-    private static native AccessControlContext getStackAccessControlContext();
-
-    static native AccessControlContext getInheritedAccessControlContext();
 
     public static AccessControlContext getContext();
 

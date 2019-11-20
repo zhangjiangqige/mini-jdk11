@@ -15,19 +15,10 @@ public class PushbackInputStream extends FilterInputStream {
 
     protected int pos;
 
-    private void ensureOpen() throws IOException;
-
     public PushbackInputStream(InputStream in, @Positive int size) {
-        super(in);
-        if (size <= 0) {
-            throw new IllegalArgumentException("size <= 0");
-        }
-        this.buf = new byte[size];
-        this.pos = size;
     }
 
     public PushbackInputStream(InputStream in) {
-        this(in, 1);
     }
 
     @GTENegativeOne

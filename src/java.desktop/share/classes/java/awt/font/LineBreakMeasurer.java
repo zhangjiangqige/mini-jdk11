@@ -11,32 +11,10 @@ import java.awt.font.FontRenderContext;
 @UsesObjectEquals
 public final class LineBreakMeasurer {
 
-    private BreakIterator breakIter;
-
-    private int start;
-
-    private int pos;
-
-    private int limit;
-
-    private TextMeasurer measurer;
-
-    private CharArrayIterator charIter;
-
     public LineBreakMeasurer(AttributedCharacterIterator text, FontRenderContext frc) {
-        this(text, BreakIterator.getLineInstance(), frc);
     }
 
     public LineBreakMeasurer(AttributedCharacterIterator text, BreakIterator breakIter, FontRenderContext frc) {
-        if (text.getEndIndex() - text.getBeginIndex() < 1) {
-            throw new IllegalArgumentException("Text must contain at least one character.");
-        }
-        this.breakIter = breakIter;
-        this.measurer = new TextMeasurer(text, frc);
-        this.limit = text.getEndIndex();
-        this.pos = this.start = text.getBeginIndex();
-        charIter = new CharArrayIterator(measurer.getChars(), this.start);
-        this.breakIter.setText(charIter);
     }
 
     public int nextOffset(float wrappingWidth);

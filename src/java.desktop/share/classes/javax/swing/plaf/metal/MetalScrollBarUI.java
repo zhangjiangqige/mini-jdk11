@@ -21,20 +21,6 @@ import static sun.swing.SwingUtilities2.drawVLine;
 @AnnotatedFor({ "interning" })
 public class MetalScrollBarUI extends BasicScrollBarUI {
 
-    private static Color shadowColor;
-
-    private static Color highlightColor;
-
-    private static Color darkShadowColor;
-
-    private static Color thumbColor;
-
-    private static Color thumbShadow;
-
-    private static Color thumbHighlightColor;
-
-    private MetalBumps bumps;
-
     protected MetalScrollButton increaseButton;
 
     protected MetalScrollButton decreaseButton;
@@ -42,9 +28,9 @@ public class MetalScrollBarUI extends BasicScrollBarUI {
     protected int scrollBarWidth;
 
     @Interned
-    public static final String FREE_STANDING_PROP = "JScrollBar.isFreeStanding";
+    public static final String FREE_STANDING_PROP;
 
-    protected boolean isFreeStanding = true;
+    protected boolean isFreeStanding;
 
     public static ComponentUI createUI(JComponent c);
 
@@ -66,20 +52,7 @@ public class MetalScrollBarUI extends BasicScrollBarUI {
 
     protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds);
 
-    private void oceanPaintThumb(Graphics g, JComponent c, Rectangle thumbBounds);
-
     protected Dimension getMinimumThumbSize();
 
     protected void setThumbBounds(int x, int y, int width, int height);
-
-    class ScrollBarListener extends BasicScrollBarUI.PropertyChangeHandler {
-
-        public void propertyChange(PropertyChangeEvent e);
-
-        public void handlePropertyChange(Object newValue);
-
-        protected void toFlush();
-
-        protected void toFreeStanding();
-    }
 }

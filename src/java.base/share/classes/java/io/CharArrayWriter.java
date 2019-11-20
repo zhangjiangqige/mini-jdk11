@@ -18,14 +18,9 @@ public class CharArrayWriter extends Writer {
     protected int count;
 
     public CharArrayWriter() {
-        this(32);
     }
 
     public CharArrayWriter(@NonNegative int initialSize) {
-        if (initialSize < 0) {
-            throw new IllegalArgumentException("Negative initial size: " + initialSize);
-        }
-        buf = new char[initialSize];
     }
 
     public void write(int c);

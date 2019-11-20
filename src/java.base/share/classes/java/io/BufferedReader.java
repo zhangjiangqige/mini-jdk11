@@ -21,55 +21,18 @@ import java.util.stream.StreamSupport;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public class BufferedReader extends Reader {
 
-    private Reader in;
-
-    private char[] cb;
-
-    private int nChars, nextChar;
-
-    private static final int INVALIDATED = -2;
-
-    private static final int UNMARKED = -1;
-
-    private int markedChar = UNMARKED;
-
-    private int readAheadLimit = 0;
-
-    private boolean skipLF = false;
-
-    private boolean markedSkipLF = false;
-
-    private static int defaultCharBufferSize = 8192;
-
-    private static int defaultExpectedLineLength = 80;
-
     public BufferedReader(Reader in, @Positive int sz) {
-        super(in);
-        if (sz <= 0)
-            throw new IllegalArgumentException("Buffer size <= 0");
-        this.in = in;
-        cb = new char[sz];
-        nextChar = nChars = 0;
     }
 
     public BufferedReader(Reader in) {
-        this(in, defaultCharBufferSize);
     }
-
-    private void ensureOpen() throws IOException;
-
-    private void fill() throws IOException;
 
     @GTENegativeOne
     public int read(@GuardSatisfied BufferedReader this) throws IOException;
 
-    private int read1(char[] cbuf, int off, int len) throws IOException;
-
     @GTENegativeOne
     @LTEqLengthOf({ "#1" })
     public int read(@GuardSatisfied BufferedReader this, char[] cbuf, @IndexOrHigh({ "#1" }) int off, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int len) throws IOException;
-
-    String readLine(@GuardSatisfied BufferedReader this, boolean ignoreLF) throws IOException;
 
     @Nullable
     public String readLine(@GuardSatisfied BufferedReader this) throws IOException;

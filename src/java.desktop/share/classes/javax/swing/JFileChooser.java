@@ -33,170 +33,104 @@ import java.lang.ref.WeakReference;
 @SuppressWarnings("serial")
 public class JFileChooser extends JComponent implements Accessible {
 
-    private static final String uiClassID = "FileChooserUI";
+    public static final int OPEN_DIALOG;
 
-    public static final int OPEN_DIALOG = 0;
+    public static final int SAVE_DIALOG;
 
-    public static final int SAVE_DIALOG = 1;
+    public static final int CUSTOM_DIALOG;
 
-    public static final int CUSTOM_DIALOG = 2;
+    public static final int CANCEL_OPTION;
 
-    public static final int CANCEL_OPTION = 1;
+    public static final int APPROVE_OPTION;
 
-    public static final int APPROVE_OPTION = 0;
+    public static final int ERROR_OPTION;
 
-    public static final int ERROR_OPTION = -1;
+    public static final int FILES_ONLY;
 
-    public static final int FILES_ONLY = 0;
+    public static final int DIRECTORIES_ONLY;
 
-    public static final int DIRECTORIES_ONLY = 1;
-
-    public static final int FILES_AND_DIRECTORIES = 2;
+    public static final int FILES_AND_DIRECTORIES;
 
     @Interned
-    public static final String CANCEL_SELECTION = "CancelSelection";
+    public static final String CANCEL_SELECTION;
 
     @Interned
-    public static final String APPROVE_SELECTION = "ApproveSelection";
+    public static final String APPROVE_SELECTION;
 
     @Interned
-    public static final String APPROVE_BUTTON_TEXT_CHANGED_PROPERTY = "ApproveButtonTextChangedProperty";
+    public static final String APPROVE_BUTTON_TEXT_CHANGED_PROPERTY;
 
     @Interned
-    public static final String APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY = "ApproveButtonToolTipTextChangedProperty";
+    public static final String APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY;
 
     @Interned
-    public static final String APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY = "ApproveButtonMnemonicChangedProperty";
+    public static final String APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY;
 
     @Interned
-    public static final String CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY = "ControlButtonsAreShownChangedProperty";
+    public static final String CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY;
 
     @Interned
-    public static final String DIRECTORY_CHANGED_PROPERTY = "directoryChanged";
+    public static final String DIRECTORY_CHANGED_PROPERTY;
 
     @Interned
-    public static final String SELECTED_FILE_CHANGED_PROPERTY = "SelectedFileChangedProperty";
+    public static final String SELECTED_FILE_CHANGED_PROPERTY;
 
-    public static final String SELECTED_FILES_CHANGED_PROPERTY = "SelectedFilesChangedProperty";
-
-    @Interned
-    public static final String MULTI_SELECTION_ENABLED_CHANGED_PROPERTY = "MultiSelectionEnabledChangedProperty";
+    public static final String SELECTED_FILES_CHANGED_PROPERTY;
 
     @Interned
-    public static final String FILE_SYSTEM_VIEW_CHANGED_PROPERTY = "FileSystemViewChanged";
+    public static final String MULTI_SELECTION_ENABLED_CHANGED_PROPERTY;
 
     @Interned
-    public static final String FILE_VIEW_CHANGED_PROPERTY = "fileViewChanged";
-
-    public static final String FILE_HIDING_CHANGED_PROPERTY = "FileHidingChanged";
+    public static final String FILE_SYSTEM_VIEW_CHANGED_PROPERTY;
 
     @Interned
-    public static final String FILE_FILTER_CHANGED_PROPERTY = "fileFilterChanged";
+    public static final String FILE_VIEW_CHANGED_PROPERTY;
+
+    public static final String FILE_HIDING_CHANGED_PROPERTY;
 
     @Interned
-    public static final String FILE_SELECTION_MODE_CHANGED_PROPERTY = "fileSelectionChanged";
+    public static final String FILE_FILTER_CHANGED_PROPERTY;
 
     @Interned
-    public static final String ACCESSORY_CHANGED_PROPERTY = "AccessoryChangedProperty";
+    public static final String FILE_SELECTION_MODE_CHANGED_PROPERTY;
 
     @Interned
-    public static final String ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY = "acceptAllFileFilterUsedChanged";
+    public static final String ACCESSORY_CHANGED_PROPERTY;
 
     @Interned
-    public static final String DIALOG_TITLE_CHANGED_PROPERTY = "DialogTitleChangedProperty";
+    public static final String ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY;
 
     @Interned
-    public static final String DIALOG_TYPE_CHANGED_PROPERTY = "DialogTypeChangedProperty";
+    public static final String DIALOG_TITLE_CHANGED_PROPERTY;
 
     @Interned
-    public static final String CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY = "ChoosableFileFilterChangedProperty";
+    public static final String DIALOG_TYPE_CHANGED_PROPERTY;
 
-    private String dialogTitle = null;
-
-    private String approveButtonText = null;
-
-    private String approveButtonToolTipText = null;
-
-    private int approveButtonMnemonic = 0;
-
-    private Vector<FileFilter> filters = new Vector<FileFilter>(5);
-
-    private JDialog dialog = null;
-
-    private int dialogType = OPEN_DIALOG;
-
-    private int returnValue = ERROR_OPTION;
-
-    private JComponent accessory = null;
-
-    private FileView fileView = null;
-
-    private boolean controlsShown = true;
-
-    private boolean useFileHiding = true;
-
-    private static final String SHOW_HIDDEN_PROP = "awt.file.showHiddenFiles";
-
-    private transient PropertyChangeListener showFilesListener = null;
-
-    private int fileSelectionMode = FILES_ONLY;
-
-    private boolean multiSelectionEnabled = false;
-
-    private boolean useAcceptAllFileFilter = true;
-
-    private boolean dragEnabled = false;
-
-    private FileFilter fileFilter = null;
-
-    private FileSystemView fileSystemView = null;
-
-    private File currentDirectory = null;
-
-    private File selectedFile = null;
-
-    private File[] selectedFiles;
+    @Interned
+    public static final String CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY;
 
     public JFileChooser() {
-        this((File) null, (FileSystemView) null);
     }
 
     public JFileChooser(String currentDirectoryPath) {
-        this(currentDirectoryPath, (FileSystemView) null);
     }
 
     public JFileChooser(File currentDirectory) {
-        this(currentDirectory, (FileSystemView) null);
     }
 
     public JFileChooser(FileSystemView fsv) {
-        this((File) null, fsv);
     }
 
     public JFileChooser(File currentDirectory, FileSystemView fsv) {
-        setup(fsv);
-        setCurrentDirectory(currentDirectory);
     }
 
     public JFileChooser(String currentDirectoryPath, FileSystemView fsv) {
-        setup(fsv);
-        if (currentDirectoryPath == null) {
-            setCurrentDirectory(null);
-        } else {
-            setCurrentDirectory(fileSystemView.createFileObject(currentDirectoryPath));
-        }
     }
 
     protected void setup(FileSystemView view);
 
-    private void installHierarchyListener();
-
-    private void installShowFilesListener();
-
     @BeanProperty(bound = false, description = "determines whether automatic drag handling is enabled")
     public void setDragEnabled(boolean b);
-
-    private static void checkDragEnabled(boolean b);
 
     public boolean getDragEnabled();
 
@@ -239,8 +173,6 @@ public class JFileChooser extends JComponent implements Accessible {
 
     @BeanProperty(preferred = true, enumerationValues = { "JFileChooser.OPEN_DIALOG", "JFileChooser.SAVE_DIALOG", "JFileChooser.CUSTOM_DIALOG" }, description = "The type (open, save, custom) of the JFileChooser.")
     public void setDialogType(int dialogType);
-
-    private static void checkDialogType(int dialogType);
 
     @BeanProperty(preferred = true, description = "The title of the JFileChooser dialog window.")
     public void setDialogTitle(String dialogTitle);
@@ -289,8 +221,6 @@ public class JFileChooser extends JComponent implements Accessible {
 
     @BeanProperty(preferred = true, enumerationValues = { "JFileChooser.FILES_ONLY", "JFileChooser.DIRECTORIES_ONLY", "JFileChooser.FILES_AND_DIRECTORIES" }, description = "Sets the types of files that the JFileChooser can choose.")
     public void setFileSelectionMode(int mode);
-
-    private static void checkFileSelectionMode(int mode);
 
     public int getFileSelectionMode();
 
@@ -351,17 +281,6 @@ public class JFileChooser extends JComponent implements Accessible {
     @SuppressWarnings("deprecation")
     protected void fireActionPerformed(String command);
 
-    private static class WeakPCL implements PropertyChangeListener {
-
-        WeakReference<JFileChooser> jfcRef;
-
-        public WeakPCL(JFileChooser jfc) {
-            jfcRef = new WeakReference<JFileChooser>(jfc);
-        }
-
-        public void propertyChange(PropertyChangeEvent ev);
-    }
-
     public void updateUI();
 
     @BeanProperty(bound = false, expert = true, description = "A string that specifies the name of the L&F class.")
@@ -370,13 +289,9 @@ public class JFileChooser extends JComponent implements Accessible {
     @BeanProperty(bound = false)
     public FileChooserUI getUI();
 
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException;
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
     protected String paramString();
 
-    protected AccessibleContext accessibleContext = null;
+    protected AccessibleContext accessibleContext;
 
     @BeanProperty(bound = false)
     public AccessibleContext getAccessibleContext();
@@ -385,11 +300,5 @@ public class JFileChooser extends JComponent implements Accessible {
     protected class AccessibleJFileChooser extends AccessibleJComponent {
 
         public AccessibleRole getAccessibleRole();
-    }
-
-    private class FCHierarchyListener implements HierarchyListener, Serializable {
-
-        @Override
-        public void hierarchyChanged(HierarchyEvent e);
     }
 }

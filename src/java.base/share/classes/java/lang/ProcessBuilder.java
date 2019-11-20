@@ -16,25 +16,10 @@ import sun.security.action.GetPropertyAction;
 @AnnotatedFor({ "nullness" })
 public final class ProcessBuilder {
 
-    private List<String> command;
-
-    private File directory;
-
-    private Map<String, String> environment;
-
-    private boolean redirectErrorStream;
-
-    private Redirect[] redirects;
-
     public ProcessBuilder(List<String> command) {
-        if (command == null)
-            throw new NullPointerException();
-        this.command = command;
     }
 
     public ProcessBuilder(String... command) {
-        this.command = new ArrayList<>(command.length);
-        for (String arg : command) this.command.add(arg);
     }
 
     public ProcessBuilder command(List<String> command);
@@ -45,38 +30,12 @@ public final class ProcessBuilder {
 
     public Map<String, String> environment();
 
-    ProcessBuilder environment(String[] envp);
-
     @Nullable
     public File directory();
 
     public ProcessBuilder directory(@Nullable File directory);
 
-    static class NullInputStream extends InputStream {
-
-        static final NullInputStream INSTANCE = new NullInputStream();
-
-        private NullInputStream() {
-        }
-
-        public int read();
-
-        public int available();
-    }
-
-    static class NullOutputStream extends OutputStream {
-
-        static final NullOutputStream INSTANCE = new NullOutputStream();
-
-        private NullOutputStream() {
-        }
-
-        public void write(int b) throws IOException;
-    }
-
     public abstract static class Redirect {
-
-        private static final File NULL_FILE = new File((GetPropertyAction.privilegedGetProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
 
         public enum Type {
 
@@ -85,50 +44,13 @@ public final class ProcessBuilder {
 
         public abstract Type type();
 
-        public static final Redirect PIPE = new Redirect() {
+        public static final Redirect PIPE;
 
-            public Type type() {
-                return Type.PIPE;
-            }
+        public static final Redirect INHERIT;
 
-            public String toString() {
-                return type().toString();
-            }
-        };
-
-        public static final Redirect INHERIT = new Redirect() {
-
-            public Type type() {
-                return Type.INHERIT;
-            }
-
-            public String toString() {
-                return type().toString();
-            }
-        };
-
-        public static final Redirect DISCARD = new Redirect() {
-
-            public Type type() {
-                return Type.WRITE;
-            }
-
-            public String toString() {
-                return type().toString();
-            }
-
-            public File file() {
-                return NULL_FILE;
-            }
-
-            boolean append() {
-                return false;
-            }
-        };
+        public static final Redirect DISCARD;
 
         public File file();
-
-        boolean append();
 
         public static Redirect from(final File file);
 
@@ -139,29 +61,7 @@ public final class ProcessBuilder {
         public boolean equals(Object obj);
 
         public int hashCode();
-
-        private Redirect() {
-        }
     }
-
-    static class RedirectPipeImpl extends Redirect {
-
-        final FileDescriptor fd;
-
-        RedirectPipeImpl() {
-            this.fd = new FileDescriptor();
-        }
-
-        @Override
-        public Type type();
-
-        @Override
-        public String toString();
-
-        FileDescriptor getFd();
-    }
-
-    private Redirect[] redirects();
 
     public ProcessBuilder redirectInput(Redirect source);
 
@@ -188,8 +88,6 @@ public final class ProcessBuilder {
     public ProcessBuilder redirectErrorStream(boolean redirectErrorStream);
 
     public Process start() throws IOException;
-
-    private Process start(Redirect[] redirects) throws IOException;
 
     public static List<Process> startPipeline(List<ProcessBuilder> builders) throws IOException;
 }

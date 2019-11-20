@@ -33,119 +33,20 @@ import sun.awt.AWTAccessor;
 @UsesObjectEquals
 public abstract class KeyboardFocusManager implements KeyEventDispatcher, KeyEventPostProcessor {
 
-    private static final PlatformLogger focusLog = PlatformLogger.getLogger("java.awt.focus.KeyboardFocusManager");
+    public static final int FORWARD_TRAVERSAL_KEYS;
 
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-        AWTAccessor.setKeyboardFocusManagerAccessor(new AWTAccessor.KeyboardFocusManagerAccessor() {
+    public static final int BACKWARD_TRAVERSAL_KEYS;
 
-            public int shouldNativelyFocusHeavyweight(Component heavyweight, Component descendant, boolean temporary, boolean focusedWindowChangeAllowed, long time, FocusEvent.Cause cause) {
-                return KeyboardFocusManager.shouldNativelyFocusHeavyweight(heavyweight, descendant, temporary, focusedWindowChangeAllowed, time, cause);
-            }
+    public static final int UP_CYCLE_TRAVERSAL_KEYS;
 
-            public boolean processSynchronousLightweightTransfer(Component heavyweight, Component descendant, boolean temporary, boolean focusedWindowChangeAllowed, long time) {
-                return KeyboardFocusManager.processSynchronousLightweightTransfer(heavyweight, descendant, temporary, focusedWindowChangeAllowed, time);
-            }
-
-            public void removeLastFocusRequest(Component heavyweight) {
-                KeyboardFocusManager.removeLastFocusRequest(heavyweight);
-            }
-
-            @Override
-            public Component getMostRecentFocusOwner(Window window) {
-                return KeyboardFocusManager.getMostRecentFocusOwner(window);
-            }
-
-            public void setMostRecentFocusOwner(Window window, Component component) {
-                KeyboardFocusManager.setMostRecentFocusOwner(window, component);
-            }
-
-            public KeyboardFocusManager getCurrentKeyboardFocusManager(AppContext ctx) {
-                return KeyboardFocusManager.getCurrentKeyboardFocusManager(ctx);
-            }
-
-            public Container getCurrentFocusCycleRoot() {
-                return KeyboardFocusManager.currentFocusCycleRoot;
-            }
-        });
-    }
-
-    transient KeyboardFocusManagerPeer peer;
-
-    private static native void initIDs();
-
-    private static final PlatformLogger log = PlatformLogger.getLogger("java.awt.KeyboardFocusManager");
-
-    public static final int FORWARD_TRAVERSAL_KEYS = 0;
-
-    public static final int BACKWARD_TRAVERSAL_KEYS = 1;
-
-    public static final int UP_CYCLE_TRAVERSAL_KEYS = 2;
-
-    public static final int DOWN_CYCLE_TRAVERSAL_KEYS = 3;
-
-    static final int TRAVERSAL_KEY_LENGTH = DOWN_CYCLE_TRAVERSAL_KEYS + 1;
+    public static final int DOWN_CYCLE_TRAVERSAL_KEYS;
 
     public static KeyboardFocusManager getCurrentKeyboardFocusManager();
 
-    static synchronized KeyboardFocusManager getCurrentKeyboardFocusManager(AppContext appcontext);
-
     public static void setCurrentKeyboardFocusManager(KeyboardFocusManager newManager) throws SecurityException;
 
-    private static Component focusOwner;
-
-    private static Component permanentFocusOwner;
-
-    private static Window focusedWindow;
-
-    private static Window activeWindow;
-
-    private FocusTraversalPolicy defaultPolicy = new DefaultFocusTraversalPolicy();
-
-    private static final String[] defaultFocusTraversalKeyPropertyNames = { "forwardDefaultFocusTraversalKeys", "backwardDefaultFocusTraversalKeys", "upCycleDefaultFocusTraversalKeys", "downCycleDefaultFocusTraversalKeys" };
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private Set<AWTKeyStroke>[] defaultFocusTraversalKeys = new Set[4];
-
-    private static Container currentFocusCycleRoot;
-
-    private VetoableChangeSupport vetoableSupport;
-
-    private PropertyChangeSupport changeSupport;
-
-    private java.util.LinkedList<KeyEventDispatcher> keyEventDispatchers;
-
-    private java.util.LinkedList<KeyEventPostProcessor> keyEventPostProcessors;
-
-    private static java.util.Map<Window, WeakReference<Component>> mostRecentFocusOwners = new WeakHashMap<>();
-
-    private static AWTPermission replaceKeyboardFocusManagerPermission;
-
-    transient SequencedEvent currentSequencedEvent = null;
-
-    final void setCurrentSequencedEvent(SequencedEvent current);
-
-    final SequencedEvent getCurrentSequencedEvent();
-
-    static Set<AWTKeyStroke> initFocusTraversalKeysSet(String value, Set<AWTKeyStroke> targetSet);
-
     public KeyboardFocusManager() {
-        @SuppressWarnings("deprecation")
-        AWTKeyStroke[][] defaultFocusTraversalKeyStrokes = { { AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, 0, false), AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, InputEvent.CTRL_DOWN_MASK | InputEvent.CTRL_MASK, false) }, { AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK | InputEvent.SHIFT_MASK, false), AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK | InputEvent.SHIFT_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.CTRL_MASK, false) }, {}, {} };
-        for (int i = 0; i < TRAVERSAL_KEY_LENGTH; i++) {
-            Set<AWTKeyStroke> work_set = new HashSet<>();
-            for (int j = 0; j < defaultFocusTraversalKeyStrokes[i].length; j++) {
-                work_set.add(defaultFocusTraversalKeyStrokes[i][j]);
-            }
-            defaultFocusTraversalKeys[i] = (work_set.isEmpty()) ? Collections.emptySet() : Collections.unmodifiableSet(work_set);
-        }
-        initPeer();
     }
-
-    private void initPeer();
 
     public Component getFocusOwner();
 
@@ -156,16 +57,6 @@ public abstract class KeyboardFocusManager implements KeyEventDispatcher, KeyEve
     public void clearFocusOwner();
 
     public void clearGlobalFocusOwner() throws SecurityException;
-
-    private void _clearGlobalFocusOwner();
-
-    void clearGlobalFocusOwnerPriv();
-
-    Component getNativeFocusOwner();
-
-    void setNativeFocusOwner(Component comp);
-
-    Window getNativeFocusedWindow();
 
     public Component getPermanentFocusOwner();
 
@@ -198,8 +89,6 @@ public abstract class KeyboardFocusManager implements KeyEventDispatcher, KeyEve
     protected Container getGlobalCurrentFocusCycleRoot() throws SecurityException;
 
     public void setGlobalCurrentFocusCycleRoot(Container newFocusCycleRoot) throws SecurityException;
-
-    void setGlobalCurrentFocusCycleRootPriv(final Container newFocusCycleRoot);
 
     public void addPropertyChangeListener(PropertyChangeListener listener);
 
@@ -243,14 +132,6 @@ public abstract class KeyboardFocusManager implements KeyEventDispatcher, KeyEve
     @SuppressWarnings("unchecked")
     protected java.util.List<KeyEventPostProcessor> getKeyEventPostProcessors();
 
-    static void setMostRecentFocusOwner(Component component);
-
-    static synchronized void setMostRecentFocusOwner(Window window, Component component);
-
-    static void clearMostRecentFocusOwner(Component comp);
-
-    static synchronized Component getMostRecentFocusOwner(Window window);
-
     public abstract boolean dispatchEvent(AWTEvent e);
 
     public final void redispatchEvent(Component target, AWTEvent e);
@@ -282,122 +163,4 @@ public abstract class KeyboardFocusManager implements KeyEventDispatcher, KeyEve
     public final void upFocusCycle();
 
     public final void downFocusCycle();
-
-    void dumpRequests();
-
-    private static final class LightweightFocusRequest {
-
-        final Component component;
-
-        final boolean temporary;
-
-        final FocusEvent.Cause cause;
-
-        LightweightFocusRequest(Component component, boolean temporary, FocusEvent.Cause cause) {
-            this.component = component;
-            this.temporary = temporary;
-            this.cause = cause;
-        }
-
-        public String toString();
-    }
-
-    private static final class HeavyweightFocusRequest {
-
-        final Component heavyweight;
-
-        final LinkedList<LightweightFocusRequest> lightweightRequests;
-
-        static final HeavyweightFocusRequest CLEAR_GLOBAL_FOCUS_OWNER = new HeavyweightFocusRequest();
-
-        private HeavyweightFocusRequest() {
-            heavyweight = null;
-            lightweightRequests = null;
-        }
-
-        HeavyweightFocusRequest(Component heavyweight, Component descendant, boolean temporary, FocusEvent.Cause cause) {
-            if (log.isLoggable(PlatformLogger.Level.FINE)) {
-                if (heavyweight == null) {
-                    log.fine("Assertion (heavyweight != null) failed");
-                }
-            }
-            this.heavyweight = heavyweight;
-            this.lightweightRequests = new LinkedList<LightweightFocusRequest>();
-            addLightweightRequest(descendant, temporary, cause);
-        }
-
-        boolean addLightweightRequest(Component descendant, boolean temporary, FocusEvent.Cause cause);
-
-        LightweightFocusRequest getFirstLightweightRequest();
-
-        public String toString();
-    }
-
-    private static LinkedList<HeavyweightFocusRequest> heavyweightRequests = new LinkedList<HeavyweightFocusRequest>();
-
-    private static LinkedList<LightweightFocusRequest> currentLightweightRequests;
-
-    private static boolean clearingCurrentLightweightRequests;
-
-    private static boolean allowSyncFocusRequests = true;
-
-    private static Component newFocusOwner = null;
-
-    private static volatile boolean disableRestoreFocus;
-
-    static final int SNFH_FAILURE = 0;
-
-    static final int SNFH_SUCCESS_HANDLED = 1;
-
-    static final int SNFH_SUCCESS_PROCEED = 2;
-
-    static boolean processSynchronousLightweightTransfer(Component heavyweight, Component descendant, boolean temporary, boolean focusedWindowChangeAllowed, long time);
-
-    static int shouldNativelyFocusHeavyweight(Component heavyweight, Component descendant, boolean temporary, boolean focusedWindowChangeAllowed, long time, FocusEvent.Cause cause);
-
-    static Window markClearGlobalFocusOwner();
-
-    Component getCurrentWaitingRequest(Component parent);
-
-    static boolean isAutoFocusTransferEnabled();
-
-    static boolean isAutoFocusTransferEnabledFor(Component comp);
-
-    private static Throwable dispatchAndCatchException(Throwable ex, Component comp, FocusEvent event);
-
-    private static void handleException(Throwable ex);
-
-    static void processCurrentLightweightRequests();
-
-    static FocusEvent retargetUnexpectedFocusEvent(FocusEvent fe);
-
-    static FocusEvent retargetFocusGained(FocusEvent fe);
-
-    static FocusEvent retargetFocusLost(FocusEvent fe);
-
-    static AWTEvent retargetFocusEvent(AWTEvent event);
-
-    void clearMarkers();
-
-    static boolean removeFirstRequest();
-
-    static void removeLastFocusRequest(Component heavyweight);
-
-    private static boolean focusedWindowChanged(Component to, Component from);
-
-    private static boolean isTemporary(Component to, Component from);
-
-    static Component getHeavyweight(Component comp);
-
-    private static boolean isProxyActiveImpl(KeyEvent e);
-
-    static boolean isProxyActive(KeyEvent e);
-
-    private static HeavyweightFocusRequest getLastHWRequest();
-
-    private static HeavyweightFocusRequest getFirstHWRequest();
-
-    private static void checkReplaceKFMPermission() throws SecurityException;
-
-    private void checkKFMSecurity() throws SecurityException;
 }

@@ -28,56 +28,22 @@ import java.util.TreeMap;
 public final class NimbusStyle extends SynthStyle {
 
     @Interned
-    public static final String LARGE_KEY = "large";
+    public static final String LARGE_KEY;
 
     @Interned
-    public static final String SMALL_KEY = "small";
+    public static final String SMALL_KEY;
 
     @Interned
-    public static final String MINI_KEY = "mini";
+    public static final String MINI_KEY;
 
-    public static final double LARGE_SCALE = 1.15;
+    public static final double LARGE_SCALE;
 
-    public static final double SMALL_SCALE = 0.857;
+    public static final double SMALL_SCALE;
 
-    public static final double MINI_SCALE = 0.714;
-
-    private static final Object NULL = '\0';
-
-    private static final Color DEFAULT_COLOR = new ColorUIResource(Color.BLACK);
-
-    private static final Comparator<RuntimeState> STATE_COMPARATOR = new Comparator<RuntimeState>() {
-
-        @Override
-        public int compare(RuntimeState a, RuntimeState b) {
-            return a.state - b.state;
-        }
-    };
-
-    private String prefix;
-
-    private SynthPainter painter;
-
-    private Values values;
-
-    private CacheKey tmpKey = new CacheKey("", 0);
-
-    private WeakReference<JComponent> component;
-
-    NimbusStyle(String prefix, JComponent c) {
-        if (c != null) {
-            this.component = new WeakReference<JComponent>(c);
-        }
-        this.prefix = prefix;
-        this.painter = new SynthPainterImpl(this);
-    }
+    public static final double MINI_SCALE;
 
     @Override
     public void installDefaults(SynthContext ctx);
-
-    private void validate();
-
-    private Painter<Object> getPainter(Map<String, Object> defaults, String key);
 
     @Override
     public Insets getInsets(SynthContext ctx, Insets in);
@@ -97,79 +63,9 @@ public final class NimbusStyle extends SynthStyle {
     @Override
     public Object get(SynthContext ctx, Object key);
 
-    @SuppressWarnings("unchecked")
-    private static Painter<Object> paintFilter(@SuppressWarnings("rawtypes") Painter painter);
-
     public Painter<Object> getBackgroundPainter(SynthContext ctx);
 
     public Painter<Object> getForegroundPainter(SynthContext ctx);
 
     public Painter<Object> getBorderPainter(SynthContext ctx);
-
-    private Values getValues(SynthContext ctx);
-
-    private boolean contains(String[] names, String name);
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private int getExtendedState(SynthContext ctx, Values v);
-
-    private RuntimeState getNextState(RuntimeState[] states, int[] lastState, int xstate);
-
-    private final class RuntimeState implements Cloneable {
-
-        int state;
-
-        Painter<Object> backgroundPainter;
-
-        Painter<Object> foregroundPainter;
-
-        Painter<Object> borderPainter;
-
-        String stateName;
-
-        UIDefaults defaults = new UIDefaults(10, .7f);
-
-        private RuntimeState(int state, String stateName) {
-            this.state = state;
-            this.stateName = stateName;
-        }
-
-        @Override
-        public String toString();
-
-        @Override
-        public RuntimeState clone();
-    }
-
-    private static final class Values {
-
-        State<?>[] stateTypes = null;
-
-        RuntimeState[] states = null;
-
-        Insets contentMargins;
-
-        UIDefaults defaults = new UIDefaults(10, .7f);
-
-        Map<CacheKey, Object> cache = new HashMap<CacheKey, Object>();
-    }
-
-    private static final class CacheKey {
-
-        private String key;
-
-        private int xstate;
-
-        CacheKey(Object key, int xstate) {
-            init(key, xstate);
-        }
-
-        void init(Object key, int xstate);
-
-        @Override
-        public boolean equals(Object obj);
-
-        @Override
-        public int hashCode();
-    }
 }

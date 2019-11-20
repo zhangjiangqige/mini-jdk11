@@ -13,10 +13,6 @@ import sun.awt.image.SunVolatileImage;
 @UsesObjectEquals
 public abstract class GraphicsConfiguration {
 
-    private static BufferCapabilities defaultBufferCaps;
-
-    private static ImageCapabilities defaultImageCaps;
-
     protected GraphicsConfiguration() {
     }
 
@@ -43,13 +39,6 @@ public abstract class GraphicsConfiguration {
     public abstract AffineTransform getNormalizingTransform();
 
     public abstract Rectangle getBounds();
-
-    private static class DefaultBufferCapabilities extends BufferCapabilities {
-
-        public DefaultBufferCapabilities(ImageCapabilities imageCaps) {
-            super(imageCaps, imageCaps, null);
-        }
-    }
 
     public BufferCapabilities getBufferCapabilities();
 

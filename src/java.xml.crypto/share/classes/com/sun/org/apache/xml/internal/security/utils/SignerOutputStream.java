@@ -9,12 +9,7 @@ import com.sun.org.apache.xml.internal.security.signature.XMLSignatureException;
 @AnnotatedFor("signedness")
 public class SignerOutputStream extends ByteArrayOutputStream {
 
-    private static final com.sun.org.slf4j.internal.Logger LOG = com.sun.org.slf4j.internal.LoggerFactory.getLogger(SignerOutputStream.class);
-
-    final SignatureAlgorithm sa;
-
     public SignerOutputStream(SignatureAlgorithm sa) {
-        this.sa = sa;
     }
 
     public void write(byte[] arg0);

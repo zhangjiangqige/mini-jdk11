@@ -17,41 +17,37 @@ import sun.swing.UIAction;
 @AnnotatedFor({ "interning" })
 public class BasicSliderUI extends SliderUI {
 
-    private static final Actions SHARED_ACTION = new Actions();
+    public static final int POSITIVE_SCROLL;
 
-    public static final int POSITIVE_SCROLL = +1;
+    public static final int NEGATIVE_SCROLL;
 
-    public static final int NEGATIVE_SCROLL = -1;
+    public static final int MIN_SCROLL;
 
-    public static final int MIN_SCROLL = -2;
-
-    public static final int MAX_SCROLL = +2;
+    public static final int MAX_SCROLL;
 
     protected Timer scrollTimer;
 
     protected JSlider slider;
 
-    protected Insets focusInsets = null;
+    protected Insets focusInsets;
 
-    protected Insets insetCache = null;
+    protected Insets insetCache;
 
-    protected boolean leftToRightCache = true;
+    protected boolean leftToRightCache;
 
-    protected Rectangle focusRect = null;
+    protected Rectangle focusRect;
 
-    protected Rectangle contentRect = null;
+    protected Rectangle contentRect;
 
-    protected Rectangle labelRect = null;
+    protected Rectangle labelRect;
 
-    protected Rectangle tickRect = null;
+    protected Rectangle tickRect;
 
-    protected Rectangle trackRect = null;
+    protected Rectangle trackRect;
 
-    protected Rectangle thumbRect = null;
+    protected Rectangle thumbRect;
 
-    protected int trackBuffer = 0;
-
-    private transient boolean isDragging;
+    protected int trackBuffer;
 
     protected TrackListener trackListener;
 
@@ -64,20 +60,6 @@ public class BasicSliderUI extends SliderUI {
     protected ScrollListener scrollListener;
 
     protected PropertyChangeListener propertyChangeListener;
-
-    private Handler handler;
-
-    private int lastValue;
-
-    private Color shadowColor;
-
-    private Color highlightColor;
-
-    private Color focusColor;
-
-    private boolean checkedLabelBaselines;
-
-    private boolean sameLabelBaselines;
 
     protected Color getShadowColor();
 
@@ -112,17 +94,11 @@ public class BasicSliderUI extends SliderUI {
 
     protected PropertyChangeListener createPropertyChangeListener(JSlider slider);
 
-    private Handler getHandler();
-
     protected void installListeners(JSlider slider);
 
     protected void uninstallListeners(JSlider slider);
 
     protected void installKeyboardActions(JSlider slider);
-
-    InputMap getInputMap(int condition, JSlider slider);
-
-    static void loadActionMap(LazyActionMap map);
 
     protected void uninstallKeyboardActions(JSlider slider);
 
@@ -153,8 +129,6 @@ public class BasicSliderUI extends SliderUI {
     protected void calculateThumbSize();
 
     protected void calculateContentRect();
-
-    private int getTickSpacing();
 
     protected void calculateThumbLocation();
 
@@ -225,8 +199,6 @@ public class BasicSliderUI extends SliderUI {
 
     public void paintThumb(Graphics g);
 
-    private static Rectangle unionRect = new Rectangle();
-
     public void setThumbLocation(int x, int y);
 
     public void scrollByBlock(int direction);
@@ -244,25 +216,6 @@ public class BasicSliderUI extends SliderUI {
     public int valueForYPosition(int yPos);
 
     public int valueForXPosition(int xPos);
-
-    private class Handler implements ChangeListener, ComponentListener, FocusListener, PropertyChangeListener {
-
-        public void stateChanged(ChangeEvent e);
-
-        public void componentHidden(ComponentEvent e);
-
-        public void componentMoved(ComponentEvent e);
-
-        public void componentResized(ComponentEvent e);
-
-        public void componentShown(ComponentEvent e);
-
-        public void focusGained(FocusEvent e);
-
-        public void focusLost(FocusEvent e);
-
-        public void propertyChange(PropertyChangeEvent e);
-    }
 
     public class ChangeHandler implements ChangeListener {
 
@@ -290,18 +243,10 @@ public class BasicSliderUI extends SliderUI {
 
     public class ScrollListener implements ActionListener {
 
-        int direction = POSITIVE_SCROLL;
-
-        boolean useBlockIncrement;
-
         public ScrollListener() {
-            direction = POSITIVE_SCROLL;
-            useBlockIncrement = true;
         }
 
         public ScrollListener(int dir, boolean block) {
-            direction = dir;
-            useBlockIncrement = block;
         }
 
         public void setDirection(int direction);
@@ -326,64 +271,11 @@ public class BasicSliderUI extends SliderUI {
     @SuppressWarnings("serial")
     public class ActionScroller extends AbstractAction {
 
-        int dir;
-
-        boolean block;
-
-        JSlider slider;
-
         public ActionScroller(JSlider slider, int dir, boolean block) {
-            this.dir = dir;
-            this.block = block;
-            this.slider = slider;
         }
 
         public void actionPerformed(ActionEvent e);
 
         public boolean isEnabled();
-    }
-
-    @SuppressWarnings("serial")
-    static class SharedActionScroller extends AbstractAction {
-
-        int dir;
-
-        boolean block;
-
-        public SharedActionScroller(int dir, boolean block) {
-            this.dir = dir;
-            this.block = block;
-        }
-
-        public void actionPerformed(ActionEvent evt);
-    }
-
-    private static class Actions extends UIAction {
-
-        public static final String POSITIVE_UNIT_INCREMENT = "positiveUnitIncrement";
-
-        public static final String POSITIVE_BLOCK_INCREMENT = "positiveBlockIncrement";
-
-        public static final String NEGATIVE_UNIT_INCREMENT = "negativeUnitIncrement";
-
-        public static final String NEGATIVE_BLOCK_INCREMENT = "negativeBlockIncrement";
-
-        @Interned
-        public static final String MIN_SCROLL_INCREMENT = "minScroll";
-
-        @Interned
-        public static final String MAX_SCROLL_INCREMENT = "maxScroll";
-
-        Actions() {
-            super(null);
-        }
-
-        public Actions(String name) {
-            super(name);
-        }
-
-        public void actionPerformed(ActionEvent evt);
-
-        private void scroll(JSlider slider, BasicSliderUI ui, int direction, boolean isBlock);
     }
 }

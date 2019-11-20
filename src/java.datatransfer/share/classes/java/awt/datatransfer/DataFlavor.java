@@ -25,125 +25,48 @@ import sun.reflect.misc.ReflectUtil;
 @AnnotatedFor({ "interning" })
 public class DataFlavor implements Externalizable, Cloneable {
 
-    private static final long serialVersionUID = 8367026044764648243L;
-
-    private static final Class<InputStream> ioInputStreamClass = InputStream.class;
-
     protected static final Class<?> tryToLoadClass(String className, ClassLoader fallback) throws ClassNotFoundException;
 
-    private static DataFlavor createConstant(Class<?> rc, String prn);
+    public static final DataFlavor stringFlavor;
 
-    private static DataFlavor createConstant(String mt, String prn);
-
-    private static DataFlavor initHtmlDataFlavor(String htmlFlavorType);
-
-    public static final DataFlavor stringFlavor = createConstant(java.lang.String.class, "Unicode String");
-
-    public static final DataFlavor imageFlavor = createConstant("image/x-java-image; class=java.awt.Image", "Image");
+    public static final DataFlavor imageFlavor;
 
     @Deprecated
-    public static final DataFlavor plainTextFlavor = createConstant("text/plain; charset=unicode; class=java.io.InputStream", "Plain Text");
+    public static final DataFlavor plainTextFlavor;
 
     @Interned
-    public static final String javaSerializedObjectMimeType = "application/x-java-serialized-object";
+    public static final String javaSerializedObjectMimeType;
 
-    public static final DataFlavor javaFileListFlavor = createConstant("application/x-java-file-list;class=java.util.List", null);
-
-    @Interned
-    public static final String javaJVMLocalObjectMimeType = "application/x-java-jvm-local-objectref";
+    public static final DataFlavor javaFileListFlavor;
 
     @Interned
-    public static final String javaRemoteObjectMimeType = "application/x-java-remote-object";
+    public static final String javaJVMLocalObjectMimeType;
 
-    public static DataFlavor selectionHtmlFlavor = initHtmlDataFlavor("selection");
+    @Interned
+    public static final String javaRemoteObjectMimeType;
 
-    public static DataFlavor fragmentHtmlFlavor = initHtmlDataFlavor("fragment");
+    public static DataFlavor selectionHtmlFlavor;
 
-    public static DataFlavor allHtmlFlavor = initHtmlDataFlavor("all");
+    public static DataFlavor fragmentHtmlFlavor;
+
+    public static DataFlavor allHtmlFlavor;
 
     public DataFlavor() {
-        super();
-    }
-
-    private DataFlavor(String primaryType, String subType, MimeTypeParameterList params, Class<?> representationClass, String humanPresentableName) {
-        super();
-        if (primaryType == null) {
-            throw new NullPointerException("primaryType");
-        }
-        if (subType == null) {
-            throw new NullPointerException("subType");
-        }
-        if (representationClass == null) {
-            throw new NullPointerException("representationClass");
-        }
-        if (params == null)
-            params = new MimeTypeParameterList();
-        params.set("class", representationClass.getName());
-        if (humanPresentableName == null) {
-            humanPresentableName = params.get("humanPresentableName");
-            if (humanPresentableName == null)
-                humanPresentableName = primaryType + "/" + subType;
-        }
-        try {
-            mimeType = new MimeType(primaryType, subType, params);
-        } catch (MimeTypeParseException mtpe) {
-            throw new IllegalArgumentException("MimeType Parse Exception: " + mtpe.getMessage());
-        }
-        this.representationClass = representationClass;
-        this.humanPresentableName = humanPresentableName;
-        mimeType.removeParameter("humanPresentableName");
     }
 
     public DataFlavor(Class<?> representationClass, String humanPresentableName) {
-        this("application", "x-java-serialized-object", null, representationClass, humanPresentableName);
-        if (representationClass == null) {
-            throw new NullPointerException("representationClass");
-        }
     }
 
     public DataFlavor(String mimeType, String humanPresentableName) {
-        super();
-        if (mimeType == null) {
-            throw new NullPointerException("mimeType");
-        }
-        try {
-            initialize(mimeType, humanPresentableName, this.getClass().getClassLoader());
-        } catch (MimeTypeParseException mtpe) {
-            throw new IllegalArgumentException("failed to parse:" + mimeType);
-        } catch (ClassNotFoundException cnfe) {
-            throw new IllegalArgumentException("can't find specified class: " + cnfe.getMessage());
-        }
     }
 
     public DataFlavor(String mimeType, String humanPresentableName, ClassLoader classLoader) throws ClassNotFoundException {
-        super();
-        if (mimeType == null) {
-            throw new NullPointerException("mimeType");
-        }
-        try {
-            initialize(mimeType, humanPresentableName, classLoader);
-        } catch (MimeTypeParseException mtpe) {
-            throw new IllegalArgumentException("failed to parse:" + mimeType);
-        }
     }
 
     public DataFlavor(String mimeType) throws ClassNotFoundException {
-        super();
-        if (mimeType == null) {
-            throw new NullPointerException("mimeType");
-        }
-        try {
-            initialize(mimeType, null, this.getClass().getClassLoader());
-        } catch (MimeTypeParseException mtpe) {
-            throw new IllegalArgumentException("failed to parse:" + mimeType);
-        }
     }
 
-    private void initialize(String mimeType, String humanPresentableName, ClassLoader classLoader) throws MimeTypeParseException, ClassNotFoundException;
-
     public String toString();
-
-    private String paramString();
 
     public static final DataFlavor getTextPlainUnicodeFlavor();
 
@@ -179,10 +102,6 @@ public class DataFlavor implements Externalizable, Cloneable {
     public boolean isMimeTypeEqual(String mimeType);
 
     public final boolean isMimeTypeEqual(DataFlavor dataFlavor);
-
-    private boolean isMimeTypeEqual(MimeType mtype);
-
-    private boolean isStandardTextRepresentationClass();
 
     public boolean isMimeTypeSerializedObject();
 
@@ -221,12 +140,4 @@ public class DataFlavor implements Externalizable, Cloneable {
 
     @Deprecated
     protected String normalizeMimeType(String mimeType);
-
-    transient int atom;
-
-    MimeType mimeType;
-
-    private String humanPresentableName;
-
-    private Class<?> representationClass;
 }

@@ -10,12 +10,4 @@ import java.util.function.Consumer;
 @AnnotatedFor({ "lock" })
 @Covariant({ 0 })
 public interface Iterator<E> {
-
-    boolean hasNext(@GuardSatisfied Iterator<E> this);
-
-    E next(@GuardSatisfied Iterator<E> this);
-
-    default void remove(@GuardSatisfied Iterator<E> this);
-
-    default void forEachRemaining(Consumer<? super E> action);
 }

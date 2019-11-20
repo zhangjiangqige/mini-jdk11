@@ -9,13 +9,7 @@ import java.io.IOException;
 @UsesObjectEquals
 public abstract class FileTypeDetector {
 
-    private static Void checkPermission();
-
-    private FileTypeDetector(Void ignore) {
-    }
-
     protected FileTypeDetector() {
-        this(checkPermission());
     }
 
     public abstract String probeContentType(Path path) throws IOException;

@@ -27,87 +27,6 @@ import java.util.function.Supplier;
 @AnnotatedFor({ "lock", "nullness" })
 public interface IntStream extends BaseStream<Integer, IntStream> {
 
-    IntStream filter(IntPredicate predicate);
-
-    IntStream map(IntUnaryOperator mapper);
-
-    <U> Stream<U> mapToObj(IntFunction<? extends U> mapper);
-
-    LongStream mapToLong(IntToLongFunction mapper);
-
-    DoubleStream mapToDouble(IntToDoubleFunction mapper);
-
-    IntStream flatMap(IntFunction<? extends IntStream> mapper);
-
-    IntStream distinct();
-
-    IntStream sorted();
-
-    IntStream peek(IntConsumer action);
-
-    IntStream limit(long maxSize);
-
-    IntStream skip(long n);
-
-    default IntStream takeWhile(IntPredicate predicate);
-
-    default IntStream dropWhile(IntPredicate predicate);
-
-    void forEach(IntConsumer action);
-
-    void forEachOrdered(IntConsumer action);
-
-    @SideEffectFree
-    int[] toArray();
-
-    int reduce(int identity, IntBinaryOperator op);
-
-    OptionalInt reduce(IntBinaryOperator op);
-
-    <R> R collect(Supplier<R> supplier, ObjIntConsumer<R> accumulator, BiConsumer<R, R> combiner);
-
-    int sum();
-
-    OptionalInt min();
-
-    OptionalInt max();
-
-    long count();
-
-    OptionalDouble average();
-
-    IntSummaryStatistics summaryStatistics();
-
-    boolean anyMatch(IntPredicate predicate);
-
-    boolean allMatch(IntPredicate predicate);
-
-    boolean noneMatch(IntPredicate predicate);
-
-    OptionalInt findFirst();
-
-    OptionalInt findAny();
-
-    LongStream asLongStream();
-
-    DoubleStream asDoubleStream();
-
-    Stream<Integer> boxed();
-
-    @Override
-    IntStream sequential();
-
-    @Override
-    IntStream parallel();
-
-    @SideEffectFree
-    @Override
-    PrimitiveIterator.OfInt iterator();
-
-    @SideEffectFree
-    @Override
-    Spliterator.OfInt spliterator();
-
     public static Builder builder();
 
     public static IntStream empty();
@@ -129,12 +48,5 @@ public interface IntStream extends BaseStream<Integer, IntStream> {
     public static IntStream concat(IntStream a, IntStream b);
 
     public interface Builder extends IntConsumer {
-
-        @Override
-        void accept(int t);
-
-        default Builder add(IntStream.@GuardSatisfied Builder this, int t);
-
-        IntStream build();
     }
 }

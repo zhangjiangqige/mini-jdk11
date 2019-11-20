@@ -13,16 +13,8 @@ import java.awt.image.ColorModel;
 @UsesObjectEquals
 public class FilteredImageSource implements ImageProducer {
 
-    ImageProducer src;
-
-    ImageFilter filter;
-
     public FilteredImageSource(ImageProducer orig, ImageFilter imgf) {
-        src = orig;
-        filter = imgf;
     }
-
-    private Hashtable<ImageConsumer, ImageFilter> proxies;
 
     public synchronized void addConsumer(ImageConsumer ic);
 

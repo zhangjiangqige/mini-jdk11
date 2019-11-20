@@ -28,52 +28,9 @@ import sun.reflect.annotation.TypeAnnotationParser;
 @AnnotatedFor({ "interning", "lock", "nullness" })
 public final class Field extends AccessibleObject implements Member {
 
-    private Class<?> clazz;
-
-    private int slot;
-
-    private String name;
-
-    private Class<?> type;
-
-    private int modifiers;
-
-    private transient String signature;
-
-    private transient FieldRepository genericInfo;
-
-    private byte[] annotations;
-
-    private FieldAccessor fieldAccessor;
-
-    private FieldAccessor overrideFieldAccessor;
-
-    private Field root;
-
-    private String getGenericSignature();
-
-    private GenericsFactory getFactory();
-
-    private FieldRepository getGenericInfo();
-
-    Field(Class<?> declaringClass, String name, Class<?> type, int modifiers, int slot, String signature, byte[] annotations) {
-        this.clazz = declaringClass;
-        this.name = name;
-        this.type = type;
-        this.modifiers = modifiers;
-        this.slot = slot;
-        this.signature = signature;
-        this.annotations = annotations;
-    }
-
-    Field copy();
-
     @Override
     @CallerSensitive
     public void setAccessible(boolean flag);
-
-    @Override
-    void checkCanSetAccessible(Class<?> caller);
 
     @SideEffectFree
     @Override
@@ -106,9 +63,6 @@ public final class Field extends AccessibleObject implements Member {
 
     @SideEffectFree
     public String toString(@GuardSatisfied Field this);
-
-    @Override
-    String toShortString();
 
     @SideEffectFree
     public String toGenericString(@GuardSatisfied Field this);
@@ -195,19 +149,6 @@ public final class Field extends AccessibleObject implements Member {
     @ForceInline
     public void setDouble(@UnknownInitialization @Nullable Object obj, double d) throws IllegalArgumentException, IllegalAccessException;
 
-    private void checkAccess(Class<?> caller, Object obj) throws IllegalAccessException;
-
-    private FieldAccessor getFieldAccessor(Object obj) throws IllegalAccessException;
-
-    private FieldAccessor acquireFieldAccessor(boolean overrideFinalCheck);
-
-    private FieldAccessor getFieldAccessor(boolean overrideFinalCheck);
-
-    private void setFieldAccessor(FieldAccessor accessor, boolean overrideFinalCheck);
-
-    @Override
-    Field getRoot();
-
     @SideEffectFree
     @Nullable
     public <T extends @Nullable Annotation> T getAnnotation(@GuardSatisfied Field this, Class<@NonNull T> annotationClass);
@@ -217,12 +158,6 @@ public final class Field extends AccessibleObject implements Member {
 
     @SideEffectFree
     public Annotation[] getDeclaredAnnotations(@GuardSatisfied Field this);
-
-    private transient volatile Map<Class<? extends Annotation>, Annotation> declaredAnnotations;
-
-    private Map<Class<? extends Annotation>, Annotation> declaredAnnotations();
-
-    private native byte[] getTypeAnnotationBytes0();
 
     public AnnotatedType getAnnotatedType();
 }

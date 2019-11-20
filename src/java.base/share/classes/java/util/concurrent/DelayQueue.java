@@ -19,20 +19,10 @@ import java.util.concurrent.locks.ReentrantLock;
 @AnnotatedFor({ "nullness" })
 public class DelayQueue<E extends @NonNull Delayed> extends AbstractQueue<E> implements BlockingQueue<E> {
 
-    private final transient ReentrantLock lock = new ReentrantLock();
-
-    private final PriorityQueue<E> q = new PriorityQueue<E>();
-
-    @Nullable
-    private Thread leader;
-
-    private final Condition available = lock.newCondition();
-
     public DelayQueue() {
     }
 
     public DelayQueue(Collection<? extends E> c) {
-        this.addAll(c);
     }
 
     public boolean add(E e);
@@ -74,29 +64,6 @@ public class DelayQueue<E extends @NonNull Delayed> extends AbstractQueue<E> imp
 
     public boolean remove(Object o);
 
-    void removeEQ(Object o);
-
     @SideEffectFree
     public Iterator<E> iterator();
-
-    private class Itr implements Iterator<E> {
-
-        final Object[] array;
-
-        int cursor;
-
-        int lastRet;
-
-        Itr(Object[] array) {
-            lastRet = -1;
-            this.array = array;
-        }
-
-        public boolean hasNext();
-
-        @SuppressWarnings("unchecked")
-        public E next();
-
-        public void remove();
-    }
 }

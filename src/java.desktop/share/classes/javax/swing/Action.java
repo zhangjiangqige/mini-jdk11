@@ -10,36 +10,36 @@ import java.beans.*;
 public interface Action extends ActionListener {
 
     @Interned
-    public static final String DEFAULT = "Default";
+    public static final String DEFAULT;
 
     @Interned
-    public static final String NAME = "Name";
+    public static final String NAME;
 
     @Interned
-    public static final String SHORT_DESCRIPTION = "ShortDescription";
+    public static final String SHORT_DESCRIPTION;
 
     @Interned
-    public static final String LONG_DESCRIPTION = "LongDescription";
+    public static final String LONG_DESCRIPTION;
 
     @Interned
-    public static final String SMALL_ICON = "SmallIcon";
+    public static final String SMALL_ICON;
 
     @Interned
-    public static final String ACTION_COMMAND_KEY = "ActionCommandKey";
+    public static final String ACTION_COMMAND_KEY;
 
     @Interned
-    public static final String ACCELERATOR_KEY = "AcceleratorKey";
+    public static final String ACCELERATOR_KEY;
 
     @Interned
-    public static final String MNEMONIC_KEY = "MnemonicKey";
+    public static final String MNEMONIC_KEY;
 
     @Interned
-    public static final String SELECTED_KEY = "SwingSelectedKey";
+    public static final String SELECTED_KEY;
 
-    public static final String DISPLAYED_MNEMONIC_INDEX_KEY = "SwingDisplayedMnemonicIndexKey";
+    public static final String DISPLAYED_MNEMONIC_INDEX_KEY;
 
     @Interned
-    public static final String LARGE_ICON_KEY = "SwingLargeIconKey";
+    public static final String LARGE_ICON_KEY;
 
     public Object getValue(String key);
 
@@ -48,8 +48,6 @@ public interface Action extends ActionListener {
     public void setEnabled(boolean b);
 
     public boolean isEnabled();
-
-    default boolean accept(Object sender);
 
     public void addPropertyChangeListener(PropertyChangeListener listener);
 

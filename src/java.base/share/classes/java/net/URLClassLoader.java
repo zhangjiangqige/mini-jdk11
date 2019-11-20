@@ -37,81 +37,20 @@ import sun.security.util.SecurityConstants;
 @AnnotatedFor("nullness")
 public class URLClassLoader extends SecureClassLoader implements Closeable {
 
-    private final URLClassPath ucp;
-
-    private final AccessControlContext acc;
-
     public URLClassLoader(URL[] urls, @Nullable ClassLoader parent) {
-        super(parent);
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkCreateClassLoader();
-        }
-        this.acc = AccessController.getContext();
-        this.ucp = new URLClassPath(urls, acc);
-    }
-
-    URLClassLoader(String name, URL[] urls, ClassLoader parent, AccessControlContext acc) {
-        super(name, parent);
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkCreateClassLoader();
-        }
-        this.acc = acc;
-        this.ucp = new URLClassPath(urls, acc);
     }
 
     public URLClassLoader(URL[] urls) {
-        super();
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkCreateClassLoader();
-        }
-        this.acc = AccessController.getContext();
-        this.ucp = new URLClassPath(urls, acc);
-    }
-
-    URLClassLoader(URL[] urls, AccessControlContext acc) {
-        super();
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkCreateClassLoader();
-        }
-        this.acc = acc;
-        this.ucp = new URLClassPath(urls, acc);
     }
 
     public URLClassLoader(URL[] urls, ClassLoader parent, URLStreamHandlerFactory factory) {
-        super(parent);
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkCreateClassLoader();
-        }
-        this.acc = AccessController.getContext();
-        this.ucp = new URLClassPath(urls, factory, acc);
     }
 
     public URLClassLoader(String name, URL[] urls, ClassLoader parent) {
-        super(name, parent);
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkCreateClassLoader();
-        }
-        this.acc = AccessController.getContext();
-        this.ucp = new URLClassPath(urls, acc);
     }
 
     public URLClassLoader(String name, URL[] urls, ClassLoader parent, URLStreamHandlerFactory factory) {
-        super(name, parent);
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkCreateClassLoader();
-        }
-        this.acc = AccessController.getContext();
-        this.ucp = new URLClassPath(urls, factory, acc);
     }
-
-    private WeakHashMap<Closeable, Void> closeables = new WeakHashMap<>();
 
     @Nullable
     public InputStream getResourceAsStream(String name);
@@ -124,14 +63,7 @@ public class URLClassLoader extends SecureClassLoader implements Closeable {
 
     protected Class<?> findClass(final String name) throws ClassNotFoundException;
 
-    @Nullable
-    private Package getAndVerifyPackage(String pkgname, Manifest man, URL url);
-
-    private Class<?> defineClass(String name, Resource res) throws IOException;
-
     protected Package definePackage(String name, Manifest man, @Nullable URL url);
-
-    private boolean isSealed(String name, Manifest man);
 
     @Nullable
     public URL findResource(final String name);
@@ -143,32 +75,4 @@ public class URLClassLoader extends SecureClassLoader implements Closeable {
     public static URLClassLoader newInstance(final URL[] urls, final ClassLoader parent);
 
     public static URLClassLoader newInstance(final URL[] urls);
-
-    static {
-        SharedSecrets.setJavaNetURLClassLoaderAccess(new JavaNetURLClassLoaderAccess() {
-
-            @Override
-            public AccessControlContext getAccessControlContext(URLClassLoader u) {
-                return u.acc;
-            }
-        });
-        ClassLoader.registerAsParallelCapable();
-    }
-}
-
-final class FactoryURLClassLoader extends URLClassLoader {
-
-    static {
-        ClassLoader.registerAsParallelCapable();
-    }
-
-    FactoryURLClassLoader(String name, URL[] urls, ClassLoader parent, AccessControlContext acc) {
-        super(name, urls, parent, acc);
-    }
-
-    FactoryURLClassLoader(URL[] urls, AccessControlContext acc) {
-        super(urls, acc);
-    }
-
-    public final Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException;
 }

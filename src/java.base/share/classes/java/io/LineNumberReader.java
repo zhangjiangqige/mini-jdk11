@@ -12,20 +12,10 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public class LineNumberReader extends BufferedReader {
 
-    private int lineNumber = 0;
-
-    private int markedLineNumber;
-
-    private boolean skipLF;
-
-    private boolean markedSkipLF;
-
     public LineNumberReader(Reader in) {
-        super(in);
     }
 
     public LineNumberReader(Reader in, @NonNegative int sz) {
-        super(in, sz);
     }
 
     public void setLineNumber(@GuardSatisfied LineNumberReader this, @NonNegative int lineNumber);
@@ -43,10 +33,6 @@ public class LineNumberReader extends BufferedReader {
 
     @Nullable
     public String readLine(@GuardSatisfied LineNumberReader this) throws IOException;
-
-    private static final int maxSkipBufferSize = 8192;
-
-    private char[] skipBuffer = null;
 
     @NonNegative
     public long skip(@GuardSatisfied LineNumberReader this, @NonNegative long n) throws IOException;

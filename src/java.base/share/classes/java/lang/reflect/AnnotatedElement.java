@@ -18,20 +18,4 @@ import sun.reflect.annotation.AnnotationType;
 
 @AnnotatedFor({ "lock", "nullness" })
 public interface AnnotatedElement {
-
-    @Pure
-    default boolean isAnnotationPresent(@GuardSatisfied AnnotatedElement this, Class<? extends Annotation> annotationClass);
-
-    @Nullable
-    <T extends @Nullable Annotation> T getAnnotation(Class<T> annotationClass);
-
-    Annotation[] getAnnotations();
-
-    default <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass);
-
-    default <T extends Annotation> T getDeclaredAnnotation(Class<T> annotationClass);
-
-    default <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass);
-
-    Annotation[] getDeclaredAnnotations();
 }

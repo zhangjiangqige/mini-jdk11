@@ -10,20 +10,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "nullness", "index" })
 public class StringReader extends Reader {
 
-    private String str;
-
-    private int length;
-
-    private int next = 0;
-
-    private int mark = 0;
-
     public StringReader(String s) {
-        this.str = s;
-        this.length = s.length();
     }
-
-    private void ensureOpen() throws IOException;
 
     public int read() throws IOException;
 

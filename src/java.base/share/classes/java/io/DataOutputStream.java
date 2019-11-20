@@ -13,13 +13,8 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput {
 
     protected int written;
 
-    private byte[] bytearr = null;
-
     public DataOutputStream(OutputStream out) {
-        super(out);
     }
-
-    private void incCount(int value);
 
     public synchronized void write(@PolySigned int b) throws IOException;
 
@@ -37,8 +32,6 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput {
 
     public final void writeInt(int v) throws IOException;
 
-    private byte[] writeBuffer = new byte[8];
-
     public final void writeLong(long v) throws IOException;
 
     public final void writeFloat(float v) throws IOException;
@@ -50,8 +43,6 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput {
     public final void writeChars(String s) throws IOException;
 
     public final void writeUTF(String str) throws IOException;
-
-    static int writeUTF(String str, DataOutput out) throws IOException;
 
     @Pure
     @NonNegative

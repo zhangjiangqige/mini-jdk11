@@ -9,19 +9,15 @@ import java.util.Vector;
 public class PlainDocument extends AbstractDocument {
 
     @Interned
-    public static final String tabSizeAttribute = "tabSize";
+    public static final String tabSizeAttribute;
 
     @Interned
-    public static final String lineLimitAttribute = "lineLimit";
+    public static final String lineLimitAttribute;
 
     public PlainDocument() {
-        this(new GapContent());
     }
 
     public PlainDocument(Content c) {
-        super(c);
-        putProperty(tabSizeAttribute, Integer.valueOf(8));
-        defaultRoot = createDefaultRoot();
     }
 
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException;
@@ -35,14 +31,4 @@ public class PlainDocument extends AbstractDocument {
     protected void insertUpdate(DefaultDocumentEvent chng, AttributeSet attr);
 
     protected void removeUpdate(DefaultDocumentEvent chng);
-
-    private void insertComposedTextUpdate(DefaultDocumentEvent chng, AttributeSet attr);
-
-    private AbstractElement defaultRoot;
-
-    private Vector<Element> added = new Vector<Element>();
-
-    private Vector<Element> removed = new Vector<Element>();
-
-    private transient Segment s;
 }

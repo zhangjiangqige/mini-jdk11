@@ -16,31 +16,11 @@ import java.util.function.Consumer;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public class LinkedList<E> extends AbstractSequentialList<E> implements List<E>, Deque<E>, Cloneable, java.io.Serializable {
 
-    transient int size = 0;
-
-    transient Node<E> first;
-
-    transient Node<E> last;
-
     public LinkedList() {
     }
 
     public LinkedList(Collection<? extends E> c) {
-        this();
-        addAll(c);
     }
-
-    private void linkFirst(E e);
-
-    void linkLast(E e);
-
-    void linkBefore(E e, Node<E> succ);
-
-    private E unlinkFirst(Node<E> f);
-
-    private E unlinkLast(Node<E> l);
-
-    E unlink(Node<E> x);
 
     public E getFirst(@GuardSatisfied LinkedList<E> this);
 
@@ -81,18 +61,6 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements List<E>,
     public void add(@GuardSatisfied LinkedList<E> this, @NonNegative int index, E element);
 
     public E remove(@GuardSatisfied LinkedList<E> this, @NonNegative int index);
-
-    private boolean isElementIndex(@NonNegative int index);
-
-    private boolean isPositionIndex(@NonNegative int index);
-
-    private String outOfBoundsMsg(@NonNegative int index);
-
-    private void checkElementIndex(@NonNegative int index);
-
-    private void checkPositionIndex(@NonNegative int index);
-
-    Node<E> node(@NonNegative int index);
 
     @Pure
     @GTENegativeOne
@@ -140,74 +108,7 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements List<E>,
 
     public ListIterator<E> listIterator(@NonNegative int index);
 
-    private class ListItr implements ListIterator<E> {
-
-        private Node<E> lastReturned;
-
-        private Node<E> next;
-
-        private int nextIndex;
-
-        private int expectedModCount = modCount;
-
-        ListItr(int index) {
-            next = (index == size) ? null : node(index);
-            nextIndex = index;
-        }
-
-        public boolean hasNext();
-
-        public E next();
-
-        public boolean hasPrevious();
-
-        public E previous();
-
-        public int nextIndex();
-
-        public int previousIndex();
-
-        public void remove();
-
-        public void set(E e);
-
-        public void add(E e);
-
-        public void forEachRemaining(Consumer<? super E> action);
-
-        final void checkForComodification();
-    }
-
-    private static class Node<E> {
-
-        E item;
-
-        Node<E> next;
-
-        Node<E> prev;
-
-        Node(Node<E> prev, E element, Node<E> next) {
-            this.item = element;
-            this.next = next;
-            this.prev = prev;
-        }
-    }
-
     public Iterator<E> descendingIterator();
-
-    private class DescendingIterator implements Iterator<E> {
-
-        private final ListItr itr = new ListItr(size());
-
-        public boolean hasNext();
-
-        public E next();
-
-        public void remove();
-    }
-
-    @SuppressWarnings("unchecked")
-    private LinkedList<E> superClone();
 
     @SideEffectFree
     public Object clone(@GuardSatisfied LinkedList<E> this);
@@ -221,49 +122,7 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements List<E>,
     @Nullable
     public <T> T @PolyNull [] toArray(T @PolyNull [] a);
 
-    private static final long serialVersionUID = 876323262645176354L;
-
-    private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException;
-
-    @SuppressWarnings("unchecked")
-    private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException;
-
     @SideEffectFree
     @Override
     public Spliterator<E> spliterator();
-
-    static final class LLSpliterator<E> implements Spliterator<E> {
-
-        static final int BATCH_UNIT = 1 << 10;
-
-        static final int MAX_BATCH = 1 << 25;
-
-        final LinkedList<E> list;
-
-        Node<E> current;
-
-        int est;
-
-        int expectedModCount;
-
-        int batch;
-
-        LLSpliterator(LinkedList<E> list, int est, int expectedModCount) {
-            this.list = list;
-            this.est = est;
-            this.expectedModCount = expectedModCount;
-        }
-
-        final int getEst();
-
-        public long estimateSize();
-
-        public Spliterator<E> trySplit();
-
-        public void forEachRemaining(Consumer<? super E> action);
-
-        public boolean tryAdvance(Consumer<? super E> action);
-
-        public int characteristics();
-    }
 }

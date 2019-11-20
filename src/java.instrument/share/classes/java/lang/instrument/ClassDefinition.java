@@ -7,16 +7,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @UsesObjectEquals
 public final class ClassDefinition {
 
-    private final Class<?> mClass;
-
-    private final byte[] mClassFile;
-
     public ClassDefinition(Class<?> theClass, byte[] theClassFile) {
-        if (theClass == null || theClassFile == null) {
-            throw new NullPointerException();
-        }
-        mClass = theClass;
-        mClassFile = theClassFile;
     }
 
     public Class<?> getDefinitionClass();

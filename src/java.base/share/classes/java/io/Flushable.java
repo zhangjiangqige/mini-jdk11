@@ -5,6 +5,4 @@ import java.io.IOException;
 
 @AnnotatedFor({ "nullness" })
 public interface Flushable {
-
-    void flush() throws IOException;
 }

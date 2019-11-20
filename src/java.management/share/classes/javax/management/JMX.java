@@ -11,37 +11,32 @@ import sun.reflect.misc.ReflectUtil;
 @AnnotatedFor({ "interning" })
 public class JMX {
 
-    static final JMX proof = new JMX();
-
-    private JMX() {
-    }
+    @Interned
+    public static final String DEFAULT_VALUE_FIELD;
 
     @Interned
-    public static final String DEFAULT_VALUE_FIELD = "defaultValue";
+    public static final String IMMUTABLE_INFO_FIELD;
 
     @Interned
-    public static final String IMMUTABLE_INFO_FIELD = "immutableInfo";
+    public static final String INTERFACE_CLASS_NAME_FIELD;
 
     @Interned
-    public static final String INTERFACE_CLASS_NAME_FIELD = "interfaceClassName";
+    public static final String LEGAL_VALUES_FIELD;
 
     @Interned
-    public static final String LEGAL_VALUES_FIELD = "legalValues";
+    public static final String MAX_VALUE_FIELD;
 
     @Interned
-    public static final String MAX_VALUE_FIELD = "maxValue";
+    public static final String MIN_VALUE_FIELD;
 
     @Interned
-    public static final String MIN_VALUE_FIELD = "minValue";
+    public static final String MXBEAN_FIELD;
 
     @Interned
-    public static final String MXBEAN_FIELD = "mxbean";
+    public static final String OPEN_TYPE_FIELD;
 
     @Interned
-    public static final String OPEN_TYPE_FIELD = "openType";
-
-    @Interned
-    public static final String ORIGINAL_TYPE_FIELD = "originalType";
+    public static final String ORIGINAL_TYPE_FIELD;
 
     public static <T> T newMBeanProxy(MBeanServerConnection connection, ObjectName objectName, Class<T> interfaceClass);
 
@@ -52,6 +47,4 @@ public class JMX {
     public static <T> T newMXBeanProxy(MBeanServerConnection connection, ObjectName objectName, Class<T> interfaceClass, boolean notificationEmitter);
 
     public static boolean isMXBeanInterface(Class<?> interfaceClass);
-
-    private static <T> T createProxy(MBeanServerConnection connection, ObjectName objectName, Class<T> interfaceClass, boolean notificationEmitter, boolean isMXBean);
 }

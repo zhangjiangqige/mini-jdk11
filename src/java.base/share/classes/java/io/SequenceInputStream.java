@@ -14,26 +14,11 @@ import java.util.Vector;
 @AnnotatedFor({ "nullness", "index" })
 public class SequenceInputStream extends InputStream {
 
-    Enumeration<? extends InputStream> e;
-
-    InputStream in;
-
     public SequenceInputStream(Enumeration<? extends InputStream> e) {
-        this.e = e;
-        peekNextStream();
     }
 
     public SequenceInputStream(InputStream s1, InputStream s2) {
-        Vector<InputStream> v = new Vector<>(2);
-        v.addElement(s1);
-        v.addElement(s2);
-        e = v.elements();
-        peekNextStream();
     }
-
-    final void nextStream() throws IOException;
-
-    private void peekNextStream();
 
     @NonNegative
     public int available() throws IOException;

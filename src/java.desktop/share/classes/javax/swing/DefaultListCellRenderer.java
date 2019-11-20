@@ -16,20 +16,10 @@ import sun.swing.SwingUtilities2;
 @SuppressWarnings("serial")
 public class DefaultListCellRenderer extends JLabel implements ListCellRenderer<Object>, Serializable {
 
-    private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-
-    private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-
-    protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
+    protected static Border noFocusBorder;
 
     public DefaultListCellRenderer() {
-        super();
-        setOpaque(true);
-        setBorder(getNoFocusBorder());
-        setName("List.cellRenderer");
     }
-
-    private Border getNoFocusBorder();
 
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus);
 

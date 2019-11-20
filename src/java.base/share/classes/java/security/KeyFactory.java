@@ -14,31 +14,7 @@ import sun.security.jca.GetInstance.Instance;
 @UsesObjectEquals
 public class KeyFactory {
 
-    private static final Debug debug = Debug.getInstance("jca", "KeyFactory");
-
-    private final String algorithm;
-
-    private Provider provider;
-
-    private volatile KeyFactorySpi spi;
-
-    private final Object lock = new Object();
-
-    private Iterator<Service> serviceIterator;
-
     protected KeyFactory(KeyFactorySpi keyFacSpi, Provider provider, String algorithm) {
-        this.spi = keyFacSpi;
-        this.provider = provider;
-        this.algorithm = algorithm;
-    }
-
-    private KeyFactory(String algorithm) throws NoSuchAlgorithmException {
-        this.algorithm = algorithm;
-        List<Service> list = GetInstance.getServices("KeyFactory", algorithm);
-        serviceIterator = list.iterator();
-        if (nextSpi(null) == null) {
-            throw new NoSuchAlgorithmException(algorithm + " KeyFactory not available");
-        }
     }
 
     public static KeyFactory getInstance(String algorithm) throws NoSuchAlgorithmException;
@@ -50,8 +26,6 @@ public class KeyFactory {
     public final Provider getProvider();
 
     public final String getAlgorithm();
-
-    private KeyFactorySpi nextSpi(KeyFactorySpi oldSpi);
 
     public final PublicKey generatePublic(KeySpec keySpec) throws InvalidKeySpecException;
 

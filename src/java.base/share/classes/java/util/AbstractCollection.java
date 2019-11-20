@@ -43,13 +43,6 @@ public abstract class AbstractCollection<E> implements Collection<E> {
     @Nullable
     public <T> T @PolyNull [] toArray(@Nullable T @PolyNull [] a);
 
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-
-    @SuppressWarnings("unchecked")
-    private static <T> T[] finishToArray(T[] r, Iterator<?> it);
-
-    private static int hugeCapacity(int minCapacity);
-
     @Override
     public boolean add(@GuardSatisfied AbstractCollection<E> this, E e);
 

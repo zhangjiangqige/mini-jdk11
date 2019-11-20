@@ -17,8 +17,6 @@ import sun.swing.UIAction;
 @AnnotatedFor({ "interning" })
 public class BasicRootPaneUI extends RootPaneUI implements PropertyChangeListener {
 
-    private static RootPaneUI rootPaneUI = new BasicRootPaneUI();
-
     public static ComponentUI createUI(JComponent c);
 
     public void installUI(JComponent c);
@@ -41,42 +39,5 @@ public class BasicRootPaneUI extends RootPaneUI implements PropertyChangeListene
 
     protected void uninstallKeyboardActions(JRootPane root);
 
-    InputMap getInputMap(int condition, JComponent c);
-
-    ComponentInputMap createInputMap(int condition, JComponent c);
-
-    static void loadActionMap(LazyActionMap map);
-
-    void updateDefaultButtonBindings(JRootPane root);
-
     public void propertyChange(PropertyChangeEvent e);
-
-    static class Actions extends UIAction {
-
-        @Interned
-        public static final String PRESS = "press";
-
-        @Interned
-        public static final String RELEASE = "release";
-
-        @Interned
-        public static final String POST_POPUP = "postPopup";
-
-        Actions(String name) {
-            super(name);
-        }
-
-        public void actionPerformed(ActionEvent evt);
-
-        @Override
-        public boolean accept(Object sender);
-    }
-
-    @SuppressWarnings("serial")
-    private static class RootPaneInputMap extends ComponentInputMapUIResource {
-
-        public RootPaneInputMap(JComponent c) {
-            super(c);
-        }
-    }
 }

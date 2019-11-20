@@ -8,20 +8,10 @@ import java.math.BigInteger;
 @UsesObjectEquals
 public class RSAPublicKeySpec implements KeySpec {
 
-    private final BigInteger modulus;
-
-    private final BigInteger publicExponent;
-
-    private final AlgorithmParameterSpec params;
-
     public RSAPublicKeySpec(BigInteger modulus, BigInteger publicExponent) {
-        this(modulus, publicExponent, null);
     }
 
     public RSAPublicKeySpec(BigInteger modulus, BigInteger publicExponent, AlgorithmParameterSpec params) {
-        this.modulus = modulus;
-        this.publicExponent = publicExponent;
-        this.params = params;
     }
 
     public BigInteger getModulus();

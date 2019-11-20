@@ -12,10 +12,7 @@ import java.io.IOException;
 @UsesObjectEquals
 public abstract class AsynchronousServerSocketChannel implements AsynchronousChannel, NetworkChannel {
 
-    private final AsynchronousChannelProvider provider;
-
     protected AsynchronousServerSocketChannel(AsynchronousChannelProvider provider) {
-        this.provider = provider;
     }
 
     public final AsynchronousChannelProvider provider();

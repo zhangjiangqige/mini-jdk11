@@ -12,10 +12,6 @@ import org.xml.sax.SAXNotSupportedException;
 @CFComment("nullness")
 public abstract class SAXParserFactory {
 
-    private boolean validating = false;
-
-    private boolean namespaceAware = false;
-
     protected SAXParserFactory() {
     }
 

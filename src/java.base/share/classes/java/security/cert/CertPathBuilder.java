@@ -17,18 +17,7 @@ import sun.security.jca.GetInstance.Instance;
 @UsesObjectEquals
 public class CertPathBuilder {
 
-    private static final String CPB_TYPE = "certpathbuilder.type";
-
-    private final CertPathBuilderSpi builderSpi;
-
-    private final Provider provider;
-
-    private final String algorithm;
-
     protected CertPathBuilder(CertPathBuilderSpi builderSpi, Provider provider, String algorithm) {
-        this.builderSpi = builderSpi;
-        this.provider = provider;
-        this.algorithm = algorithm;
     }
 
     public static CertPathBuilder getInstance(String algorithm) throws NoSuchAlgorithmException;

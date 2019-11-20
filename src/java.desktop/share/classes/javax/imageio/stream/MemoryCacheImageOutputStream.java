@@ -8,15 +8,7 @@ import java.io.OutputStream;
 @AnnotatedFor({ "signedness" })
 public class MemoryCacheImageOutputStream extends ImageOutputStreamImpl {
 
-    private OutputStream stream;
-
-    private MemoryCache cache = new MemoryCache();
-
     public MemoryCacheImageOutputStream(OutputStream stream) {
-        if (stream == null) {
-            throw new IllegalArgumentException("stream == null!");
-        }
-        this.stream = stream;
     }
 
     public int read() throws IOException;

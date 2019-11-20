@@ -19,9 +19,6 @@ import sun.rmi.transport.tcp.TCPEndpoint;
 @UsesObjectEquals
 public final class LocateRegistry {
 
-    private LocateRegistry() {
-    }
-
     public static Registry getRegistry() throws RemoteException;
 
     public static Registry getRegistry(int port) throws RemoteException;

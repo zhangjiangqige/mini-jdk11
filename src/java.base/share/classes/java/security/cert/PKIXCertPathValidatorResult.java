@@ -8,20 +8,7 @@ import java.security.PublicKey;
 @UsesObjectEquals
 public class PKIXCertPathValidatorResult implements CertPathValidatorResult {
 
-    private TrustAnchor trustAnchor;
-
-    private PolicyNode policyTree;
-
-    private PublicKey subjectPublicKey;
-
     public PKIXCertPathValidatorResult(TrustAnchor trustAnchor, PolicyNode policyTree, PublicKey subjectPublicKey) {
-        if (subjectPublicKey == null)
-            throw new NullPointerException("subjectPublicKey must be non-null");
-        if (trustAnchor == null)
-            throw new NullPointerException("trustAnchor must be non-null");
-        this.trustAnchor = trustAnchor;
-        this.policyTree = policyTree;
-        this.subjectPublicKey = subjectPublicKey;
     }
 
     public TrustAnchor getTrustAnchor();

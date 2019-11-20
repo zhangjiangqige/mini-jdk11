@@ -11,19 +11,10 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public class StringWriter extends Writer {
 
-    private StringBuffer buf;
-
     public StringWriter() {
-        buf = new StringBuffer();
-        lock = buf;
     }
 
     public StringWriter(@NonNegative int initialSize) {
-        if (initialSize < 0) {
-            throw new IllegalArgumentException("Negative buffer size");
-        }
-        buf = new StringBuffer(initialSize);
-        lock = buf;
     }
 
     public void write(int c);

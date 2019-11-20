@@ -17,6 +17,6 @@ public abstract class PrintJob {
 
     public abstract void end();
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public void finalize();
 }

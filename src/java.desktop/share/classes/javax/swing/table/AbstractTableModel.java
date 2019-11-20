@@ -12,7 +12,7 @@ import java.util.EventListener;
 @SuppressWarnings("serial")
 public abstract class AbstractTableModel implements TableModel, Serializable {
 
-    protected EventListenerList listenerList = new EventListenerList();
+    protected EventListenerList listenerList;
 
     public String getColumnName(@NonNegative int column);
 

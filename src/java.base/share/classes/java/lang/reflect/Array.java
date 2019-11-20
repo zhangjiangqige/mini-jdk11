@@ -11,9 +11,6 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @UsesObjectEquals
 public final class Array {
 
-    private Array() {
-    }
-
     public static Object newInstance(Class<?> componentType, @NonNegative int length) throws NegativeArraySizeException;
 
     public static Object newInstance(Class<?> componentType, @NonNegative int... dimensions) throws IllegalArgumentException, NegativeArraySizeException;
@@ -57,9 +54,4 @@ public final class Array {
     public static native void setFloat(Object array, @IndexFor({ "#1" }) int index, float f) throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
 
     public static native void setDouble(Object array, @IndexFor({ "#1" }) int index, double d) throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
-
-    @HotSpotIntrinsicCandidate
-    private static native Object newArray(Class<?> componentType, int length) throws NegativeArraySizeException;
-
-    private static native Object multiNewArray(Class<?> componentType, int[] dimensions) throws IllegalArgumentException, NegativeArraySizeException;
 }

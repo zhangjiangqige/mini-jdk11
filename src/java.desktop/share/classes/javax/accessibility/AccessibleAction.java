@@ -6,17 +6,17 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "interning" })
 public interface AccessibleAction {
 
-    public static final String TOGGLE_EXPAND = new String("toggleexpand");
+    public static final String TOGGLE_EXPAND;
 
-    public static final String INCREMENT = new String("increment");
+    public static final String INCREMENT;
 
-    public static final String DECREMENT = new String("decrement");
-
-    @Interned
-    public static final String CLICK = new String("click");
+    public static final String DECREMENT;
 
     @Interned
-    public static final String TOGGLE_POPUP = new String("toggle popup");
+    public static final String CLICK;
+
+    @Interned
+    public static final String TOGGLE_POPUP;
 
     public int getAccessibleActionCount();
 

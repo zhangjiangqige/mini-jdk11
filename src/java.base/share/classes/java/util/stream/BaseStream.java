@@ -14,23 +14,4 @@ import java.util.function.Predicate;
 
 @AnnotatedFor({ "lock", "nullness" })
 public interface BaseStream<T, S extends BaseStream<T, S>> extends AutoCloseable {
-
-    @SideEffectFree
-    Iterator<T> iterator();
-
-    @SideEffectFree
-    Spliterator<T> spliterator();
-
-    boolean isParallel();
-
-    S sequential();
-
-    S parallel();
-
-    S unordered();
-
-    S onClose(Runnable closeHandler);
-
-    @Override
-    void close();
 }

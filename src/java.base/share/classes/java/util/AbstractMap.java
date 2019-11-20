@@ -50,10 +50,6 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
     public void clear(@GuardSatisfied AbstractMap<K, V> this);
 
-    transient Set<K> keySet;
-
-    transient Collection<V> values;
-
     @SideEffectFree
     public Set<@KeyFor({ "this" }) K> keySet(@GuardSatisfied AbstractMap<K, V> this);
 
@@ -74,24 +70,12 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
     protected Object clone() throws CloneNotSupportedException;
 
-    private static boolean eq(Object o1, Object o2);
-
     public static class SimpleEntry<K, V> implements Entry<K, V>, java.io.Serializable {
 
-        private static final long serialVersionUID = -8499721149061103585L;
-
-        private final K key;
-
-        private V value;
-
         public SimpleEntry(K key, V value) {
-            this.key = key;
-            this.value = value;
         }
 
         public SimpleEntry(Entry<? extends K, ? extends V> entry) {
-            this.key = entry.getKey();
-            this.value = entry.getValue();
         }
 
         @Pure
@@ -114,20 +98,10 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
     public static class SimpleImmutableEntry<K, V> implements Entry<K, V>, java.io.Serializable {
 
-        private static final long serialVersionUID = 7138329143949025153L;
-
-        private final K key;
-
-        private final V value;
-
         public SimpleImmutableEntry(K key, V value) {
-            this.key = key;
-            this.value = value;
         }
 
         public SimpleImmutableEntry(Entry<? extends K, ? extends V> entry) {
-            this.key = entry.getKey();
-            this.value = entry.getValue();
         }
 
         @Pure

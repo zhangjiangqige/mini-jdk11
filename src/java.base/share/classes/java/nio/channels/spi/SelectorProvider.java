@@ -16,22 +16,8 @@ import sun.security.action.GetPropertyAction;
 @UsesObjectEquals
 public abstract class SelectorProvider {
 
-    private static final Object lock = new Object();
-
-    private static SelectorProvider provider = null;
-
-    private static Void checkPermission();
-
-    private SelectorProvider(Void ignore) {
-    }
-
     protected SelectorProvider() {
-        this(checkPermission());
     }
-
-    private static boolean loadProviderFromProperty();
-
-    private static boolean loadProviderAsService();
 
     public static SelectorProvider provider();
 

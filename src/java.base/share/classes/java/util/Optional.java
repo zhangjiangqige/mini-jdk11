@@ -20,20 +20,7 @@ import java.util.stream.Stream;
 @NonNull
 public final class Optional<T> {
 
-    private static final Optional<?> EMPTY = new Optional<>();
-
-    @Nullable
-    private final T value;
-
-    private Optional() {
-        this.value = null;
-    }
-
     public static <T> Optional<T> empty();
-
-    private Optional(@NonNull T value) {
-        this.value = Objects.requireNonNull(value);
-    }
 
     @Present
     public static <T> Optional<T> of(@NonNull T value);

@@ -14,37 +14,11 @@ import javax.accessibility.*;
 @AnnotatedFor({ "i18n" })
 public class Button extends Component implements Accessible {
 
-    String label;
-
-    String actionCommand;
-
-    transient ActionListener actionListener;
-
-    private static final String base = "button";
-
-    private static int nameCounter = 0;
-
-    private static final long serialVersionUID = -8774683716313001058L;
-
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-    }
-
-    private static native void initIDs();
-
     public Button() throws HeadlessException {
-        this("");
     }
 
     public Button(String label) throws HeadlessException {
-        GraphicsEnvironment.checkHeadless();
-        this.label = label;
     }
-
-    String constructComponentName();
 
     public void addNotify();
 
@@ -65,26 +39,16 @@ public class Button extends Component implements Accessible {
 
     public <T extends EventListener> T[] getListeners(Class<T> listenerType);
 
-    boolean eventEnabled(AWTEvent e);
-
     protected void processEvent(AWTEvent e);
 
     protected void processActionEvent(ActionEvent e);
 
     protected String paramString();
 
-    private int buttonSerializedDataVersion = 1;
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException, HeadlessException;
-
     @BeanProperty(expert = true, description = "The AccessibleContext associated with this Button.")
     public AccessibleContext getAccessibleContext();
 
     protected class AccessibleAWTButton extends AccessibleAWTComponent implements AccessibleAction, AccessibleValue {
-
-        private static final long serialVersionUID = -5932203980244017102L;
 
         public String getAccessibleName();
 

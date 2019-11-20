@@ -13,56 +13,20 @@ import javax.accessibility.*;
 @AnnotatedFor({ "i18n" })
 public class Checkbox extends Component implements ItemSelectable, Accessible {
 
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-    }
-
-    String label;
-
-    boolean state;
-
-    CheckboxGroup group;
-
-    transient ItemListener itemListener;
-
-    private static final String base = "checkbox";
-
-    private static int nameCounter = 0;
-
-    private static final long serialVersionUID = 7270714317450821763L;
-
-    void setStateInternal(boolean state);
-
     public Checkbox() throws HeadlessException {
-        this("", false, null);
     }
 
     public Checkbox(String label) throws HeadlessException {
-        this(label, false, null);
     }
 
     public Checkbox(String label, boolean state) throws HeadlessException {
-        this(label, state, null);
     }
 
     public Checkbox(String label, boolean state, CheckboxGroup group) throws HeadlessException {
-        GraphicsEnvironment.checkHeadless();
-        this.label = label;
-        this.state = state;
-        this.group = group;
-        if (state && (group != null)) {
-            group.setSelectedCheckbox(this);
-        }
     }
 
     public Checkbox(String label, CheckboxGroup group, boolean state) throws HeadlessException {
-        this(label, state, group);
     }
-
-    String constructComponentName();
 
     public void addNotify();
 
@@ -89,31 +53,17 @@ public class Checkbox extends Component implements ItemSelectable, Accessible {
 
     public <T extends EventListener> T[] getListeners(Class<T> listenerType);
 
-    boolean eventEnabled(AWTEvent e);
-
     protected void processEvent(AWTEvent e);
 
     protected void processItemEvent(ItemEvent e);
 
     protected String paramString();
 
-    private int checkboxSerializedDataVersion = 1;
-
-    private void writeObject(ObjectOutputStream s) throws java.io.IOException;
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException, HeadlessException;
-
-    private static native void initIDs();
-
     public AccessibleContext getAccessibleContext();
 
     protected class AccessibleAWTCheckbox extends AccessibleAWTComponent implements ItemListener, AccessibleAction, AccessibleValue {
 
-        private static final long serialVersionUID = 7881579233144754107L;
-
         public AccessibleAWTCheckbox() {
-            super();
-            Checkbox.this.addItemListener(this);
         }
 
         public void itemStateChanged(ItemEvent e);

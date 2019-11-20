@@ -7,72 +7,45 @@ import java.util.Hashtable;
 @AnnotatedFor({ "interning" })
 public class BorderLayout implements LayoutManager2, java.io.Serializable {
 
-    int hgap;
-
-    int vgap;
-
-    Component north;
-
-    Component west;
-
-    Component east;
-
-    Component south;
-
-    Component center;
-
-    Component firstLine;
-
-    Component lastLine;
-
-    Component firstItem;
-
-    Component lastItem;
+    @Interned
+    public static final String NORTH;
 
     @Interned
-    public static final String NORTH = "North";
+    public static final String SOUTH;
 
     @Interned
-    public static final String SOUTH = "South";
+    public static final String EAST;
 
     @Interned
-    public static final String EAST = "East";
+    public static final String WEST;
 
     @Interned
-    public static final String WEST = "West";
+    public static final String CENTER;
 
     @Interned
-    public static final String CENTER = "Center";
+    public static final String BEFORE_FIRST_LINE;
 
     @Interned
-    public static final String BEFORE_FIRST_LINE = "First";
+    public static final String AFTER_LAST_LINE;
 
     @Interned
-    public static final String AFTER_LAST_LINE = "Last";
+    public static final String BEFORE_LINE_BEGINS;
 
     @Interned
-    public static final String BEFORE_LINE_BEGINS = "Before";
+    public static final String AFTER_LINE_ENDS;
 
-    @Interned
-    public static final String AFTER_LINE_ENDS = "After";
+    public static final String PAGE_START;
 
-    public static final String PAGE_START = BEFORE_FIRST_LINE;
+    public static final String PAGE_END;
 
-    public static final String PAGE_END = AFTER_LAST_LINE;
+    public static final String LINE_START;
 
-    public static final String LINE_START = BEFORE_LINE_BEGINS;
-
-    public static final String LINE_END = AFTER_LINE_ENDS;
-
-    private static final long serialVersionUID = -8658291919501921765L;
+    public static final String LINE_END;
 
     public BorderLayout() {
-        this(0, 0);
     }
 
     public BorderLayout(int hgap, int vgap) {
-        this.hgap = hgap;
-        this.vgap = vgap;
     }
 
     public int getHgap();
@@ -109,8 +82,6 @@ public class BorderLayout implements LayoutManager2, java.io.Serializable {
     public void invalidateLayout(Container target);
 
     public void layoutContainer(Container target);
-
-    private Component getChild(String key, boolean ltr);
 
     public String toString();
 }

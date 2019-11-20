@@ -12,20 +12,15 @@ import java.lang.annotation.Native;
 public class PageFormat implements Cloneable {
 
     @Native
-    public static final int LANDSCAPE = 0;
+    public static final int LANDSCAPE;
 
     @Native
-    public static final int PORTRAIT = 1;
+    public static final int PORTRAIT;
 
     @Native
-    public static final int REVERSE_LANDSCAPE = 2;
-
-    private Paper mPaper;
-
-    private int mOrientation = PORTRAIT;
+    public static final int REVERSE_LANDSCAPE;
 
     public PageFormat() {
-        mPaper = new Paper();
     }
 
     public Object clone();

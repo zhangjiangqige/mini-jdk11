@@ -10,31 +10,4 @@ import javax.naming.NamingEnumeration;
 
 @AnnotatedFor("nullness")
 public interface Attributes extends Cloneable, java.io.Serializable {
-
-    @Pure
-    boolean isCaseIgnored();
-
-    @Pure
-    int size();
-
-    @Nullable
-    @Pure
-    Attribute get(String attrID);
-
-    @Pure
-    NamingEnumeration<? extends Attribute> getAll();
-
-    @Pure
-    NamingEnumeration<String> getIDs();
-
-    @Nullable
-    Attribute put(String attrID, @Nullable Object val);
-
-    @Nullable
-    Attribute put(Attribute attr);
-
-    @Nullable
-    Attribute remove(String attrID);
-
-    Object clone();
 }

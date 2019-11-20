@@ -37,9 +37,5 @@ public class SimpleBeanInfo implements BeanInfo {
     @Override
     public Image getIcon(final int iconKind);
 
-    private Image loadStandardImage(final String resourceName);
-
-    private Image loadImage(final String resourceName, final String suffix);
-
     public Image loadImage(final String resourceName);
 }

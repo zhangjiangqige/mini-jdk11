@@ -9,10 +9,6 @@ import org.checkerframework.checker.signedness.qual.Unsigned;
 
 public final class SignednessUtil {
 
-    private SignednessUtil() {
-        throw new Error("Do not instantiate");
-    }
-
     @SuppressWarnings("signedness")
     public static ByteBuffer wrapUnsigned(@Unsigned byte[] array);
 
@@ -165,10 +161,6 @@ public final class SignednessUtil {
 
     @SuppressWarnings("signedness")
     public static String toUnsignedString(@Unsigned byte b, int radix);
-
-    @SuppressWarnings("signedness")
-    @Unsigned
-    private static BigInteger toUnsignedBigInteger(@Unsigned long l);
 
     @Deprecated
     @Unsigned

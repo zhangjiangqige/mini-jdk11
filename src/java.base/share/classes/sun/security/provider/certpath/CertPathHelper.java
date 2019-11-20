@@ -21,7 +21,5 @@ public abstract class CertPathHelper {
 
     protected abstract void implSetDateAndTime(X509CRLSelector sel, Date date, long skew);
 
-    static void setPathToNames(X509CertSelector sel, Set<GeneralNameInterface> names);
-
     public static void setDateAndTime(X509CRLSelector sel, Date date, long skew);
 }

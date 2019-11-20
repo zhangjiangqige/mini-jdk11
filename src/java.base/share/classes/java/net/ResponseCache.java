@@ -11,8 +11,6 @@ import sun.security.util.SecurityConstants;
 @UsesObjectEquals
 public abstract class ResponseCache {
 
-    private static ResponseCache theResponseCache;
-
     public static synchronized ResponseCache getDefault();
 
     public static synchronized void setDefault(ResponseCache responseCache);

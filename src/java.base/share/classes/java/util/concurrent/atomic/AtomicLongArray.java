@@ -11,18 +11,10 @@ import java.util.function.LongUnaryOperator;
 @UsesObjectEquals
 public class AtomicLongArray implements java.io.Serializable {
 
-    private static final long serialVersionUID = -2308431214976778248L;
-
-    private static final VarHandle AA = MethodHandles.arrayElementVarHandle(long[].class);
-
-    private final long[] array;
-
     public AtomicLongArray(int length) {
-        array = new long[length];
     }
 
     public AtomicLongArray(long[] array) {
-        this.array = array.clone();
     }
 
     public final int length();
@@ -37,7 +29,7 @@ public class AtomicLongArray implements java.io.Serializable {
 
     public final boolean compareAndSet(int i, long expectedValue, long newValue);
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public final boolean weakCompareAndSet(int i, long expectedValue, long newValue);
 
     public final boolean weakCompareAndSetPlain(int i, long expectedValue, long newValue);

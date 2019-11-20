@@ -8,18 +8,11 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public class ParsePosition {
 
     @NonNegative
-    int index = 0;
-
-    @GTENegativeOne
-    int errorIndex = -1;
-
-    @NonNegative
     public int getIndex();
 
     public void setIndex(@NonNegative int index);
 
     public ParsePosition(@NonNegative int index) {
-        this.index = index;
     }
 
     public void setErrorIndex(@GTENegativeOne int ei);

@@ -11,23 +11,7 @@ import java.util.function.UnaryOperator;
 @UsesObjectEquals
 public class AtomicReference<V> implements java.io.Serializable {
 
-    private static final long serialVersionUID = -1848883965231344442L;
-
-    private static final VarHandle VALUE;
-
-    static {
-        try {
-            MethodHandles.Lookup l = MethodHandles.lookup();
-            VALUE = l.findVarHandle(AtomicReference.class, "value", Object.class);
-        } catch (ReflectiveOperationException e) {
-            throw new ExceptionInInitializerError(e);
-        }
-    }
-
-    private volatile V value;
-
     public AtomicReference(V initialValue) {
-        value = initialValue;
     }
 
     public AtomicReference() {
@@ -41,7 +25,7 @@ public class AtomicReference<V> implements java.io.Serializable {
 
     public final boolean compareAndSet(V expectedValue, V newValue);
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public final boolean weakCompareAndSet(V expectedValue, V newValue);
 
     public final boolean weakCompareAndSetPlain(V expectedValue, V newValue);

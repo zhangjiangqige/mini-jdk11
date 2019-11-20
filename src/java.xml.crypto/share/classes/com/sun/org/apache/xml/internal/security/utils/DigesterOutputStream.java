@@ -8,12 +8,7 @@ import com.sun.org.apache.xml.internal.security.algorithms.MessageDigestAlgorith
 @AnnotatedFor({ "signedness" })
 public class DigesterOutputStream extends ByteArrayOutputStream {
 
-    private static final com.sun.org.slf4j.internal.Logger LOG = com.sun.org.slf4j.internal.LoggerFactory.getLogger(DigesterOutputStream.class);
-
-    final MessageDigestAlgorithm mda;
-
     public DigesterOutputStream(MessageDigestAlgorithm mda) {
-        this.mda = mda;
     }
 
     public void write(@PolySigned byte[] arg0);

@@ -7,6 +7,4 @@ import org.checkerframework.framework.qual.CFComment;
 @AnnotatedFor({ "nullness" })
 @FunctionalInterface
 public interface Callable<V> {
-
-    V call() throws Exception;
 }

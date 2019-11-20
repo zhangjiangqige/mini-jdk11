@@ -16,90 +16,10 @@ import sun.reflect.misc.ReflectUtil;
 @UsesObjectEquals
 public class ObjectStreamField implements Comparable<Object> {
 
-    private final String name;
-
-    private final String signature;
-
-    private final Class<?> type;
-
-    private String typeSignature;
-
-    private final boolean unshared;
-
-    private final Field field;
-
-    private int offset;
-
     public ObjectStreamField(String name, Class<?> type) {
-        this(name, type, false);
     }
 
     public ObjectStreamField(String name, Class<?> type, boolean unshared) {
-        if (name == null) {
-            throw new NullPointerException();
-        }
-        this.name = name;
-        this.type = type;
-        this.unshared = unshared;
-        this.field = null;
-        this.signature = null;
-    }
-
-    ObjectStreamField(String name, String signature, boolean unshared) {
-        if (name == null) {
-            throw new NullPointerException();
-        }
-        this.name = name;
-        this.signature = signature.intern();
-        this.unshared = unshared;
-        this.field = null;
-        switch(signature.charAt(0)) {
-            case 'Z':
-                type = Boolean.TYPE;
-                break;
-            case 'B':
-                type = Byte.TYPE;
-                break;
-            case 'C':
-                type = Character.TYPE;
-                break;
-            case 'S':
-                type = Short.TYPE;
-                break;
-            case 'I':
-                type = Integer.TYPE;
-                break;
-            case 'J':
-                type = Long.TYPE;
-                break;
-            case 'F':
-                type = Float.TYPE;
-                break;
-            case 'D':
-                type = Double.TYPE;
-                break;
-            case 'L':
-            case '[':
-                type = Object.class;
-                break;
-            default:
-                throw new IllegalArgumentException("illegal signature");
-        }
-    }
-
-    private static String getPrimitiveSignature(Class<?> cl);
-
-    static String getClassSignature(Class<?> cl);
-
-    static StringBuilder appendClassSignature(StringBuilder sbuf, Class<?> cl);
-
-    ObjectStreamField(Field field, boolean unshared, boolean showType) {
-        this.field = field;
-        this.unshared = unshared;
-        name = field.getName();
-        Class<?> ftype = field.getType();
-        type = (showType || ftype.isPrimitive()) ? ftype : Object.class;
-        signature = getClassSignature(ftype).intern();
     }
 
     public String getName();
@@ -128,8 +48,4 @@ public class ObjectStreamField implements Comparable<Object> {
 
     @SideEffectFree
     public String toString(@GuardSatisfied ObjectStreamField this);
-
-    Field getField();
-
-    String getSignature();
 }

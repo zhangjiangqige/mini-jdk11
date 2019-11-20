@@ -7,10 +7,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @UsesObjectEquals
 public class ImageCapabilities implements Cloneable {
 
-    private boolean accelerated = false;
-
     public ImageCapabilities(boolean accelerated) {
-        this.accelerated = accelerated;
     }
 
     public boolean isAccelerated();

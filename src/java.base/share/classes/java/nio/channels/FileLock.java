@@ -9,40 +9,10 @@ import java.util.Objects;
 @UsesObjectEquals
 public abstract class FileLock implements AutoCloseable {
 
-    private final Channel channel;
-
-    private final long position;
-
-    private final long size;
-
-    private final boolean shared;
-
     protected FileLock(FileChannel channel, long position, long size, boolean shared) {
-        Objects.requireNonNull(channel, "Null channel");
-        if (position < 0)
-            throw new IllegalArgumentException("Negative position");
-        if (size < 0)
-            throw new IllegalArgumentException("Negative size");
-        if (position + size < 0)
-            throw new IllegalArgumentException("Negative position + size");
-        this.channel = channel;
-        this.position = position;
-        this.size = size;
-        this.shared = shared;
     }
 
     protected FileLock(AsynchronousFileChannel channel, long position, long size, boolean shared) {
-        Objects.requireNonNull(channel, "Null channel");
-        if (position < 0)
-            throw new IllegalArgumentException("Negative position");
-        if (size < 0)
-            throw new IllegalArgumentException("Negative size");
-        if (position + size < 0)
-            throw new IllegalArgumentException("Negative position + size");
-        this.channel = channel;
-        this.position = position;
-        this.size = size;
-        this.shared = shared;
     }
 
     public final FileChannel channel();

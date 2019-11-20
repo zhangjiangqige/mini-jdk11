@@ -7,14 +7,4 @@ import java.util.Iterator;
 
 @AnnotatedFor("nullness")
 public interface NamespaceContext {
-
-    @Pure
-    String getNamespaceURI(String prefix);
-
-    @Nullable
-    @Pure
-    String getPrefix(String namespaceURI);
-
-    @Pure
-    Iterator<String> getPrefixes(String namespaceURI);
 }

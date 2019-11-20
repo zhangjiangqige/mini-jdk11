@@ -8,17 +8,9 @@ import jdk.internal.misc.Unsafe;
 @UsesObjectEquals
 public final class ByteOrder {
 
-    private String name;
+    public static final ByteOrder BIG_ENDIAN;
 
-    private ByteOrder(String name) {
-        this.name = name;
-    }
-
-    public static final ByteOrder BIG_ENDIAN = new ByteOrder("BIG_ENDIAN");
-
-    public static final ByteOrder LITTLE_ENDIAN = new ByteOrder("LITTLE_ENDIAN");
-
-    private static final ByteOrder NATIVE_ORDER = Unsafe.getUnsafe().isBigEndian() ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
+    public static final ByteOrder LITTLE_ENDIAN;
 
     public static ByteOrder nativeOrder();
 

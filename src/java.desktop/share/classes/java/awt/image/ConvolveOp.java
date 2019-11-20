@@ -14,27 +14,16 @@ import sun.awt.image.ImagingLib;
 @UsesObjectEquals
 public class ConvolveOp implements BufferedImageOp, RasterOp {
 
-    Kernel kernel;
-
-    int edgeHint;
-
-    RenderingHints hints;
+    @Native
+    public static final int EDGE_ZERO_FILL;
 
     @Native
-    public static final int EDGE_ZERO_FILL = 0;
-
-    @Native
-    public static final int EDGE_NO_OP = 1;
+    public static final int EDGE_NO_OP;
 
     public ConvolveOp(Kernel kernel, int edgeCondition, RenderingHints hints) {
-        this.kernel = kernel;
-        this.edgeHint = edgeCondition;
-        this.hints = hints;
     }
 
     public ConvolveOp(Kernel kernel) {
-        this.kernel = kernel;
-        this.edgeHint = EDGE_ZERO_FILL;
     }
 
     public int getEdgeCondition();

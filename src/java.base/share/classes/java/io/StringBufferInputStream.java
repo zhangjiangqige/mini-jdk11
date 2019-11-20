@@ -18,8 +18,6 @@ public class StringBufferInputStream extends InputStream {
     protected int count;
 
     public StringBufferInputStream(String s) {
-        this.buffer = s;
-        count = s.length();
     }
 
     public synchronized int read();

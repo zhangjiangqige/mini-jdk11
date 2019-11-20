@@ -7,8 +7,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @UsesObjectEquals
 public abstract class SecureRandomSpi implements java.io.Serializable {
 
-    private static final long serialVersionUID = -2991854161009191830L;
-
     public SecureRandomSpi() {
     }
 

@@ -15,25 +15,7 @@ import java.util.Arrays;
 @UsesObjectEquals
 public class BandCombineOp implements RasterOp {
 
-    float[][] matrix;
-
-    int nrows = 0;
-
-    int ncols = 0;
-
-    RenderingHints hints;
-
     public BandCombineOp(float[][] matrix, RenderingHints hints) {
-        nrows = matrix.length;
-        ncols = matrix[0].length;
-        this.matrix = new float[nrows][];
-        for (int i = 0; i < nrows; i++) {
-            if (ncols > matrix[i].length) {
-                throw new IndexOutOfBoundsException("row " + i + " too short");
-            }
-            this.matrix[i] = Arrays.copyOf(matrix[i], ncols);
-        }
-        this.hints = hints;
     }
 
     public final float[][] getMatrix();

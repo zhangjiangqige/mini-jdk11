@@ -29,7 +29,6 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
         }
 
         public Float(float x1, float y1, float ctrlx, float ctrly, float x2, float y2) {
-            setCurve(x1, y1, ctrlx, ctrly, x2, y2);
         }
 
         public double getX1();
@@ -55,8 +54,6 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
         public void setCurve(float x1, float y1, float ctrlx, float ctrly, float x2, float y2);
 
         public Rectangle2D getBounds2D();
-
-        private static final long serialVersionUID = -8511188402130719609L;
     }
 
     public static class Double extends QuadCurve2D implements Serializable {
@@ -77,7 +74,6 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
         }
 
         public Double(double x1, double y1, double ctrlx, double ctrly, double x2, double y2) {
-            setCurve(x1, y1, ctrlx, ctrly, x2, y2);
         }
 
         public double getX1();
@@ -101,8 +97,6 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
         public void setCurve(double x1, double y1, double ctrlx, double ctrly, double x2, double y2);
 
         public Rectangle2D getBounds2D();
-
-        private static final long serialVersionUID = 4217149928428559721L;
     }
 
     protected QuadCurve2D() {
@@ -161,24 +155,6 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
     public boolean contains(double x, double y);
 
     public boolean contains(Point2D p);
-
-    private static void fillEqn(double[] eqn, double val, double c1, double cp, double c2);
-
-    private static int evalQuadratic(double[] vals, int num, boolean include0, boolean include1, double[] inflect, double c1, double ctrl, double c2);
-
-    private static final int BELOW = -2;
-
-    private static final int LOWEDGE = -1;
-
-    private static final int INSIDE = 0;
-
-    private static final int HIGHEDGE = 1;
-
-    private static final int ABOVE = 2;
-
-    private static int getTag(double coord, double low, double high);
-
-    private static boolean inwards(int pttag, int opt1tag, int opt2tag);
 
     public boolean intersects(double x, double y, double w, double h);
 

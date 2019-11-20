@@ -19,24 +19,14 @@ import sun.swing.SwingUtilities2;
 @SuppressWarnings("serial")
 public class JColorChooser extends JComponent implements Accessible {
 
-    private static final String uiClassID = "ColorChooserUI";
-
-    private ColorSelectionModel selectionModel;
-
-    private JComponent previewPanel = ColorChooserComponentFactory.getPreviewPanel();
-
-    private AbstractColorChooserPanel[] chooserPanels = new AbstractColorChooserPanel[0];
-
-    private boolean dragEnabled;
+    @Interned
+    public static final String SELECTION_MODEL_PROPERTY;
 
     @Interned
-    public static final String SELECTION_MODEL_PROPERTY = "selectionModel";
+    public static final String PREVIEW_PANEL_PROPERTY;
 
     @Interned
-    public static final String PREVIEW_PANEL_PROPERTY = "previewPanel";
-
-    @Interned
-    public static final String CHOOSER_PANELS_PROPERTY = "chooserPanels";
+    public static final String CHOOSER_PANELS_PROPERTY;
 
     public static Color showDialog(Component component, String title, Color initialColor) throws HeadlessException;
 
@@ -46,17 +36,12 @@ public class JColorChooser extends JComponent implements Accessible {
     public static JDialog createDialog(Component c, String title, boolean modal, JColorChooser chooserPane, ActionListener okListener, ActionListener cancelListener) throws HeadlessException;
 
     public JColorChooser() {
-        this(Color.white);
     }
 
     public JColorChooser(Color initialColor) {
-        this(new DefaultColorSelectionModel(initialColor));
     }
 
     public JColorChooser(ColorSelectionModel model) {
-        selectionModel = model;
-        updateUI();
-        dragEnabled = false;
     }
 
     public ColorChooserUI getUI();
@@ -102,11 +87,9 @@ public class JColorChooser extends JComponent implements Accessible {
     @BeanProperty(hidden = true, description = "The model which contains the currently selected color.")
     public void setSelectionModel(ColorSelectionModel newModel);
 
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
     protected String paramString();
 
-    protected AccessibleContext accessibleContext = null;
+    protected AccessibleContext accessibleContext;
 
     @BeanProperty(bound = false)
     public AccessibleContext getAccessibleContext();
@@ -115,60 +98,4 @@ public class JColorChooser extends JComponent implements Accessible {
 
         public AccessibleRole getAccessibleRole();
     }
-}
-
-@SuppressWarnings("serial")
-class ColorChooserDialog extends JDialog {
-
-    private Color initialColor;
-
-    private JColorChooser chooserPane;
-
-    private JButton cancelButton;
-
-    public ColorChooserDialog(Dialog owner, String title, boolean modal, Component c, JColorChooser chooserPane, ActionListener okListener, ActionListener cancelListener) throws HeadlessException {
-        super(owner, title, modal);
-        initColorChooserDialog(c, chooserPane, okListener, cancelListener);
-    }
-
-    public ColorChooserDialog(Frame owner, String title, boolean modal, Component c, JColorChooser chooserPane, ActionListener okListener, ActionListener cancelListener) throws HeadlessException {
-        super(owner, title, modal);
-        initColorChooserDialog(c, chooserPane, okListener, cancelListener);
-    }
-
-    protected void initColorChooserDialog(Component c, JColorChooser chooserPane, ActionListener okListener, ActionListener cancelListener);
-
-    @SuppressWarnings("deprecation")
-    public void show();
-
-    public void reset();
-
-    @SuppressWarnings("serial")
-    class Closer extends WindowAdapter implements Serializable {
-
-        @SuppressWarnings("deprecation")
-        public void windowClosing(WindowEvent e);
-    }
-
-    @SuppressWarnings("serial")
-    static class DisposeOnClose extends ComponentAdapter implements Serializable {
-
-        public void componentHidden(ComponentEvent e);
-    }
-}
-
-@SuppressWarnings("serial")
-class ColorTracker implements ActionListener, Serializable {
-
-    JColorChooser chooser;
-
-    Color color;
-
-    public ColorTracker(JColorChooser c) {
-        chooser = c;
-    }
-
-    public void actionPerformed(ActionEvent e);
-
-    public Color getColor();
 }

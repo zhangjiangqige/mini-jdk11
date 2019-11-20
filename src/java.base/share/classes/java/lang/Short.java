@@ -12,13 +12,13 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @AnnotatedFor({ "nullness", "index" })
 public final class Short extends Number implements Comparable<Short> {
 
-    public static final short MIN_VALUE = -32768;
+    public static final short MIN_VALUE;
 
     @Positive
-    public static final short MAX_VALUE = 32767;
+    public static final short MAX_VALUE;
 
     @SuppressWarnings("unchecked")
-    public static final Class<Short> TYPE = (Class<Short>) Class.getPrimitiveClass("short");
+    public static final Class<Short> TYPE;
 
     @SideEffectFree
     public static String toString(short s);
@@ -35,18 +35,6 @@ public final class Short extends Number implements Comparable<Short> {
     @SideEffectFree
     public static Short valueOf(String s) throws NumberFormatException;
 
-    private static class ShortCache {
-
-        private ShortCache() {
-        }
-
-        static final Short[] cache = new Short[-(-128) + 127 + 1];
-
-        static {
-            for (int i = 0; i < cache.length; i++) cache[i] = new Short((short) (i - 128));
-        }
-    }
-
     @SideEffectFree
     @HotSpotIntrinsicCandidate
     @PolyIndex
@@ -55,19 +43,15 @@ public final class Short extends Number implements Comparable<Short> {
     @SideEffectFree
     public static Short decode(String nm) throws NumberFormatException;
 
-    private final short value;
-
     @SideEffectFree
-    @Deprecated(since = "9")
+    @Deprecated()
     @PolyIndex
     public Short(@PolyIndex short value) {
-        this.value = value;
     }
 
     @SideEffectFree
-    @Deprecated(since = "9")
+    @Deprecated()
     public Short(String s) throws NumberFormatException {
-        this.value = parseShort(s, 10);
     }
 
     @Pure
@@ -113,9 +97,9 @@ public final class Short extends Number implements Comparable<Short> {
     public static int compareUnsigned(short x, short y);
 
     @Positive
-    public static final int SIZE = 16;
+    public static final int SIZE;
 
-    public static final int BYTES = SIZE / Byte.SIZE;
+    public static final int BYTES;
 
     @Pure
     @HotSpotIntrinsicCandidate
@@ -124,6 +108,4 @@ public final class Short extends Number implements Comparable<Short> {
     public static int toUnsignedInt(short x);
 
     public static long toUnsignedLong(short x);
-
-    private static final long serialVersionUID = 7515723908773894738L;
 }

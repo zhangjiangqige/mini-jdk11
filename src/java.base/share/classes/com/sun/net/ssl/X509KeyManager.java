@@ -7,7 +7,7 @@ import java.security.Principal;
 import java.security.cert.X509Certificate;
 
 @AnnotatedFor("nullness")
-@Deprecated(since = "1.4")
+@Deprecated()
 public interface X509KeyManager extends KeyManager {
 
     public String[] getClientAliases(String keyType, Principal[] issuers);

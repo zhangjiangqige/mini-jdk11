@@ -22,14 +22,7 @@ import jdk.internal.reflect.Reflection;
 @UsesObjectEquals
 public class Runtime {
 
-    private static final Runtime currentRuntime = new Runtime();
-
-    private static Version version;
-
     public static Runtime getRuntime();
-
-    private Runtime() {
-    }
 
     @TerminatesExecution
     public void exit(int status);
@@ -64,44 +57,23 @@ public class Runtime {
 
     public void runFinalization();
 
-    @Deprecated(since = "9", forRemoval = true)
+    @Deprecated()
     public void traceInstructions(boolean on);
 
-    @Deprecated(since = "9", forRemoval = true)
+    @Deprecated()
     public void traceMethodCalls(boolean on);
 
     @CallerSensitive
     public void load(String filename);
 
-    synchronized void load0(Class<?> fromClass, String filename);
-
     @CallerSensitive
     public void loadLibrary(String libname);
-
-    synchronized void loadLibrary0(Class<?> fromClass, String libname);
 
     public static Version version();
 
     public static final class Version implements Comparable<Version> {
 
-        private final List<Integer> version;
-
-        private final Optional<String> pre;
-
-        private final Optional<Integer> build;
-
-        private final Optional<String> optional;
-
-        private Version(List<Integer> unmodifiableListOfVersions, Optional<String> pre, Optional<Integer> build, Optional<String> optional) {
-            this.version = unmodifiableListOfVersions;
-            this.pre = pre;
-            this.build = build;
-            this.optional = optional;
-        }
-
         public static Version parse(String s);
-
-        private static boolean isSimpleNumber(String s);
 
         public int feature();
 
@@ -111,13 +83,13 @@ public class Runtime {
 
         public int patch();
 
-        @Deprecated(since = "10")
+        @Deprecated()
         public int major();
 
-        @Deprecated(since = "10")
+        @Deprecated()
         public int minor();
 
-        @Deprecated(since = "10")
+        @Deprecated()
         public int security();
 
         public List<Integer> version();
@@ -133,16 +105,6 @@ public class Runtime {
 
         public int compareToIgnoreOptional(Version obj);
 
-        private int compare(Version obj, boolean ignoreOpt);
-
-        private int compareVersion(Version obj);
-
-        private int comparePre(Version obj);
-
-        private int compareBuild(Version obj);
-
-        private int compareOptional(Version obj);
-
         @Override
         public String toString();
 
@@ -153,30 +115,5 @@ public class Runtime {
 
         @Override
         public int hashCode();
-    }
-
-    private static class VersionPattern {
-
-        private static final String VNUM = "(?<VNUM>[1-9][0-9]*(?:(?:\\.0)*\\.[1-9][0-9]*)*)";
-
-        private static final String PRE = "(?:-(?<PRE>[a-zA-Z0-9]+))?";
-
-        private static final String BUILD = "(?:(?<PLUS>\\+)(?<BUILD>0|[1-9][0-9]*)?)?";
-
-        private static final String OPT = "(?:-(?<OPT>[-a-zA-Z0-9.]+))?";
-
-        private static final String VSTR_FORMAT = VNUM + PRE + BUILD + OPT;
-
-        static final Pattern VSTR_PATTERN = Pattern.compile(VSTR_FORMAT);
-
-        static final String VNUM_GROUP = "VNUM";
-
-        static final String PRE_GROUP = "PRE";
-
-        static final String PLUS_GROUP = "PLUS";
-
-        static final String BUILD_GROUP = "BUILD";
-
-        static final String OPT_GROUP = "OPT";
     }
 }

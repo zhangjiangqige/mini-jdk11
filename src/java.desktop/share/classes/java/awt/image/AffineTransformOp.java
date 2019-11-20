@@ -18,58 +18,19 @@ import sun.awt.image.ImagingLib;
 @UsesObjectEquals
 public class AffineTransformOp implements BufferedImageOp, RasterOp {
 
-    private AffineTransform xform;
-
-    RenderingHints hints;
+    @Native
+    public static final int TYPE_NEAREST_NEIGHBOR;
 
     @Native
-    public static final int TYPE_NEAREST_NEIGHBOR = 1;
+    public static final int TYPE_BILINEAR;
 
     @Native
-    public static final int TYPE_BILINEAR = 2;
-
-    @Native
-    public static final int TYPE_BICUBIC = 3;
-
-    int interpolationType = TYPE_NEAREST_NEIGHBOR;
+    public static final int TYPE_BICUBIC;
 
     public AffineTransformOp(AffineTransform xform, RenderingHints hints) {
-        validateTransform(xform);
-        this.xform = (AffineTransform) xform.clone();
-        this.hints = hints;
-        if (hints != null) {
-            Object value = hints.get(RenderingHints.KEY_INTERPOLATION);
-            if (value == null) {
-                value = hints.get(RenderingHints.KEY_RENDERING);
-                if (value == RenderingHints.VALUE_RENDER_SPEED) {
-                    interpolationType = TYPE_NEAREST_NEIGHBOR;
-                } else if (value == RenderingHints.VALUE_RENDER_QUALITY) {
-                    interpolationType = TYPE_BILINEAR;
-                }
-            } else if (value == RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR) {
-                interpolationType = TYPE_NEAREST_NEIGHBOR;
-            } else if (value == RenderingHints.VALUE_INTERPOLATION_BILINEAR) {
-                interpolationType = TYPE_BILINEAR;
-            } else if (value == RenderingHints.VALUE_INTERPOLATION_BICUBIC) {
-                interpolationType = TYPE_BICUBIC;
-            }
-        } else {
-            interpolationType = TYPE_NEAREST_NEIGHBOR;
-        }
     }
 
     public AffineTransformOp(AffineTransform xform, int interpolationType) {
-        validateTransform(xform);
-        this.xform = (AffineTransform) xform.clone();
-        switch(interpolationType) {
-            case TYPE_NEAREST_NEIGHBOR:
-            case TYPE_BILINEAR:
-            case TYPE_BICUBIC:
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown interpolation type: " + interpolationType);
-        }
-        this.interpolationType = interpolationType;
     }
 
     public final int getInterpolationType();
@@ -91,6 +52,4 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
     public final AffineTransform getTransform();
 
     public final RenderingHints getRenderingHints();
-
-    void validateTransform(AffineTransform xform);
 }

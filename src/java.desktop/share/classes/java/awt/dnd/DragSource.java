@@ -27,36 +27,23 @@ import sun.security.action.GetIntegerAction;
 @UsesObjectEquals
 public class DragSource implements Serializable {
 
-    private static final long serialVersionUID = 6236096958971414066L;
+    public static final Cursor DefaultCopyDrop;
 
-    private static Cursor load(String name);
+    public static final Cursor DefaultMoveDrop;
 
-    public static final Cursor DefaultCopyDrop = load("DnD.Cursor.CopyDrop");
+    public static final Cursor DefaultLinkDrop;
 
-    public static final Cursor DefaultMoveDrop = load("DnD.Cursor.MoveDrop");
+    public static final Cursor DefaultCopyNoDrop;
 
-    public static final Cursor DefaultLinkDrop = load("DnD.Cursor.LinkDrop");
+    public static final Cursor DefaultMoveNoDrop;
 
-    public static final Cursor DefaultCopyNoDrop = load("DnD.Cursor.CopyNoDrop");
-
-    public static final Cursor DefaultMoveNoDrop = load("DnD.Cursor.MoveNoDrop");
-
-    public static final Cursor DefaultLinkNoDrop = load("DnD.Cursor.LinkNoDrop");
-
-    private static final DragSource dflt = (GraphicsEnvironment.isHeadless()) ? null : new DragSource();
-
-    static final String dragSourceListenerK = "dragSourceL";
-
-    static final String dragSourceMotionListenerK = "dragSourceMotionL";
+    public static final Cursor DefaultLinkNoDrop;
 
     public static DragSource getDefaultDragSource();
 
     public static boolean isDragImageSupported();
 
     public DragSource() throws HeadlessException {
-        if (GraphicsEnvironment.isHeadless()) {
-            throw new HeadlessException();
-        }
     }
 
     public void startDrag(DragGestureEvent trigger, Cursor dragCursor, Image dragImage, Point imageOffset, Transferable transferable, DragSourceListener dsl, FlavorMap flavorMap) throws InvalidDnDOperationException;
@@ -89,27 +76,5 @@ public class DragSource implements Serializable {
 
     public <T extends EventListener> T[] getListeners(Class<T> listenerType);
 
-    void processDragEnter(DragSourceDragEvent dsde);
-
-    void processDragOver(DragSourceDragEvent dsde);
-
-    void processDropActionChanged(DragSourceDragEvent dsde);
-
-    void processDragExit(DragSourceEvent dse);
-
-    void processDragDropEnd(DragSourceDropEvent dsde);
-
-    void processDragMouseMoved(DragSourceDragEvent dsde);
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
-
     public static int getDragThreshold();
-
-    private transient FlavorMap flavorMap = SystemFlavorMap.getDefaultFlavorMap();
-
-    private transient DragSourceListener listener;
-
-    private transient DragSourceMotionListener motionListener;
 }

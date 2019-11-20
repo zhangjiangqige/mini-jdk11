@@ -106,7 +106,7 @@ public abstract class Graphics {
 
     public abstract void dispose();
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public void finalize();
 
     public String toString();

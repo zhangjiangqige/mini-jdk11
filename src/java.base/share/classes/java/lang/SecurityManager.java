@@ -34,16 +34,7 @@ import sun.security.util.SecurityConstants;
 @UsesObjectEquals
 public class SecurityManager {
 
-    private boolean initialized = false;
-
     public SecurityManager() {
-        synchronized (SecurityManager.class) {
-            SecurityManager sm = System.getSecurityManager();
-            if (sm != null) {
-                sm.checkPermission(new RuntimePermission("createSecurityManager"));
-            }
-            initialized = true;
-        }
     }
 
     protected native Class<?>[] getClassContext();
@@ -55,10 +46,6 @@ public class SecurityManager {
     public void checkPermission(Permission perm, Object context);
 
     public void checkCreateClassLoader();
-
-    private static ThreadGroup rootGroup = getRootGroup();
-
-    private static ThreadGroup getRootGroup();
 
     public void checkAccess(Thread t);
 
@@ -92,7 +79,7 @@ public class SecurityManager {
 
     public void checkMulticast(InetAddress maddr);
 
-    @Deprecated(since = "1.4")
+    @Deprecated()
     public void checkMulticast(InetAddress maddr, byte ttl);
 
     public void checkPropertiesAccess();
@@ -100,32 +87,6 @@ public class SecurityManager {
     public void checkPropertyAccess(String key);
 
     public void checkPrintJobAccess();
-
-    private static boolean packageAccessValid = false;
-
-    private static String[] packageAccess;
-
-    private static final Object packageAccessLock = new Object();
-
-    private static boolean packageDefinitionValid = false;
-
-    private static String[] packageDefinition;
-
-    private static final Object packageDefinitionLock = new Object();
-
-    private static String[] getPackages(String p);
-
-    private static final Map<String, Boolean> nonExportedPkgs = new ConcurrentHashMap<>();
-
-    static {
-        addNonExportedPackages(ModuleLayer.boot());
-    }
-
-    static void addNonExportedPackages(ModuleLayer layer);
-
-    static void invalidatePackageAccessCache();
-
-    private static Set<String> nonExportedPkgs(ModuleDescriptor md);
 
     public void checkPackageAccess(String pkg);
 

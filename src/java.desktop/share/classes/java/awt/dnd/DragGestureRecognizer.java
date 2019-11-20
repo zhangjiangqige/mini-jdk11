@@ -18,32 +18,16 @@ import java.io.Serializable;
 @UsesObjectEquals
 public abstract class DragGestureRecognizer implements Serializable {
 
-    private static final long serialVersionUID = 8996673345831063337L;
-
     protected DragGestureRecognizer(DragSource ds, Component c, int sa, DragGestureListener dgl) {
-        super();
-        if (ds == null)
-            throw new IllegalArgumentException("null DragSource");
-        dragSource = ds;
-        component = c;
-        sourceActions = sa & (DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK);
-        try {
-            if (dgl != null)
-                addDragGestureListener(dgl);
-        } catch (TooManyListenersException tmle) {
-        }
     }
 
     protected DragGestureRecognizer(DragSource ds, Component c, int sa) {
-        this(ds, c, sa, null);
     }
 
     protected DragGestureRecognizer(DragSource ds, Component c) {
-        this(ds, c, DnDConstants.ACTION_NONE);
     }
 
     protected DragGestureRecognizer(DragSource ds) {
-        this(ds, null);
     }
 
     protected abstract void registerListeners();
@@ -72,11 +56,6 @@ public abstract class DragGestureRecognizer implements Serializable {
 
     protected synchronized void appendEvent(InputEvent awtie);
 
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    @SuppressWarnings("unchecked")
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
-
     protected DragSource dragSource;
 
     protected Component component;
@@ -85,5 +64,5 @@ public abstract class DragGestureRecognizer implements Serializable {
 
     protected int sourceActions;
 
-    protected ArrayList<InputEvent> events = new ArrayList<InputEvent>(1);
+    protected ArrayList<InputEvent> events;
 }

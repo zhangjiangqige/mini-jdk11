@@ -17,18 +17,7 @@ import sun.security.jca.GetInstance.Instance;
 @UsesObjectEquals
 public class CertPathValidator {
 
-    private static final String CPV_TYPE = "certpathvalidator.type";
-
-    private final CertPathValidatorSpi validatorSpi;
-
-    private final Provider provider;
-
-    private final String algorithm;
-
     protected CertPathValidator(CertPathValidatorSpi validatorSpi, Provider provider, String algorithm) {
-        this.validatorSpi = validatorSpi;
-        this.provider = provider;
-        this.algorithm = algorithm;
     }
 
     public static CertPathValidator getInstance(String algorithm) throws NoSuchAlgorithmException;

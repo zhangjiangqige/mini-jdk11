@@ -7,69 +7,69 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @UsesObjectEquals
 public class GridBagConstraints implements Cloneable, java.io.Serializable {
 
-    public static final int RELATIVE = -1;
+    public static final int RELATIVE;
 
-    public static final int REMAINDER = 0;
+    public static final int REMAINDER;
 
-    public static final int NONE = 0;
+    public static final int NONE;
 
-    public static final int BOTH = 1;
+    public static final int BOTH;
 
-    public static final int HORIZONTAL = 2;
+    public static final int HORIZONTAL;
 
-    public static final int VERTICAL = 3;
+    public static final int VERTICAL;
 
-    public static final int CENTER = 10;
+    public static final int CENTER;
 
-    public static final int NORTH = 11;
+    public static final int NORTH;
 
-    public static final int NORTHEAST = 12;
+    public static final int NORTHEAST;
 
-    public static final int EAST = 13;
+    public static final int EAST;
 
-    public static final int SOUTHEAST = 14;
+    public static final int SOUTHEAST;
 
-    public static final int SOUTH = 15;
+    public static final int SOUTH;
 
-    public static final int SOUTHWEST = 16;
+    public static final int SOUTHWEST;
 
-    public static final int WEST = 17;
+    public static final int WEST;
 
-    public static final int NORTHWEST = 18;
+    public static final int NORTHWEST;
 
-    public static final int PAGE_START = 19;
+    public static final int PAGE_START;
 
-    public static final int PAGE_END = 20;
+    public static final int PAGE_END;
 
-    public static final int LINE_START = 21;
+    public static final int LINE_START;
 
-    public static final int LINE_END = 22;
+    public static final int LINE_END;
 
-    public static final int FIRST_LINE_START = 23;
+    public static final int FIRST_LINE_START;
 
-    public static final int FIRST_LINE_END = 24;
+    public static final int FIRST_LINE_END;
 
-    public static final int LAST_LINE_START = 25;
+    public static final int LAST_LINE_START;
 
-    public static final int LAST_LINE_END = 26;
+    public static final int LAST_LINE_END;
 
-    public static final int BASELINE = 0x100;
+    public static final int BASELINE;
 
-    public static final int BASELINE_LEADING = 0x200;
+    public static final int BASELINE_LEADING;
 
-    public static final int BASELINE_TRAILING = 0x300;
+    public static final int BASELINE_TRAILING;
 
-    public static final int ABOVE_BASELINE = 0x400;
+    public static final int ABOVE_BASELINE;
 
-    public static final int ABOVE_BASELINE_LEADING = 0x500;
+    public static final int ABOVE_BASELINE_LEADING;
 
-    public static final int ABOVE_BASELINE_TRAILING = 0x600;
+    public static final int ABOVE_BASELINE_TRAILING;
 
-    public static final int BELOW_BASELINE = 0x700;
+    public static final int BELOW_BASELINE;
 
-    public static final int BELOW_BASELINE_LEADING = 0x800;
+    public static final int BELOW_BASELINE_LEADING;
 
-    public static final int BELOW_BASELINE_TRAILING = 0x900;
+    public static final int BELOW_BASELINE_TRAILING;
 
     public int gridx;
 
@@ -93,59 +93,11 @@ public class GridBagConstraints implements Cloneable, java.io.Serializable {
 
     public int ipady;
 
-    int tempX;
-
-    int tempY;
-
-    int tempWidth;
-
-    int tempHeight;
-
-    int minWidth;
-
-    int minHeight;
-
-    transient int ascent;
-
-    transient int descent;
-
-    transient Component.BaselineResizeBehavior baselineResizeBehavior;
-
-    transient int centerPadding;
-
-    transient int centerOffset;
-
-    private static final long serialVersionUID = -1000070633030801713L;
-
     public GridBagConstraints() {
-        gridx = RELATIVE;
-        gridy = RELATIVE;
-        gridwidth = 1;
-        gridheight = 1;
-        weightx = 0;
-        weighty = 0;
-        anchor = CENTER;
-        fill = NONE;
-        insets = new Insets(0, 0, 0, 0);
-        ipadx = 0;
-        ipady = 0;
     }
 
     public GridBagConstraints(int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int anchor, int fill, Insets insets, int ipadx, int ipady) {
-        this.gridx = gridx;
-        this.gridy = gridy;
-        this.gridwidth = gridwidth;
-        this.gridheight = gridheight;
-        this.fill = fill;
-        this.ipadx = ipadx;
-        this.ipady = ipady;
-        this.insets = insets;
-        this.anchor = anchor;
-        this.weightx = weightx;
-        this.weighty = weighty;
     }
 
     public Object clone();
-
-    boolean isVerticallyResizable();
 }

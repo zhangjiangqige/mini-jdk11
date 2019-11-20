@@ -22,8 +22,6 @@ public abstract class AbstractExecutorService implements ExecutorService {
 
     public <T> Future<T> submit(Callable<T> task);
 
-    private <T> T doInvokeAny(Collection<? extends Callable<T>> tasks, boolean timed, long nanos) throws InterruptedException, ExecutionException, TimeoutException;
-
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException;
 
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException;
@@ -31,8 +29,4 @@ public abstract class AbstractExecutorService implements ExecutorService {
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException;
 
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException;
-
-    private static <T> void cancelAll(ArrayList<Future<T>> futures);
-
-    private static <T> void cancelAll(ArrayList<Future<T>> futures, int j);
 }

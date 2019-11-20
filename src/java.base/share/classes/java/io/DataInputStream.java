@@ -13,12 +13,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public class DataInputStream extends FilterInputStream implements DataInput {
 
     public DataInputStream(InputStream in) {
-        super(in);
     }
-
-    private byte[] bytearr = new byte[80];
-
-    private char[] chararr = new char[80];
 
     @GTENegativeOne
     @LTEqLengthOf({ "#1" })
@@ -51,15 +46,11 @@ public class DataInputStream extends FilterInputStream implements DataInput {
 
     public final int readInt() throws IOException;
 
-    private byte[] readBuffer = new byte[8];
-
     public final long readLong() throws IOException;
 
     public final float readFloat() throws IOException;
 
     public final double readDouble() throws IOException;
-
-    private char[] lineBuffer;
 
     @Deprecated
     @Nullable

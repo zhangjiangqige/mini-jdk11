@@ -14,10 +14,7 @@ import java.nio.ByteBuffer;
 @UsesObjectEquals
 public abstract class AsynchronousSocketChannel implements AsynchronousByteChannel, NetworkChannel {
 
-    private final AsynchronousChannelProvider provider;
-
     protected AsynchronousSocketChannel(AsynchronousChannelProvider provider) {
-        this.provider = provider;
     }
 
     public final AsynchronousChannelProvider provider();

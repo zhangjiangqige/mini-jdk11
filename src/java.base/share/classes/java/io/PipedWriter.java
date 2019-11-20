@@ -8,12 +8,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "nullness", "index" })
 public class PipedWriter extends Writer {
 
-    private PipedReader sink;
-
-    private boolean closed = false;
-
     public PipedWriter(PipedReader snk) throws IOException {
-        connect(snk);
     }
 
     public PipedWriter() {

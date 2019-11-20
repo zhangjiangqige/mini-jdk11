@@ -15,10 +15,6 @@ import java.util.Objects;
 @AnnotatedFor({ "index" })
 public abstract class InputStream implements Closeable {
 
-    private static final int MAX_SKIP_BUFFER_SIZE = 2048;
-
-    private static final int DEFAULT_BUFFER_SIZE = 8192;
-
     public static InputStream nullInputStream();
 
     @GTENegativeOne
@@ -31,8 +27,6 @@ public abstract class InputStream implements Closeable {
     @GTENegativeOne
     @LTEqLengthOf({ "#1" })
     public int read(byte[] b, @IndexOrHigh({ "#1" }) int off, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int len) throws IOException;
-
-    private static final int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
 
     public byte[] readAllBytes() throws IOException;
 

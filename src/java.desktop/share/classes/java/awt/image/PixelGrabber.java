@@ -12,59 +12,13 @@ import java.awt.Image;
 @UsesObjectEquals
 public class PixelGrabber implements ImageConsumer {
 
-    ImageProducer producer;
-
-    int dstX;
-
-    int dstY;
-
-    int dstW;
-
-    int dstH;
-
-    ColorModel imageModel;
-
-    byte[] bytePixels;
-
-    int[] intPixels;
-
-    int dstOff;
-
-    int dstScan;
-
-    private boolean grabbing;
-
-    private int flags;
-
-    private static final int GRABBEDBITS = (ImageObserver.FRAMEBITS | ImageObserver.ALLBITS);
-
-    private static final int DONEBITS = (GRABBEDBITS | ImageObserver.ERROR);
-
     public PixelGrabber(Image img, int x, int y, int w, int h, int[] pix, int off, int scansize) {
-        this(img.getSource(), x, y, w, h, pix, off, scansize);
     }
 
     public PixelGrabber(ImageProducer ip, int x, int y, int w, int h, int[] pix, int off, int scansize) {
-        producer = ip;
-        dstX = x;
-        dstY = y;
-        dstW = w;
-        dstH = h;
-        dstOff = off;
-        dstScan = scansize;
-        intPixels = pix;
-        imageModel = ColorModel.getRGBdefault();
     }
 
     public PixelGrabber(Image img, int x, int y, int w, int h, boolean forceRGB) {
-        producer = img.getSource();
-        dstX = x;
-        dstY = y;
-        dstW = w;
-        dstH = h;
-        if (forceRGB) {
-            imageModel = ColorModel.getRGBdefault();
-        }
     }
 
     public synchronized void startGrabbing();
@@ -92,8 +46,6 @@ public class PixelGrabber implements ImageConsumer {
     public void setProperties(Hashtable<?, ?> props);
 
     public void setColorModel(ColorModel model);
-
-    private void convertToRGB();
 
     public void setPixels(int srcX, int srcY, int srcW, int srcH, ColorModel model, byte[] pixels, int srcOff, int srcScan);
 

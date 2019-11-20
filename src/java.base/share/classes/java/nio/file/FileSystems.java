@@ -18,25 +18,6 @@ import jdk.internal.misc.VM;
 @UsesObjectEquals
 public final class FileSystems {
 
-    private FileSystems() {
-    }
-
-    private static final FileSystemProvider builtinFileSystemProvider = sun.nio.fs.DefaultFileSystemProvider.create();
-
-    private static class BuiltinFileSystemHolder {
-
-        static final FileSystem builtinFileSystem = builtinFileSystemProvider.getFileSystem(URI.create("file:///"));
-    }
-
-    private static class DefaultFileSystemHolder {
-
-        static final FileSystem defaultFileSystem = defaultFileSystem();
-
-        private static FileSystem defaultFileSystem();
-
-        private static FileSystemProvider getDefaultProvider();
-    }
-
     public static FileSystem getDefault();
 
     public static FileSystem getFileSystem(URI uri);

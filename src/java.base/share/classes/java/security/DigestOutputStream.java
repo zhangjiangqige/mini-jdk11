@@ -12,13 +12,9 @@ import java.io.ByteArrayOutputStream;
 @AnnotatedFor({ "signedness" })
 public class DigestOutputStream extends FilterOutputStream {
 
-    private boolean on = true;
-
     protected MessageDigest digest;
 
     public DigestOutputStream(OutputStream stream, MessageDigest digest) {
-        super(stream);
-        setMessageDigest(digest);
     }
 
     public MessageDigest getMessageDigest();

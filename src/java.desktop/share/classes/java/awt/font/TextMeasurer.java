@@ -22,68 +22,10 @@ import sun.font.FontResolver;
 @UsesObjectEquals
 public final class TextMeasurer implements Cloneable {
 
-    private static float EST_LINES = (float) 2.1;
-
-    private FontRenderContext fFrc;
-
-    private int fStart;
-
-    private char[] fChars;
-
-    private Bidi fBidi;
-
-    private byte[] fLevels;
-
-    private TextLineComponent[] fComponents;
-
-    private int fComponentStart;
-
-    private int fComponentLimit;
-
-    private boolean haveLayoutWindow;
-
-    private BreakIterator fLineBreak = null;
-
-    private CharArrayIterator charIter = null;
-
-    int layoutCount = 0;
-
-    int layoutCharCount = 0;
-
-    private StyledParagraph fParagraph;
-
-    private boolean fIsDirectionLTR;
-
-    private byte fBaseline;
-
-    private float[] fBaselineOffsets;
-
-    private float fJustifyRatio = 1;
-
     public TextMeasurer(AttributedCharacterIterator text, FontRenderContext frc) {
-        fFrc = frc;
-        initAll(text);
     }
 
     protected Object clone();
-
-    private void invalidateComponents();
-
-    private void initAll(AttributedCharacterIterator text);
-
-    private void generateComponents(int startingAt, int endingAt);
-
-    private int calcLineBreak(final int pos, final float maxAdvance);
-
-    private int trailingCdWhitespaceStart(int startPos, int limitPos);
-
-    private TextLineComponent[] makeComponentsOnRange(int startPos, int limitPos);
-
-    private TextLine makeTextLineOnRange(int startPos, int limitPos);
-
-    private void ensureComponents(int start, int limit);
-
-    private void makeLayoutWindow(int localStart);
 
     public int getLineBreakIndex(int start, float maxAdvance);
 
@@ -91,17 +33,7 @@ public final class TextMeasurer implements Cloneable {
 
     public TextLayout getLayout(int start, int limit);
 
-    private int formattedChars = 0;
-
-    private static boolean wantStats = false;
-
-    private boolean collectStats = false;
-
-    private void printStats();
-
     public void insertChar(AttributedCharacterIterator newParagraph, int insertPos);
 
     public void deleteChar(AttributedCharacterIterator newParagraph, int deletePos);
-
-    char[] getChars();
 }

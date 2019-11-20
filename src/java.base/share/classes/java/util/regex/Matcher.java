@@ -23,104 +23,9 @@ import java.util.stream.StreamSupport;
 @UsesObjectEquals
 public final class Matcher implements MatchResult {
 
-    Pattern parentPattern;
-
-    int[] groups;
-
-    int from, to;
-
-    int lookbehindTo;
-
-    CharSequence text;
-
-    static final int ENDANCHOR = 1;
-
-    static final int NOANCHOR = 0;
-
-    int acceptMode = NOANCHOR;
-
-    int first = -1, last = 0;
-
-    int oldLast = -1;
-
-    int lastAppendPosition = 0;
-
-    int[] locals;
-
-    IntHashSet[] localsPos;
-
-    boolean hitEnd;
-
-    boolean requireEnd;
-
-    boolean transparentBounds = false;
-
-    boolean anchoringBounds = true;
-
-    int modCount;
-
-    Matcher() {
-    }
-
-    Matcher(Pattern parent, CharSequence text) {
-        this.parentPattern = parent;
-        this.text = text;
-        int parentGroupCount = Math.max(parent.capturingGroupCount, 10);
-        groups = new int[parentGroupCount * 2];
-        locals = new int[parent.localCount];
-        localsPos = new IntHashSet[parent.localTCNCount];
-        reset();
-    }
-
     public Pattern pattern();
 
     public MatchResult toMatchResult();
-
-    private MatchResult toMatchResult(String text);
-
-    private static class ImmutableMatchResult implements MatchResult {
-
-        private final int first;
-
-        private final int last;
-
-        private final int[] groups;
-
-        private final int groupCount;
-
-        private final String text;
-
-        ImmutableMatchResult(int first, int last, int groupCount, int[] groups, String text) {
-            this.first = first;
-            this.last = last;
-            this.groupCount = groupCount;
-            this.groups = groups;
-            this.text = text;
-        }
-
-        @Override
-        public int start();
-
-        @Override
-        public int start(int group);
-
-        @Override
-        public int end();
-
-        @Override
-        public int end(int group);
-
-        @Override
-        public int groupCount();
-
-        @Override
-        public String group();
-
-        @Override
-        public String group(int group);
-
-        private void checkMatch();
-    }
 
     public Matcher usePattern(Pattern newPattern);
 
@@ -175,8 +80,6 @@ public final class Matcher implements MatchResult {
 
     public Matcher appendReplacement(StringBuilder sb, String replacement);
 
-    private StringBuilder appendExpandedReplacement(String replacement, StringBuilder result);
-
     public StringBuffer appendTail(StringBuffer sb);
 
     public StringBuilder appendTail(StringBuilder sb);
@@ -219,16 +122,4 @@ public final class Matcher implements MatchResult {
 
     @Pure
     public boolean requireEnd();
-
-    boolean search(int from);
-
-    boolean match(int from, int anchor);
-
-    int getTextLength();
-
-    CharSequence getSubSequence(int beginIndex, int endIndex);
-
-    char charAt(int i);
-
-    int getMatchedGroupIndex(String name);
 }

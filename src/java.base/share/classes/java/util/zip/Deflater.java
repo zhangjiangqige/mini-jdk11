@@ -16,64 +16,35 @@ import sun.nio.ch.DirectBuffer;
 @UsesObjectEquals
 public class Deflater {
 
-    private final DeflaterZStreamRef zsRef;
+    public static final int DEFLATED;
 
-    private ByteBuffer input = ZipUtils.defaultBuf;
+    public static final int NO_COMPRESSION;
 
-    private byte[] inputArray;
+    public static final int BEST_SPEED;
 
-    private int inputPos, inputLim;
+    public static final int BEST_COMPRESSION;
 
-    private int level, strategy;
+    public static final int DEFAULT_COMPRESSION;
 
-    private boolean setParams;
+    public static final int FILTERED;
 
-    private boolean finish, finished;
+    public static final int HUFFMAN_ONLY;
 
-    private long bytesRead;
+    public static final int DEFAULT_STRATEGY;
 
-    private long bytesWritten;
+    public static final int NO_FLUSH;
 
-    public static final int DEFLATED = 8;
+    public static final int SYNC_FLUSH;
 
-    public static final int NO_COMPRESSION = 0;
-
-    public static final int BEST_SPEED = 1;
-
-    public static final int BEST_COMPRESSION = 9;
-
-    public static final int DEFAULT_COMPRESSION = -1;
-
-    public static final int FILTERED = 1;
-
-    public static final int HUFFMAN_ONLY = 2;
-
-    public static final int DEFAULT_STRATEGY = 0;
-
-    public static final int NO_FLUSH = 0;
-
-    public static final int SYNC_FLUSH = 2;
-
-    public static final int FULL_FLUSH = 3;
-
-    private static final int FINISH = 4;
-
-    static {
-        ZipUtils.loadLibrary();
-    }
+    public static final int FULL_FLUSH;
 
     public Deflater(int level, boolean nowrap) {
-        this.level = level;
-        this.strategy = DEFAULT_STRATEGY;
-        this.zsRef = DeflaterZStreamRef.get(this, init(level, DEFAULT_STRATEGY, nowrap));
     }
 
     public Deflater(int level) {
-        this(level, false);
     }
 
     public Deflater() {
-        this(DEFAULT_COMPRESSION, false);
     }
 
     public void setInput(byte[] input, @IndexOrHigh({ "#1" }) int off, @IndexOrHigh({ "#1" }) int len);
@@ -125,65 +96,6 @@ public class Deflater {
 
     public void end();
 
-    @Deprecated(since = "9", forRemoval = true)
+    @Deprecated()
     protected void finalize();
-
-    private void ensureOpen();
-
-    private static native long init(int level, int strategy, boolean nowrap);
-
-    private static native void setDictionary(long addr, byte[] b, int off, int len);
-
-    private static native void setDictionaryBuffer(long addr, long bufAddress, int len);
-
-    private native long deflateBytesBytes(long addr, byte[] inputArray, int inputOff, int inputLen, byte[] outputArray, int outputOff, int outputLen, int flush, int params);
-
-    private native long deflateBytesBuffer(long addr, byte[] inputArray, int inputOff, int inputLen, long outputAddress, int outputLen, int flush, int params);
-
-    private native long deflateBufferBytes(long addr, long inputAddress, int inputLen, byte[] outputArray, int outputOff, int outputLen, int flush, int params);
-
-    private native long deflateBufferBuffer(long addr, long inputAddress, int inputLen, long outputAddress, int outputLen, int flush, int params);
-
-    private static native int getAdler(long addr);
-
-    private static native void reset(long addr);
-
-    private static native void end(long addr);
-
-    static class DeflaterZStreamRef implements Runnable {
-
-        private long address;
-
-        private final Cleanable cleanable;
-
-        private DeflaterZStreamRef(Deflater owner, long addr) {
-            this.cleanable = (owner != null) ? CleanerFactory.cleaner().register(owner, this) : null;
-            this.address = addr;
-        }
-
-        long address();
-
-        void clean();
-
-        public synchronized void run();
-
-        static DeflaterZStreamRef get(Deflater owner, long addr);
-
-        private static class FinalizableZStreamRef extends DeflaterZStreamRef {
-
-            final Deflater owner;
-
-            FinalizableZStreamRef(Deflater owner, long addr) {
-                super(null, addr);
-                this.owner = owner;
-            }
-
-            @Override
-            void clean();
-
-            @Override
-            @SuppressWarnings("deprecation")
-            protected void finalize();
-        }
-    }
 }

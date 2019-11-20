@@ -11,18 +11,7 @@ import java.util.Objects;
 @UsesObjectEquals
 public class AlgorithmParameters {
 
-    private Provider provider;
-
-    private AlgorithmParametersSpi paramSpi;
-
-    private String algorithm;
-
-    private boolean initialized = false;
-
     protected AlgorithmParameters(AlgorithmParametersSpi paramSpi, Provider provider, String algorithm) {
-        this.paramSpi = paramSpi;
-        this.provider = provider;
-        this.algorithm = algorithm;
     }
 
     public final String getAlgorithm();

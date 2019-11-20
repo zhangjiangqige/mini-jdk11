@@ -12,31 +12,7 @@ import com.sun.imageio.stream.StreamCloser;
 @AnnotatedFor({ "signedness" })
 public class FileCacheImageOutputStream extends ImageOutputStreamImpl {
 
-    private OutputStream stream;
-
-    private File cacheFile;
-
-    private RandomAccessFile cache;
-
-    private long maxStreamPos = 0L;
-
-    private final StreamCloser.CloseAction closeAction;
-
     public FileCacheImageOutputStream(OutputStream stream, File cacheDir) throws IOException {
-        if (stream == null) {
-            throw new IllegalArgumentException("stream == null!");
-        }
-        if ((cacheDir != null) && !(cacheDir.isDirectory())) {
-            throw new IllegalArgumentException("Not a directory!");
-        }
-        this.stream = stream;
-        if (cacheDir == null)
-            this.cacheFile = Files.createTempFile("imageio", ".tmp").toFile();
-        else
-            this.cacheFile = Files.createTempFile(cacheDir.toPath(), "imageio", ".tmp").toFile();
-        this.cache = new RandomAccessFile(cacheFile, "rw");
-        this.closeAction = StreamCloser.createCloseAction(this);
-        StreamCloser.addToQueue(closeAction);
     }
 
     public int read() throws IOException;

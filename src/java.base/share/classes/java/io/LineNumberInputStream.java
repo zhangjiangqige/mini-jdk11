@@ -11,16 +11,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @Deprecated
 public class LineNumberInputStream extends FilterInputStream {
 
-    int pushBack = -1;
-
-    int lineNumber;
-
-    int markLineNumber;
-
-    int markPushBack = -1;
-
     public LineNumberInputStream(InputStream in) {
-        super(in);
     }
 
     @SuppressWarnings("fallthrough")

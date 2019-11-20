@@ -19,35 +19,14 @@ public class InflaterInputStream extends FilterInputStream {
 
     protected int len;
 
-    private boolean closed = false;
-
-    private boolean reachEOF = false;
-
-    private void ensureOpen() throws IOException;
-
     public InflaterInputStream(InputStream in, Inflater inf, @Positive int size) {
-        super(in);
-        if (in == null || inf == null) {
-            throw new NullPointerException();
-        } else if (size <= 0) {
-            throw new IllegalArgumentException("buffer size <= 0");
-        }
-        this.inf = inf;
-        buf = new byte[size];
     }
 
     public InflaterInputStream(InputStream in, Inflater inf) {
-        this(in, inf, 512);
     }
-
-    boolean usesDefaultInflater = false;
 
     public InflaterInputStream(InputStream in) {
-        this(in, new Inflater());
-        usesDefaultInflater = true;
     }
-
-    private byte[] singleByteBuf = new byte[1];
 
     public int read() throws IOException;
 
@@ -56,8 +35,6 @@ public class InflaterInputStream extends FilterInputStream {
     public int read(byte[] b, @IndexOrHigh({ "#1" }) int off, @IndexOrHigh({ "#1" }) int len) throws IOException;
 
     public int available() throws IOException;
-
-    private byte[] b = new byte[512];
 
     public long skip(long n) throws IOException;
 

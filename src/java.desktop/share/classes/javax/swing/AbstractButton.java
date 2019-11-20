@@ -24,131 +24,71 @@ import javax.swing.text.*;
 public abstract class AbstractButton extends JComponent implements ItemSelectable, SwingConstants {
 
     @Interned
-    public static final String MODEL_CHANGED_PROPERTY = "model";
+    public static final String MODEL_CHANGED_PROPERTY;
 
     @Interned
-    public static final String TEXT_CHANGED_PROPERTY = "text";
+    public static final String TEXT_CHANGED_PROPERTY;
 
     @Interned
-    public static final String MNEMONIC_CHANGED_PROPERTY = "mnemonic";
+    public static final String MNEMONIC_CHANGED_PROPERTY;
 
     @Interned
-    public static final String MARGIN_CHANGED_PROPERTY = "margin";
+    public static final String MARGIN_CHANGED_PROPERTY;
 
     @Interned
-    public static final String VERTICAL_ALIGNMENT_CHANGED_PROPERTY = "verticalAlignment";
+    public static final String VERTICAL_ALIGNMENT_CHANGED_PROPERTY;
 
     @Interned
-    public static final String HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY = "horizontalAlignment";
+    public static final String HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY;
 
     @Interned
-    public static final String VERTICAL_TEXT_POSITION_CHANGED_PROPERTY = "verticalTextPosition";
+    public static final String VERTICAL_TEXT_POSITION_CHANGED_PROPERTY;
 
     @Interned
-    public static final String HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY = "horizontalTextPosition";
+    public static final String HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY;
 
     @Interned
-    public static final String BORDER_PAINTED_CHANGED_PROPERTY = "borderPainted";
+    public static final String BORDER_PAINTED_CHANGED_PROPERTY;
 
     @Interned
-    public static final String FOCUS_PAINTED_CHANGED_PROPERTY = "focusPainted";
+    public static final String FOCUS_PAINTED_CHANGED_PROPERTY;
 
     @Interned
-    public static final String ROLLOVER_ENABLED_CHANGED_PROPERTY = "rolloverEnabled";
+    public static final String ROLLOVER_ENABLED_CHANGED_PROPERTY;
 
     @Interned
-    public static final String CONTENT_AREA_FILLED_CHANGED_PROPERTY = "contentAreaFilled";
+    public static final String CONTENT_AREA_FILLED_CHANGED_PROPERTY;
 
     @Interned
-    public static final String ICON_CHANGED_PROPERTY = "icon";
+    public static final String ICON_CHANGED_PROPERTY;
 
     @Interned
-    public static final String PRESSED_ICON_CHANGED_PROPERTY = "pressedIcon";
+    public static final String PRESSED_ICON_CHANGED_PROPERTY;
 
     @Interned
-    public static final String SELECTED_ICON_CHANGED_PROPERTY = "selectedIcon";
+    public static final String SELECTED_ICON_CHANGED_PROPERTY;
 
     @Interned
-    public static final String ROLLOVER_ICON_CHANGED_PROPERTY = "rolloverIcon";
+    public static final String ROLLOVER_ICON_CHANGED_PROPERTY;
 
     @Interned
-    public static final String ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY = "rolloverSelectedIcon";
+    public static final String ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY;
 
     @Interned
-    public static final String DISABLED_ICON_CHANGED_PROPERTY = "disabledIcon";
+    public static final String DISABLED_ICON_CHANGED_PROPERTY;
 
     @Interned
-    public static final String DISABLED_SELECTED_ICON_CHANGED_PROPERTY = "disabledSelectedIcon";
+    public static final String DISABLED_SELECTED_ICON_CHANGED_PROPERTY;
 
-    protected ButtonModel model = null;
+    protected ButtonModel model;
 
-    private String text = "";
+    protected ChangeListener changeListener;
 
-    private Insets margin = null;
+    protected ActionListener actionListener;
 
-    private Insets defaultMargin = null;
-
-    private Icon defaultIcon = null;
-
-    private Icon pressedIcon = null;
-
-    private Icon disabledIcon = null;
-
-    private Icon selectedIcon = null;
-
-    private Icon disabledSelectedIcon = null;
-
-    private Icon rolloverIcon = null;
-
-    private Icon rolloverSelectedIcon = null;
-
-    private boolean paintBorder = true;
-
-    private boolean paintFocus = true;
-
-    private boolean rolloverEnabled = false;
-
-    private boolean contentAreaFilled = true;
-
-    private int verticalAlignment = CENTER;
-
-    private int horizontalAlignment = CENTER;
-
-    private int verticalTextPosition = CENTER;
-
-    private int horizontalTextPosition = TRAILING;
-
-    private int iconTextGap = 4;
-
-    private int mnemonic;
-
-    private int mnemonicIndex = -1;
-
-    private long multiClickThreshhold = 0;
-
-    private boolean borderPaintedSet = false;
-
-    private boolean rolloverEnabledSet = false;
-
-    private boolean iconTextGapSet = false;
-
-    private boolean contentAreaFilledSet = false;
-
-    private boolean setLayout = false;
-
-    boolean defaultCapable = true;
-
-    private Handler handler;
-
-    protected ChangeListener changeListener = null;
-
-    protected ActionListener actionListener = null;
-
-    protected ItemListener itemListener = null;
+    protected ItemListener itemListener;
 
     protected transient ChangeEvent changeEvent;
-
-    private boolean hideActionText = false;
 
     @BeanProperty(expert = true, description = "Whether the text of the button should come from the <code>Action</code>.")
     public void setHideActionText(boolean hideActionText);
@@ -244,54 +184,16 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
 
     public String getActionCommand();
 
-    private Action action;
-
-    private PropertyChangeListener actionPropertyChangeListener;
-
     @BeanProperty(visualUpdate = true, description = "the Action instance connected with this ActionEvent source")
     public void setAction(Action a);
-
-    private boolean isListener(Class<?> c, ActionListener a);
 
     public Action getAction();
 
     protected void configurePropertiesFromAction(Action a);
 
-    void clientPropertyChanged(Object key, Object oldValue, Object newValue);
-
-    boolean shouldUpdateSelectedStateFromAction();
-
     protected void actionPropertyChanged(Action action, String propertyName);
 
-    private void setDisplayedMnemonicIndexFromAction(Action a, boolean fromPropertyChange);
-
-    private void setMnemonicFromAction(Action a);
-
-    private void setTextFromAction(Action a, boolean propertyChange);
-
-    void setIconFromAction(Action a);
-
-    void smallIconChanged(Action a);
-
-    void largeIconChanged(Action a);
-
-    private void setActionCommandFromAction(Action a);
-
-    private void setSelectedFromAction(Action a);
-
     protected PropertyChangeListener createActionPropertyChangeListener(Action a);
-
-    PropertyChangeListener createActionPropertyChangeListener0(Action a);
-
-    @SuppressWarnings("serial")
-    private static class ButtonActionPropertyChangeListener extends ActionPropertyChangeListener<AbstractButton> {
-
-        ButtonActionPropertyChangeListener(AbstractButton b, Action a) {
-            super(b, a);
-        }
-
-        protected void actionPropertyChanged(AbstractButton button, Action action, PropertyChangeEvent e);
-    }
 
     public boolean isBorderPainted();
 
@@ -327,10 +229,6 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setDisplayedMnemonicIndex(int index) throws IllegalArgumentException;
 
     public int getDisplayedMnemonicIndex();
-
-    private void updateDisplayedMnemonicIndex(String text, int mnemonic);
-
-    private void updateMnemonicProperties();
 
     public void setMultiClickThreshhold(long threshhold);
 
@@ -373,9 +271,6 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     @SuppressWarnings("serial")
     protected class ButtonChangeListener implements ChangeListener, Serializable {
 
-        ButtonChangeListener() {
-        }
-
         public void stateChanged(ChangeEvent e);
     }
 
@@ -410,21 +305,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
 
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h);
 
-    void setUIProperty(String propertyName, Object value);
-
     protected String paramString();
-
-    private Handler getHandler();
-
-    @SuppressWarnings("serial")
-    class Handler implements ActionListener, ChangeListener, ItemListener, Serializable {
-
-        public void stateChanged(ChangeEvent e);
-
-        public void actionPerformed(ActionEvent event);
-
-        public void itemStateChanged(ItemEvent event);
-    }
 
     @SuppressWarnings("serial")
     protected abstract class AccessibleAbstractButton extends AccessibleJComponent implements AccessibleAction, AccessibleValue, AccessibleText, AccessibleExtendedComponent {
@@ -479,29 +360,10 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
 
         public String getSelectedText();
 
-        private String getText(int offset, int length) throws BadLocationException;
-
-        private Rectangle getTextRectangle();
-
-        AccessibleExtendedComponent getAccessibleExtendedComponent();
-
         public String getToolTipText();
 
         public String getTitledBorderText();
 
         public AccessibleKeyBinding getAccessibleKeyBinding();
-
-        class ButtonKeyBinding implements AccessibleKeyBinding {
-
-            int mnemonic;
-
-            ButtonKeyBinding(int mnemonic) {
-                this.mnemonic = mnemonic;
-            }
-
-            public int getAccessibleKeyBindingCount();
-
-            public java.lang.Object getAccessibleKeyBinding(int i);
-        }
     }
 }

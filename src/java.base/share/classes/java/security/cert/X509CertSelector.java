@@ -18,104 +18,6 @@ import sun.security.x509.*;
 @UsesObjectEquals
 public class X509CertSelector implements CertSelector {
 
-    private static final Debug debug = Debug.getInstance("certpath");
-
-    private static final ObjectIdentifier ANY_EXTENDED_KEY_USAGE = ObjectIdentifier.newInternal(new int[] { 2, 5, 29, 37, 0 });
-
-    static {
-        CertPathHelperImpl.initialize();
-    }
-
-    private BigInteger serialNumber;
-
-    private X500Principal issuer;
-
-    private X500Principal subject;
-
-    private byte[] subjectKeyID;
-
-    private byte[] authorityKeyID;
-
-    private Date certificateValid;
-
-    private Date privateKeyValid;
-
-    private ObjectIdentifier subjectPublicKeyAlgID;
-
-    private PublicKey subjectPublicKey;
-
-    private byte[] subjectPublicKeyBytes;
-
-    private boolean[] keyUsage;
-
-    private Set<String> keyPurposeSet;
-
-    private Set<ObjectIdentifier> keyPurposeOIDSet;
-
-    private Set<List<?>> subjectAlternativeNames;
-
-    private Set<GeneralNameInterface> subjectAlternativeGeneralNames;
-
-    private CertificatePolicySet policy;
-
-    private Set<String> policySet;
-
-    private Set<List<?>> pathToNames;
-
-    private Set<GeneralNameInterface> pathToGeneralNames;
-
-    private NameConstraintsExtension nc;
-
-    private byte[] ncBytes;
-
-    private int basicConstraints = -1;
-
-    private X509Certificate x509Cert;
-
-    private boolean matchAllSubjectAltNames = true;
-
-    private static final Boolean FALSE = Boolean.FALSE;
-
-    private static final int PRIVATE_KEY_USAGE_ID = 0;
-
-    private static final int SUBJECT_ALT_NAME_ID = 1;
-
-    private static final int NAME_CONSTRAINTS_ID = 2;
-
-    private static final int CERT_POLICIES_ID = 3;
-
-    private static final int EXTENDED_KEY_USAGE_ID = 4;
-
-    private static final int NUM_OF_EXTENSIONS = 5;
-
-    private static final String[] EXTENSION_OIDS = new String[NUM_OF_EXTENSIONS];
-
-    static {
-        EXTENSION_OIDS[PRIVATE_KEY_USAGE_ID] = "2.5.29.16";
-        EXTENSION_OIDS[SUBJECT_ALT_NAME_ID] = "2.5.29.17";
-        EXTENSION_OIDS[NAME_CONSTRAINTS_ID] = "2.5.29.30";
-        EXTENSION_OIDS[CERT_POLICIES_ID] = "2.5.29.32";
-        EXTENSION_OIDS[EXTENDED_KEY_USAGE_ID] = "2.5.29.37";
-    }
-
-    static final int NAME_ANY = 0;
-
-    static final int NAME_RFC822 = 1;
-
-    static final int NAME_DNS = 2;
-
-    static final int NAME_X400 = 3;
-
-    static final int NAME_DIRECTORY = 4;
-
-    static final int NAME_EDI = 5;
-
-    static final int NAME_URI = 6;
-
-    static final int NAME_IP = 7;
-
-    static final int NAME_OID = 8;
-
     public X509CertSelector() {
     }
 
@@ -161,14 +63,6 @@ public class X509CertSelector implements CertSelector {
 
     public void addSubjectAlternativeName(int type, byte[] name) throws IOException;
 
-    private void addSubjectAlternativeNameInternal(int type, Object name) throws IOException;
-
-    private static Set<GeneralNameInterface> parseNames(Collection<List<?>> names) throws IOException;
-
-    static boolean equalNames(Collection<?> object1, Collection<?> object2);
-
-    static GeneralNameInterface makeGeneralNameInterface(int type, Object name) throws IOException;
-
     public void setNameConstraints(byte[] bytes) throws IOException;
 
     public void setBasicConstraints(int minMaxPathLen);
@@ -177,13 +71,9 @@ public class X509CertSelector implements CertSelector {
 
     public void setPathToNames(Collection<List<?>> names) throws IOException;
 
-    void setPathToNamesInternal(Set<GeneralNameInterface> names);
-
     public void addPathToName(int type, String name) throws IOException;
 
     public void addPathToName(int type, byte[] name) throws IOException;
-
-    private void addPathToNameInternal(int type, Object name) throws IOException;
 
     public X509Certificate getCertificate();
 
@@ -221,10 +111,6 @@ public class X509CertSelector implements CertSelector {
 
     public Collection<List<?>> getSubjectAlternativeNames();
 
-    private static Set<List<?>> cloneNames(Collection<List<?>> names);
-
-    private static Set<List<?>> cloneAndCheckNames(Collection<List<?>> names) throws IOException;
-
     public byte[] getNameConstraints();
 
     public int getBasicConstraints();
@@ -235,40 +121,7 @@ public class X509CertSelector implements CertSelector {
 
     public String toString();
 
-    private static String keyUsageToString(boolean[] k);
-
-    private static Extension getExtensionObject(X509Certificate cert, int extId) throws IOException;
-
     public boolean match(Certificate cert);
-
-    private boolean matchSubjectKeyID(X509Certificate xcert);
-
-    private boolean matchAuthorityKeyID(X509Certificate xcert);
-
-    private boolean matchPrivateKeyValid(X509Certificate xcert);
-
-    private boolean matchSubjectPublicKeyAlgID(X509Certificate xcert);
-
-    private boolean matchKeyUsage(X509Certificate xcert);
-
-    private boolean matchExtendedKeyUsage(X509Certificate xcert);
-
-    private boolean matchSubjectAlternativeNames(X509Certificate xcert);
-
-    private boolean matchNameConstraints(X509Certificate xcert);
-
-    private boolean matchPolicy(X509Certificate xcert);
-
-    private boolean matchPathToNames(X509Certificate xcert);
-
-    private boolean matchExcluded(GeneralSubtrees excluded);
-
-    private boolean matchPermitted(GeneralSubtrees permitted);
-
-    private boolean matchBasicConstraints(X509Certificate xcert);
-
-    @SuppressWarnings("unchecked")
-    private static <T> Set<T> cloneSet(Set<T> set);
 
     public Object clone();
 }

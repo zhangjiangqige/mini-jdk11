@@ -9,23 +9,7 @@ import java.util.stream.IntStream;
 @AnnotatedFor({ "lock", "nullness" })
 public final class OptionalInt {
 
-    private static final OptionalInt EMPTY = new OptionalInt();
-
-    private final boolean isPresent;
-
-    private final int value;
-
-    private OptionalInt() {
-        this.isPresent = false;
-        this.value = 0;
-    }
-
     public static OptionalInt empty();
-
-    private OptionalInt(int value) {
-        this.isPresent = true;
-        this.value = value;
-    }
 
     public static OptionalInt of(int value);
 

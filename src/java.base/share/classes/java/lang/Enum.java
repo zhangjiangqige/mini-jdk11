@@ -18,18 +18,12 @@ import java.io.ObjectStreamException;
 @SuppressWarnings("serial")
 public abstract class Enum<E extends Enum<E>> implements Comparable<E>, Serializable {
 
-    private final String name;
-
     public final String name(@GuardedByUnknown @UnknownInitialization(java.lang.Enum.class) Enum<E> this);
-
-    private final int ordinal;
 
     @NonNegative
     public final int ordinal();
 
     protected Enum(String name, @NonNegative int ordinal) {
-        this.name = name;
-        this.ordinal = ordinal;
     }
 
     @SideEffectFree
@@ -54,8 +48,4 @@ public abstract class Enum<E extends Enum<E>> implements Comparable<E>, Serializ
 
     @SuppressWarnings("deprecation")
     protected final void finalize();
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException;
-
-    private void readObjectNoData() throws ObjectStreamException;
 }

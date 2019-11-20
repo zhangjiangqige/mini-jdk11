@@ -8,8 +8,4 @@ import java.security.PrivateKey;
 @AnnotatedFor({ "interning" })
 @UsesObjectEquals
 public interface ECPrivateKey extends PrivateKey, ECKey {
-
-    static final long serialVersionUID = -7896394956925609184L;
-
-    BigInteger getS();
 }

@@ -26,19 +26,9 @@ import sun.swing.SwingUtilities2;
 @SuppressWarnings("serial")
 public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer {
 
-    private JTree tree;
-
     protected boolean selected;
 
     protected boolean hasFocus;
-
-    private boolean drawsFocusBorderAroundIcon;
-
-    private boolean drawDashedFocusIndicator;
-
-    private Color treeBGColor;
-
-    private Color focusBGColor;
 
     protected transient Icon closedIcon;
 
@@ -56,14 +46,7 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer 
 
     protected Color borderSelectionColor;
 
-    private boolean isDropCell;
-
-    private boolean fillBackground;
-
-    private boolean inited;
-
     public DefaultTreeCellRenderer() {
-        inited = true;
     }
 
     public void updateUI();
@@ -115,10 +98,6 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus);
 
     public void paint(Graphics g);
-
-    private void paintFocus(Graphics g, int x, int y, int w, int h, Color notColor);
-
-    private int getLabelStart();
 
     public Dimension getPreferredSize();
 

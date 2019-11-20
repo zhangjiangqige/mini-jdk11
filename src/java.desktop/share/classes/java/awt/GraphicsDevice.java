@@ -10,22 +10,14 @@ import sun.awt.SunToolkit;
 @UsesObjectEquals
 public abstract class GraphicsDevice {
 
-    private Window fullScreenWindow;
-
-    private AppContext fullScreenAppContext;
-
-    private final Object fsAppContextLock = new Object();
-
-    private Rectangle windowedModeBounds;
-
     protected GraphicsDevice() {
     }
 
-    public static final int TYPE_RASTER_SCREEN = 0;
+    public static final int TYPE_RASTER_SCREEN;
 
-    public static final int TYPE_PRINTER = 1;
+    public static final int TYPE_PRINTER;
 
-    public static final int TYPE_IMAGE_BUFFER = 2;
+    public static final int TYPE_IMAGE_BUFFER;
 
     public static enum WindowTranslucency {
 
@@ -59,12 +51,4 @@ public abstract class GraphicsDevice {
     public int getAvailableAcceleratedMemory();
 
     public boolean isWindowTranslucencySupported(WindowTranslucency translucencyKind);
-
-    static boolean isWindowShapingSupported();
-
-    static boolean isWindowOpacitySupported();
-
-    boolean isWindowPerpixelTranslucencySupported();
-
-    GraphicsConfiguration getTranslucencyCapableGC();
 }

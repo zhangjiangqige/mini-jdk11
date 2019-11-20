@@ -10,8 +10,6 @@ import sun.security.jca.JCAUtil;
 @UsesObjectEquals
 public abstract class MessageDigestSpi {
 
-    private byte[] tempArray;
-
     protected int engineGetDigestLength();
 
     protected abstract void engineUpdate(byte input);

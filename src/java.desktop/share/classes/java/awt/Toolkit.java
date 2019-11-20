@@ -83,18 +83,6 @@ public abstract class Toolkit {
 
     public abstract void sync();
 
-    private static Toolkit toolkit;
-
-    private static String atNames;
-
-    private static void initAssistiveTechnologies();
-
-    private static void newAWTError(Throwable e, String s);
-
-    private static void fallbackToLoadClassForAT(String atName);
-
-    private static void loadAssistiveTechnologies();
-
     public static synchronized Toolkit getDefaultToolkit();
 
     public abstract Image getImage(String filename);
@@ -125,7 +113,7 @@ public abstract class Toolkit {
 
     public Clipboard getSystemSelection() throws HeadlessException;
 
-    @Deprecated(since = "10")
+    @Deprecated()
     public int getMenuShortcutKeyMask() throws HeadlessException;
 
     public int getMenuShortcutKeyMaskEx() throws HeadlessException;
@@ -144,48 +132,11 @@ public abstract class Toolkit {
 
     public boolean isFrameStateSupported(int state) throws HeadlessException;
 
-    private static ResourceBundle resources;
-
-    private static ResourceBundle platformResources;
-
-    private static void setPlatformResources(ResourceBundle bundle);
-
-    private static native void initIDs();
-
-    private static boolean loaded = false;
-
-    static void loadLibraries();
-
-    static {
-        AWTAccessor.setToolkitAccessor(new AWTAccessor.ToolkitAccessor() {
-
-            @Override
-            public void setPlatformResources(ResourceBundle bundle) {
-                Toolkit.setPlatformResources(bundle);
-            }
-        });
-        java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Void>() {
-
-            public Void run() {
-                try {
-                    resources = ResourceBundle.getBundle("sun.awt.resources.awt");
-                } catch (MissingResourceException e) {
-                }
-                return null;
-            }
-        });
-        loadLibraries();
-        initAssistiveTechnologies();
-        initIDs();
-    }
-
     public static String getProperty(String key, String defaultValue);
 
     public final EventQueue getSystemEventQueue();
 
     protected abstract EventQueue getSystemEventQueueImpl();
-
-    static EventQueue getEventQueue();
 
     public <T extends DragGestureRecognizer> T createDragGestureRecognizer(Class<T> abstractRecognizerClass, DragSource ds, Component c, int srcActions, DragGestureListener dgl);
 
@@ -205,9 +156,9 @@ public abstract class Toolkit {
 
     public PropertyChangeListener[] getPropertyChangeListeners(String propertyName);
 
-    protected final Map<String, Object> desktopProperties = new HashMap<String, Object>();
+    protected final Map<String, Object> desktopProperties;
 
-    protected final PropertyChangeSupport desktopPropsSupport = Toolkit.createPropertyChangeSupport(this);
+    protected final PropertyChangeSupport desktopPropsSupport;
 
     public boolean isAlwaysOnTopSupported();
 
@@ -215,110 +166,15 @@ public abstract class Toolkit {
 
     public abstract boolean isModalExclusionTypeSupported(Dialog.ModalExclusionType modalExclusionType);
 
-    private static final int LONG_BITS = 64;
-
-    private int[] calls = new int[LONG_BITS];
-
-    private static volatile long enabledOnToolkitMask;
-
-    private AWTEventListener eventListener = null;
-
-    private WeakHashMap<AWTEventListener, SelectiveAWTEventListener> listener2SelectiveListener = new WeakHashMap<>();
-
-    private static AWTEventListener deProxyAWTEventListener(AWTEventListener l);
-
     public void addAWTEventListener(AWTEventListener listener, long eventMask);
 
     public void removeAWTEventListener(AWTEventListener listener);
-
-    static boolean enabledOnToolkit(long eventMask);
-
-    synchronized int countAWTEventListeners(long eventMask);
 
     public AWTEventListener[] getAWTEventListeners();
 
     public AWTEventListener[] getAWTEventListeners(long eventMask);
 
-    void notifyAWTEventListeners(AWTEvent theEvent);
-
-    private static class ToolkitEventMulticaster extends AWTEventMulticaster implements AWTEventListener {
-
-        ToolkitEventMulticaster(AWTEventListener a, AWTEventListener b) {
-            super(a, b);
-        }
-
-        @SuppressWarnings("overloads")
-        static AWTEventListener add(AWTEventListener a, AWTEventListener b);
-
-        @SuppressWarnings("overloads")
-        static AWTEventListener remove(AWTEventListener l, AWTEventListener oldl);
-
-        protected EventListener remove(EventListener oldl);
-
-        public void eventDispatched(AWTEvent event);
-    }
-
-    private class SelectiveAWTEventListener implements AWTEventListener {
-
-        AWTEventListener listener;
-
-        private long eventMask;
-
-        int[] calls = new int[Toolkit.LONG_BITS];
-
-        public AWTEventListener getListener();
-
-        public long getEventMask();
-
-        public int[] getCalls();
-
-        public void orEventMasks(long mask);
-
-        SelectiveAWTEventListener(AWTEventListener l, long mask) {
-            listener = l;
-            eventMask = mask;
-        }
-
-        public void eventDispatched(AWTEvent event);
-    }
-
     public abstract Map<java.awt.font.TextAttribute, ?> mapInputMethodHighlight(InputMethodHighlight highlight) throws HeadlessException;
-
-    private static PropertyChangeSupport createPropertyChangeSupport(Toolkit toolkit);
-
-    @SuppressWarnings("serial")
-    private static class DesktopPropertyChangeSupport extends PropertyChangeSupport {
-
-        private static final StringBuilder PROP_CHANGE_SUPPORT_KEY = new StringBuilder("desktop property change support key");
-
-        private final Object source;
-
-        public DesktopPropertyChangeSupport(Object sourceBean) {
-            super(sourceBean);
-            source = sourceBean;
-        }
-
-        @Override
-        public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
-
-        @Override
-        public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
-
-        @Override
-        public synchronized PropertyChangeListener[] getPropertyChangeListeners();
-
-        @Override
-        public synchronized PropertyChangeListener[] getPropertyChangeListeners(String propertyName);
-
-        @Override
-        public synchronized void addPropertyChangeListener(PropertyChangeListener listener);
-
-        @Override
-        public synchronized void removePropertyChangeListener(PropertyChangeListener listener);
-
-        @Override
-        public void firePropertyChange(final PropertyChangeEvent evt);
-    }
 
     public boolean areExtraMouseButtonsEnabled() throws HeadlessException;
 }

@@ -23,75 +23,10 @@ import sun.security.util.SecurityConstants;
 @UsesObjectEquals
 public class ProtectionDomain {
 
-    private static final boolean filePermCompatInPD = "true".equals(GetPropertyAction.privilegedGetProperty("jdk.security.filePermCompat"));
-
-    private static class JavaSecurityAccessImpl implements JavaSecurityAccess {
-
-        private JavaSecurityAccessImpl() {
-        }
-
-        @Override
-        public <T> T doIntersectionPrivilege(PrivilegedAction<T> action, final AccessControlContext stack, final AccessControlContext context);
-
-        @Override
-        public <T> T doIntersectionPrivilege(PrivilegedAction<T> action, AccessControlContext context);
-
-        @Override
-        public ProtectionDomain[] getProtectDomains(AccessControlContext context);
-
-        private static AccessControlContext getCombinedACC(AccessControlContext context, AccessControlContext stack);
-
-        @Override
-        public ProtectionDomainCache getProtectionDomainCache();
-    }
-
-    static {
-        SharedSecrets.setJavaSecurityAccess(new JavaSecurityAccessImpl());
-    }
-
-    @Nullable
-    private CodeSource codesource;
-
-    @Nullable
-    private ClassLoader classloader;
-
-    private Principal[] principals;
-
-    @Nullable
-    private PermissionCollection permissions;
-
-    private boolean hasAllPerm = false;
-
-    private final boolean staticPermissions;
-
-    final Key key = new Key();
-
     public ProtectionDomain(@Nullable CodeSource codesource, @Nullable PermissionCollection permissions) {
-        this.codesource = codesource;
-        if (permissions != null) {
-            this.permissions = permissions;
-            this.permissions.setReadOnly();
-            if (permissions instanceof Permissions && ((Permissions) permissions).allPermission != null) {
-                hasAllPerm = true;
-            }
-        }
-        this.classloader = null;
-        this.principals = new Principal[0];
-        staticPermissions = true;
     }
 
     public ProtectionDomain(@Nullable CodeSource codesource, @Nullable PermissionCollection permissions, @Nullable ClassLoader classloader, Principal[] principals) {
-        this.codesource = codesource;
-        if (permissions != null) {
-            this.permissions = permissions;
-            this.permissions.setReadOnly();
-            if (permissions instanceof Permissions && ((Permissions) permissions).allPermission != null) {
-                hasAllPerm = true;
-            }
-        }
-        this.classloader = classloader;
-        this.principals = (principals != null ? principals.clone() : new Principal[0]);
-        staticPermissions = false;
     }
 
     @Deterministic
@@ -110,22 +45,6 @@ public class ProtectionDomain {
 
     public boolean implies(Permission perm);
 
-    boolean impliesWithAltFilePerm(Permission perm);
-
-    boolean impliesCreateAccessControlContext();
-
     @Override
     public String toString();
-
-    private static class DebugHolder {
-
-        private static final Debug debug = Debug.getInstance("domain");
-    }
-
-    private static boolean seeAllp();
-
-    private PermissionCollection mergePermissions();
-
-    final class Key {
-    }
 }

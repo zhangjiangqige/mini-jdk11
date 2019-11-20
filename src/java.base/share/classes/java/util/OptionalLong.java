@@ -9,23 +9,7 @@ import java.util.stream.LongStream;
 @AnnotatedFor({ "lock", "nullness" })
 public final class OptionalLong {
 
-    private static final OptionalLong EMPTY = new OptionalLong();
-
-    private final boolean isPresent;
-
-    private final long value;
-
-    private OptionalLong() {
-        this.isPresent = false;
-        this.value = 0;
-    }
-
     public static OptionalLong empty();
-
-    private OptionalLong(long value) {
-        this.isPresent = true;
-        this.value = value;
-    }
 
     public static OptionalLong of(long value);
 

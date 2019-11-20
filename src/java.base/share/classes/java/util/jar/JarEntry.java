@@ -10,25 +10,13 @@ import java.security.cert.Certificate;
 @AnnotatedFor({ "nullness" })
 public class JarEntry extends ZipEntry {
 
-    Attributes attr;
-
-    Certificate[] certs;
-
-    CodeSigner[] signers;
-
     public JarEntry(String name) {
-        super(name);
     }
 
     public JarEntry(ZipEntry ze) {
-        super(ze);
     }
 
     public JarEntry(JarEntry je) {
-        this((ZipEntry) je);
-        this.attr = je.attr;
-        this.certs = je.certs;
-        this.signers = je.signers;
     }
 
     @Nullable

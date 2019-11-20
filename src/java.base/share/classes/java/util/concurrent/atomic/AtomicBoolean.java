@@ -9,23 +9,7 @@ import java.lang.invoke.VarHandle;
 @UsesObjectEquals
 public class AtomicBoolean implements java.io.Serializable {
 
-    private static final long serialVersionUID = 4654671469794556979L;
-
-    private static final VarHandle VALUE;
-
-    static {
-        try {
-            MethodHandles.Lookup l = MethodHandles.lookup();
-            VALUE = l.findVarHandle(AtomicBoolean.class, "value", int.class);
-        } catch (ReflectiveOperationException e) {
-            throw new ExceptionInInitializerError(e);
-        }
-    }
-
-    private volatile int value;
-
     public AtomicBoolean(boolean initialValue) {
-        value = initialValue ? 1 : 0;
     }
 
     public AtomicBoolean() {
@@ -35,7 +19,7 @@ public class AtomicBoolean implements java.io.Serializable {
 
     public final boolean compareAndSet(boolean expectedValue, boolean newValue);
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public boolean weakCompareAndSet(boolean expectedValue, boolean newValue);
 
     public boolean weakCompareAndSetPlain(boolean expectedValue, boolean newValue);

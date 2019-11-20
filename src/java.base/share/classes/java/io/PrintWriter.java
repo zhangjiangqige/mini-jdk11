@@ -18,70 +18,38 @@ public class PrintWriter extends Writer {
 
     protected Writer out;
 
-    private final boolean autoFlush;
-
-    private boolean trouble = false;
-
-    private Formatter formatter;
-
-    private PrintStream psOut = null;
-
-    private static Charset toCharset(String csn) throws UnsupportedEncodingException;
-
     public PrintWriter(Writer out) {
-        this(out, false);
     }
 
     public PrintWriter(Writer out, boolean autoFlush) {
-        super(out);
-        this.out = out;
-        this.autoFlush = autoFlush;
     }
 
     public PrintWriter(OutputStream out) {
-        this(out, false);
     }
 
     public PrintWriter(OutputStream out, boolean autoFlush) {
-        this(out, autoFlush, Charset.defaultCharset());
     }
 
     public PrintWriter(OutputStream out, boolean autoFlush, Charset charset) {
-        this(new BufferedWriter(new OutputStreamWriter(out, charset)), autoFlush);
-        if (out instanceof java.io.PrintStream) {
-            psOut = (PrintStream) out;
-        }
     }
 
     public PrintWriter(String fileName) throws FileNotFoundException {
-        this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName))), false);
-    }
-
-    private PrintWriter(Charset charset, File file) throws FileNotFoundException {
-        this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset)), false);
     }
 
     public PrintWriter(String fileName, String csn) throws FileNotFoundException, UnsupportedEncodingException {
-        this(toCharset(csn), new File(fileName));
     }
 
     public PrintWriter(String fileName, Charset charset) throws IOException {
-        this(Objects.requireNonNull(charset, "charset"), new File(fileName));
     }
 
     public PrintWriter(File file) throws FileNotFoundException {
-        this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file))), false);
     }
 
     public PrintWriter(File file, String csn) throws FileNotFoundException, UnsupportedEncodingException {
-        this(toCharset(csn), file);
     }
 
     public PrintWriter(File file, Charset charset) throws IOException {
-        this(Objects.requireNonNull(charset, "charset"), file);
     }
-
-    private void ensureOpen() throws IOException;
 
     public void flush();
 
@@ -102,8 +70,6 @@ public class PrintWriter extends Writer {
     public void write(String s, @IndexOrHigh({ "#1" }) int off, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int len);
 
     public void write(String s);
-
-    private void newLine();
 
     public void print(boolean b);
 

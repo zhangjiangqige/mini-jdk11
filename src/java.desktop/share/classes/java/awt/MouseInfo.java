@@ -9,12 +9,7 @@ import sun.awt.ComponentFactory;
 @UsesObjectEquals
 public class MouseInfo {
 
-    private MouseInfo() {
-    }
-
     public static PointerInfo getPointerInfo() throws HeadlessException;
-
-    private static boolean areScreenDevicesIndependent(GraphicsDevice[] gds);
 
     public static int getNumberOfButtons() throws HeadlessException;
 }

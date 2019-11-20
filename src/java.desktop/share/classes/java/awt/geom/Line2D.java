@@ -24,11 +24,9 @@ public abstract class Line2D implements Shape, Cloneable {
         }
 
         public Float(float x1, float y1, float x2, float y2) {
-            setLine(x1, y1, x2, y2);
         }
 
         public Float(Point2D p1, Point2D p2) {
-            setLine(p1, p2);
         }
 
         public double getX1();
@@ -48,8 +46,6 @@ public abstract class Line2D implements Shape, Cloneable {
         public void setLine(float x1, float y1, float x2, float y2);
 
         public Rectangle2D getBounds2D();
-
-        private static final long serialVersionUID = 6161772511649436349L;
     }
 
     public static class Double extends Line2D implements Serializable {
@@ -66,11 +62,9 @@ public abstract class Line2D implements Shape, Cloneable {
         }
 
         public Double(double x1, double y1, double x2, double y2) {
-            setLine(x1, y1, x2, y2);
         }
 
         public Double(Point2D p1, Point2D p2) {
-            setLine(p1, p2);
         }
 
         public double getX1();
@@ -88,8 +82,6 @@ public abstract class Line2D implements Shape, Cloneable {
         public void setLine(double x1, double y1, double x2, double y2);
 
         public Rectangle2D getBounds2D();
-
-        private static final long serialVersionUID = 7979627399746467499L;
     }
 
     protected Line2D() {

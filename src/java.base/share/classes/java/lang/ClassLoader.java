@@ -57,150 +57,43 @@ import sun.security.util.SecurityConstants;
 @UsesObjectEquals
 public abstract class ClassLoader {
 
-    private static native void registerNatives();
-
-    static {
-        registerNatives();
-    }
-
-    @Nullable
-    private final ClassLoader parent;
-
-    private final String name;
-
-    private final Module unnamedModule;
-
-    private final String nameAndId;
-
-    private static class ParallelLoaders {
-
-        private ParallelLoaders() {
-        }
-
-        private static final Set<Class<? extends ClassLoader>> loaderTypes = Collections.newSetFromMap(new WeakHashMap<>());
-
-        static {
-            synchronized (loaderTypes) {
-                loaderTypes.add(ClassLoader.class);
-            }
-        }
-
-        static boolean register(Class<? extends ClassLoader> c);
-
-        static boolean isRegistered(Class<? extends ClassLoader> c);
-    }
-
-    @Nullable
-    private final ConcurrentHashMap<String, Object> parallelLockMap;
-
-    private final Map<String, Certificate[]> package2certs;
-
-    private static final Certificate[] nocerts = new Certificate[0];
-
-    private final Vector<Class<?>> classes = new Vector<>();
-
-    private final ProtectionDomain defaultDomain = new ProtectionDomain(new CodeSource(null, (Certificate[]) null), null, this, null);
-
-    void addClass(Class<?> c);
-
-    private final ConcurrentHashMap<String, NamedPackage> packages = new ConcurrentHashMap<>();
-
-    private NamedPackage getNamedPackage(String pn, Module m);
-
-    @Nullable
-    private static Void checkCreateClassLoader();
-
-    private static Void checkCreateClassLoader(String name);
-
-    private ClassLoader(Void unused, String name, ClassLoader parent) {
-        this.name = name;
-        this.parent = parent;
-        this.unnamedModule = new Module(this);
-        if (ParallelLoaders.isRegistered(this.getClass())) {
-            parallelLockMap = new ConcurrentHashMap<>();
-            package2certs = new ConcurrentHashMap<>();
-            assertionLock = new Object();
-        } else {
-            parallelLockMap = null;
-            package2certs = new Hashtable<>();
-            assertionLock = this;
-        }
-        this.nameAndId = nameAndId(this);
-    }
-
-    private static String nameAndId(ClassLoader ld);
-
     protected ClassLoader(String name, ClassLoader parent) {
-        this(checkCreateClassLoader(name), name, parent);
     }
 
     protected ClassLoader(@Nullable ClassLoader parent) {
-        this(checkCreateClassLoader(), null, parent);
     }
 
     protected ClassLoader() {
-        this(checkCreateClassLoader(), null, getSystemClassLoader());
     }
 
     public String getName();
-
-    final String name();
 
     public Class<?> loadClass(@BinaryName String name) throws ClassNotFoundException;
 
     protected Class<?> loadClass(@BinaryName String name, boolean resolve) throws ClassNotFoundException;
 
-    final Class<?> loadClass(Module module, String name);
-
     protected Object getClassLoadingLock(String className);
-
-    private void checkPackageAccess(Class<?> cls, ProtectionDomain pd);
 
     protected Class<?> findClass(@BinaryName String name) throws ClassNotFoundException;
 
     protected Class<?> findClass(String moduleName, String name);
 
-    @Deprecated(since = "1.1")
+    @Deprecated()
     @SuppressWarnings("signature")
     protected final Class<?> defineClass(byte[] b, int off, int len) throws ClassFormatError;
 
     protected final Class<?> defineClass(@Nullable @BinaryName String name, byte[] b, int off, int len) throws ClassFormatError;
 
-    private ProtectionDomain preDefineClass(@Nullable String name, @Nullable ProtectionDomain pd);
-
-    @Nullable
-    private String defineClassSourceLocation(ProtectionDomain pd);
-
-    private void postDefineClass(Class<?> c, ProtectionDomain pd);
-
     protected final Class<?> defineClass(@Nullable @BinaryName String name, byte[] b, int off, int len, @Nullable ProtectionDomain protectionDomain) throws ClassFormatError;
 
     protected final Class<?> defineClass(@Nullable String name, java.nio.ByteBuffer b, @Nullable ProtectionDomain protectionDomain) throws ClassFormatError;
-
-    static native Class<?> defineClass1(ClassLoader loader, String name, byte[] b, int off, int len, ProtectionDomain pd, String source);
-
-    static native Class<?> defineClass2(ClassLoader loader, String name, java.nio.ByteBuffer b, int off, int len, ProtectionDomain pd, String source);
-
-    private boolean checkName(@Nullable String name);
-
-    private void checkCerts(String name, @Nullable CodeSource cs);
-
-    private boolean compareCerts(Certificate[] pcerts, Certificate @Nullable [] certs);
 
     protected final void resolveClass(Class<?> c);
 
     protected final Class<?> findSystemClass(@BinaryName String name) throws ClassNotFoundException;
 
     @Nullable
-    Class<?> findBootstrapClassOrNull(String name);
-
-    @Nullable
-    private native Class<?> findBootstrapClass(String name);
-
-    @Nullable
     protected final Class<?> findLoadedClass(@BinaryName String name);
-
-    private final native Class<?> findLoadedClass0(String name);
 
     protected final void setSigners(Class<?> c, Object[] signers);
 
@@ -246,37 +139,13 @@ public abstract class ClassLoader {
     @CallerSensitive
     public static ClassLoader getSystemClassLoader();
 
-    static ClassLoader getBuiltinPlatformClassLoader();
-
-    static ClassLoader getBuiltinAppClassLoader();
-
-    static synchronized ClassLoader initSystemClassLoader();
-
-    boolean isAncestor(ClassLoader cl);
-
-    private static boolean needsClassLoaderPermissionCheck(@Nullable ClassLoader from, ClassLoader to);
-
-    @Nullable
-    static ClassLoader getClassLoader(Class<?> caller);
-
-    static void checkClassLoaderPermission(ClassLoader cl, Class<?> caller);
-
-    @Nullable
-    private static volatile ClassLoader scl;
-
-    Package definePackage(Class<?> c);
-
-    Package definePackage(String name, Module m);
-
-    private Package toPackage(String name, NamedPackage p, Module m);
-
     protected Package definePackage(@FullyQualifiedName String name, @Nullable String specTitle, @Nullable String specVersion, @Nullable String specVendor, @Nullable String implTitle, @Nullable String implVersion, @Nullable String implVendor, @Nullable URL sealBase);
 
     public final Package getDefinedPackage(String name);
 
     public final Package[] getDefinedPackages();
 
-    @Deprecated(since = "9")
+    @Deprecated()
     @Nullable
     protected Package getPackage(String name);
 
@@ -284,102 +153,8 @@ public abstract class ClassLoader {
     @SuppressWarnings({ "nullness:return.type.incompatible" })
     protected Package[] getPackages();
 
-    Stream<Package> packages();
-
     @Nullable
     protected String findLibrary(String libname);
-
-    static class NativeLibrary {
-
-        final Class<?> fromClass;
-
-        final String name;
-
-        final boolean isBuiltin;
-
-        long handle;
-
-        int jniVersion;
-
-        native boolean load0(String name, boolean isBuiltin);
-
-        native long findEntry(String name);
-
-        NativeLibrary(Class<?> fromClass, String name, boolean isBuiltin) {
-            this.name = name;
-            this.fromClass = fromClass;
-            this.isBuiltin = isBuiltin;
-        }
-
-        boolean load();
-
-        static boolean loadLibrary(Class<?> fromClass, String name, boolean isBuiltin);
-
-        static Class<?> getFromClass();
-
-        static Deque<NativeLibrary> nativeLibraryContext = new ArrayDeque<>(8);
-
-        static class Unloader implements Runnable {
-
-            static final NativeLibrary UNLOADER = new NativeLibrary(null, "dummy", false);
-
-            final String name;
-
-            final long handle;
-
-            final boolean isBuiltin;
-
-            Unloader(String name, long handle, boolean isBuiltin) {
-                if (handle == 0) {
-                    throw new IllegalArgumentException("Invalid handle for native library " + name);
-                }
-                this.name = name;
-                this.handle = handle;
-                this.isBuiltin = isBuiltin;
-            }
-
-            @Override
-            public void run();
-        }
-
-        static native void unload(String name, boolean isBuiltin, long handle);
-    }
-
-    private static String @Nullable [] usr_paths;
-
-    private static String @Nullable [] sys_paths;
-
-    private static String[] initializePath(String propName);
-
-    @CFComment({ "nulness: usr_paths and sys_paths are initialized", "by intializePath method if they are null" })
-    @SuppressWarnings({ "nullness:dereference.of.nullable" })
-    static void loadLibrary(Class<?> fromClass, String name, boolean isAbsolute);
-
-    private static native String findBuiltinLib(String name);
-
-    private static boolean loadLibrary0(Class<?> fromClass, final File file);
-
-    private static long findNative(@Nullable ClassLoader loader, String entryName);
-
-    private static final Set<String> loadedLibraryNames = new HashSet<>();
-
-    private static volatile Map<String, NativeLibrary> systemNativeLibraries;
-
-    private volatile Map<String, NativeLibrary> nativeLibraries;
-
-    private static Map<String, NativeLibrary> systemNativeLibraries();
-
-    private Map<String, NativeLibrary> nativeLibraries();
-
-    final Object assertionLock;
-
-    private boolean defaultAssertionStatus = false;
-
-    @Nullable
-    private Map<@Nullable String, Boolean> packageAssertionStatus = null;
-
-    @Nullable
-    Map<String, Boolean> classAssertionStatus = null;
 
     public void setDefaultAssertionStatus(boolean enabled);
 
@@ -388,36 +163,4 @@ public abstract class ClassLoader {
     public void setClassAssertionStatus(String className, boolean enabled);
 
     public void clearAssertionStatus();
-
-    @RequiresNonNull({ "classAssertionStatus", "packageAssertionStatus" })
-    boolean desiredAssertionStatus(String className);
-
-    @SuppressWarnings({ "contracts.postcondition.not.satisfied" })
-    @EnsuresNonNull({ "classAssertionStatus", "packageAssertionStatus" })
-    private void initializeJavaAssertionMaps();
-
-    private static native AssertionStatusDirectives retrieveDirectives();
-
-    ConcurrentHashMap<?, ?> createOrGetClassLoaderValueMap();
-
-    private volatile ConcurrentHashMap<?, ?> classLoaderValueMap;
-
-    private boolean trySetObjectField(String name, Object obj);
-}
-
-final class CompoundEnumeration<E> implements Enumeration<E> {
-
-    private final Enumeration<E>[] enums;
-
-    private int index;
-
-    public CompoundEnumeration(Enumeration<E>[] enums) {
-        this.enums = enums;
-    }
-
-    private boolean next();
-
-    public boolean hasMoreElements();
-
-    public E nextElement();
 }

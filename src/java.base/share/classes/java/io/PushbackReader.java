@@ -11,24 +11,11 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "nullness", "index" })
 public class PushbackReader extends FilterReader {
 
-    private char[] buf;
-
-    private int pos;
-
     public PushbackReader(Reader in, @Positive int size) {
-        super(in);
-        if (size <= 0) {
-            throw new IllegalArgumentException("size <= 0");
-        }
-        this.buf = new char[size];
-        this.pos = size;
     }
 
     public PushbackReader(Reader in) {
-        this(in, 1);
     }
-
-    private void ensureOpen() throws IOException;
 
     public int read() throws IOException;
 

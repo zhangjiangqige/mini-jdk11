@@ -57,15 +57,15 @@ public abstract class GlyphVector implements Cloneable {
 
     public int getLayoutFlags();
 
-    public static final int FLAG_HAS_TRANSFORMS = 1;
+    public static final int FLAG_HAS_TRANSFORMS;
 
-    public static final int FLAG_HAS_POSITION_ADJUSTMENTS = 2;
+    public static final int FLAG_HAS_POSITION_ADJUSTMENTS;
 
-    public static final int FLAG_RUN_RTL = 4;
+    public static final int FLAG_RUN_RTL;
 
-    public static final int FLAG_COMPLEX_GLYPHS = 8;
+    public static final int FLAG_COMPLEX_GLYPHS;
 
-    public static final int FLAG_MASK = FLAG_HAS_TRANSFORMS | FLAG_HAS_POSITION_ADJUSTMENTS | FLAG_RUN_RTL | FLAG_COMPLEX_GLYPHS;
+    public static final int FLAG_MASK;
 
     public abstract float[] getGlyphPositions(int beginGlyphIndex, int numEntries, float[] positionReturn);
 

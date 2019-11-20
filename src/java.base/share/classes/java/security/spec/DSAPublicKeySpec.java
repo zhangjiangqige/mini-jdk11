@@ -8,19 +8,7 @@ import java.math.BigInteger;
 @UsesObjectEquals
 public class DSAPublicKeySpec implements KeySpec {
 
-    private BigInteger y;
-
-    private BigInteger p;
-
-    private BigInteger q;
-
-    private BigInteger g;
-
     public DSAPublicKeySpec(BigInteger y, BigInteger p, BigInteger q, BigInteger g) {
-        this.y = y;
-        this.p = p;
-        this.q = q;
-        this.g = g;
     }
 
     public BigInteger getY();

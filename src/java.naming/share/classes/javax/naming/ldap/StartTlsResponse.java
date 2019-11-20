@@ -11,7 +11,7 @@ import javax.net.ssl.HostnameVerifier;
 public abstract class StartTlsResponse implements ExtendedResponse {
 
     @Interned
-    public static final String OID = "1.3.6.1.4.1.1466.20037";
+    public static final String OID;
 
     protected StartTlsResponse() {
     }
@@ -29,6 +29,4 @@ public abstract class StartTlsResponse implements ExtendedResponse {
     public abstract SSLSession negotiate(SSLSocketFactory factory) throws IOException;
 
     public abstract void close() throws IOException;
-
-    private static final long serialVersionUID = 8372842182579276418L;
 }

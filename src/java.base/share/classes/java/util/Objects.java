@@ -16,10 +16,6 @@ import java.util.function.Supplier;
 @UsesObjectEquals
 public final class Objects {
 
-    private Objects() {
-        throw new AssertionError("No java.util.Objects instances for you!");
-    }
-
     @Pure
     public static boolean equals(@GuardSatisfied @Nullable Object a, @GuardSatisfied @Nullable Object b);
 

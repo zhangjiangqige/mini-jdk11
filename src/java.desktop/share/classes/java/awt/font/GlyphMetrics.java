@@ -8,42 +8,20 @@ import java.awt.geom.Rectangle2D;
 @UsesObjectEquals
 public final class GlyphMetrics {
 
-    private boolean horizontal;
+    public static final byte STANDARD;
 
-    private float advanceX;
+    public static final byte LIGATURE;
 
-    private float advanceY;
+    public static final byte COMBINING;
 
-    private Rectangle2D.Float bounds;
+    public static final byte COMPONENT;
 
-    private byte glyphType;
-
-    public static final byte STANDARD = 0;
-
-    public static final byte LIGATURE = 1;
-
-    public static final byte COMBINING = 2;
-
-    public static final byte COMPONENT = 3;
-
-    public static final byte WHITESPACE = 4;
+    public static final byte WHITESPACE;
 
     public GlyphMetrics(float advance, Rectangle2D bounds, byte glyphType) {
-        this.horizontal = true;
-        this.advanceX = advance;
-        this.advanceY = 0;
-        this.bounds = new Rectangle2D.Float();
-        this.bounds.setRect(bounds);
-        this.glyphType = glyphType;
     }
 
     public GlyphMetrics(boolean horizontal, float advanceX, float advanceY, Rectangle2D bounds, byte glyphType) {
-        this.horizontal = horizontal;
-        this.advanceX = advanceX;
-        this.advanceY = advanceY;
-        this.bounds = new Rectangle2D.Float();
-        this.bounds.setRect(bounds);
-        this.glyphType = glyphType;
     }
 
     public float getAdvance();

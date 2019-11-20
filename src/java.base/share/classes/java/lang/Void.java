@@ -8,8 +8,5 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public final class Void {
 
     @SuppressWarnings("unchecked")
-    public static final Class<Void> TYPE = (Class<Void>) Class.getPrimitiveClass("void");
-
-    private Void() {
-    }
+    public static final Class<Void> TYPE;
 }

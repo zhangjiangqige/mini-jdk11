@@ -29,23 +29,19 @@ import static java.lang.String.UTF16;
 public final class Long extends Number implements Comparable<Long> {
 
     @Native
-    public static final long MIN_VALUE = 0x8000000000000000L;
+    public static final long MIN_VALUE;
 
     @Native
     @SignedPositive
-    public static final long MAX_VALUE = 0x7fffffffffffffffL;
+    public static final long MAX_VALUE;
 
     @SuppressWarnings("unchecked")
-    public static final Class<Long> TYPE = (Class<Long>) Class.getPrimitiveClass("long");
+    public static final Class<Long> TYPE;
 
     @SideEffectFree
     public static String toString(long i, @Positive int radix);
 
-    private static String toStringUTF16(long i, int radix);
-
     public static String toUnsignedString(@Unsigned long i, @Positive int radix);
-
-    private static BigInteger toUnsignedBigInteger(@Unsigned long i);
 
     @SideEffectFree
     public static String toHexString(@Unsigned long i);
@@ -56,21 +52,9 @@ public final class Long extends Number implements Comparable<Long> {
     @SideEffectFree
     public static String toBinaryString(@Unsigned long i);
 
-    static String toUnsignedString0(@Unsigned long val, @IntVal({ 1, 2, 3, 4, 5 }) int shift);
-
-    static void formatUnsignedLong0(long val, @IntVal({ 1, 2, 3, 4, 5 }) int shift, byte[] buf, int offset, int len);
-
-    private static void formatUnsignedLong0UTF16(long val, @IntVal({ 1, 2, 3, 4, 5 }) int shift, byte[] buf, int offset, int len);
-
-    static String fastUUID(long lsb, long msb);
-
     public static String toString(long i);
 
     public static String toUnsignedString(@Unsigned long i);
-
-    static int getChars(long i, int index, byte[] buf);
-
-    static int stringSize(long x);
 
     @Pure
     public static long parseLong(String s, @Positive int radix) throws NumberFormatException;
@@ -92,18 +76,6 @@ public final class Long extends Number implements Comparable<Long> {
 
     public static Long valueOf(String s) throws NumberFormatException;
 
-    private static class LongCache {
-
-        private LongCache() {
-        }
-
-        static final Long[] cache = new Long[-(-128) + 127 + 1];
-
-        static {
-            for (int i = 0; i < cache.length; i++) cache[i] = new Long(i - 128);
-        }
-    }
-
     @SideEffectFree
     @HotSpotIntrinsicCandidate
     public static Long valueOf(long l);
@@ -111,19 +83,15 @@ public final class Long extends Number implements Comparable<Long> {
     @SideEffectFree
     public static Long decode(String nm) throws NumberFormatException;
 
-    private final long value;
-
     @SideEffectFree
-    @Deprecated(since = "9")
+    @Deprecated()
     @PolyIndex
     public Long(@PolyIndex long value) {
-        this.value = value;
     }
 
     @SideEffectFree
-    @Deprecated(since = "9")
+    @Deprecated()
     public Long(String s) throws NumberFormatException {
-        this.value = parseLong(s, 10);
     }
 
     @Pure
@@ -187,10 +155,10 @@ public final class Long extends Number implements Comparable<Long> {
 
     @Native
     @SignedPositive
-    public static final int SIZE = 64;
+    public static final int SIZE;
 
     @SignedPositive
-    public static final int BYTES = SIZE / Byte.SIZE;
+    public static final int BYTES;
 
     @Pure
     public static long highestOneBit(@UnknownSignedness long i);
@@ -239,7 +207,4 @@ public final class Long extends Number implements Comparable<Long> {
     public static long max(long a, long b);
 
     public static long min(long a, long b);
-
-    @Native
-    private static final long serialVersionUID = 4290774380558885855L;
 }

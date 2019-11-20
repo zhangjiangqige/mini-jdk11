@@ -18,22 +18,7 @@ import sun.security.jca.GetInstance.Instance;
 @UsesObjectEquals
 public class CertStore {
 
-    private static final String CERTSTORE_TYPE = "certstore.type";
-
-    private CertStoreSpi storeSpi;
-
-    private Provider provider;
-
-    private String type;
-
-    private CertStoreParameters params;
-
     protected CertStore(CertStoreSpi storeSpi, Provider provider, String type, CertStoreParameters params) {
-        this.storeSpi = storeSpi;
-        this.provider = provider;
-        this.type = type;
-        if (params != null)
-            this.params = (CertStoreParameters) params.clone();
     }
 
     public final Collection<? extends Certificate> getCertificates(CertSelector selector) throws CertStoreException;
@@ -41,8 +26,6 @@ public class CertStore {
     public final Collection<? extends CRL> getCRLs(CRLSelector selector) throws CertStoreException;
 
     public static CertStore getInstance(String type, CertStoreParameters params) throws InvalidAlgorithmParameterException, NoSuchAlgorithmException;
-
-    private static CertStore handleException(NoSuchAlgorithmException e) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     public static CertStore getInstance(String type, CertStoreParameters params, String provider) throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException;
 

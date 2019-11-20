@@ -69,13 +69,13 @@ public interface MBeanServer extends MBeanServerConnection {
 
     public Object instantiate(String className, @Nullable ObjectName loaderName, Object @Nullable [] params, String @Nullable [] signature) throws ReflectionException, MBeanException, InstanceNotFoundException;
 
-    @Deprecated(since = "1.5")
+    @Deprecated()
     default public ObjectInputStream deserialize(@Nullable ObjectName name, byte[] data) throws InstanceNotFoundException, OperationsException;
 
-    @Deprecated(since = "1.5")
+    @Deprecated()
     default public ObjectInputStream deserialize(String className, byte[] data) throws OperationsException, ReflectionException;
 
-    @Deprecated(since = "1.5")
+    @Deprecated()
     default public ObjectInputStream deserialize(String className, @Nullable ObjectName loaderName, byte[] data) throws InstanceNotFoundException, OperationsException, ReflectionException;
 
     public ClassLoader getClassLoaderFor(ObjectName mbeanName) throws InstanceNotFoundException;

@@ -10,20 +10,8 @@ import sun.security.jca.GetInstance;
 @AnnotatedFor("nullness")
 public class SSLContext {
 
-    private final Provider provider;
-
-    private final SSLContextSpi contextSpi;
-
-    private final String protocol;
-
     protected SSLContext(SSLContextSpi contextSpi, Provider provider, String protocol) {
-        this.contextSpi = contextSpi;
-        this.provider = provider;
-        this.protocol = protocol;
     }
-
-    @MonotonicNonNull
-    private static SSLContext defaultContext;
 
     public static synchronized SSLContext getDefault() throws NoSuchAlgorithmException;
 

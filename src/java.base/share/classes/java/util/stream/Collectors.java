@@ -36,70 +36,6 @@ import java.util.function.ToLongFunction;
 @AnnotatedFor({ "lock", "nullness" })
 public final class Collectors {
 
-    static final Set<Collector.Characteristics> CH_CONCURRENT_ID = Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.CONCURRENT, Collector.Characteristics.UNORDERED, Collector.Characteristics.IDENTITY_FINISH));
-
-    static final Set<Collector.Characteristics> CH_CONCURRENT_NOID = Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.CONCURRENT, Collector.Characteristics.UNORDERED));
-
-    static final Set<Collector.Characteristics> CH_ID = Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.IDENTITY_FINISH));
-
-    static final Set<Collector.Characteristics> CH_UNORDERED_ID = Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.UNORDERED, Collector.Characteristics.IDENTITY_FINISH));
-
-    static final Set<Collector.Characteristics> CH_NOID = Collections.emptySet();
-
-    static final Set<Collector.Characteristics> CH_UNORDERED_NOID = Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.UNORDERED));
-
-    private Collectors() {
-    }
-
-    private static IllegalStateException duplicateKeyException(Object k, Object u, Object v);
-
-    private static <K, V, M extends Map<K, V>> BinaryOperator<M> uniqKeysMapMerger();
-
-    private static <T, K, V> BiConsumer<Map<K, V>, T> uniqKeysMapAccumulator(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper);
-
-    @SuppressWarnings("unchecked")
-    private static <I, R> Function<I, R> castingIdentity();
-
-    static class CollectorImpl<T, A, R> implements Collector<T, A, R> {
-
-        private final Supplier<A> supplier;
-
-        private final BiConsumer<A, T> accumulator;
-
-        private final BinaryOperator<A> combiner;
-
-        private final Function<A, R> finisher;
-
-        private final Set<Characteristics> characteristics;
-
-        CollectorImpl(Supplier<A> supplier, BiConsumer<A, T> accumulator, BinaryOperator<A> combiner, Function<A, R> finisher, Set<Characteristics> characteristics) {
-            this.supplier = supplier;
-            this.accumulator = accumulator;
-            this.combiner = combiner;
-            this.finisher = finisher;
-            this.characteristics = characteristics;
-        }
-
-        CollectorImpl(Supplier<A> supplier, BiConsumer<A, T> accumulator, BinaryOperator<A> combiner, Set<Characteristics> characteristics) {
-            this(supplier, accumulator, combiner, castingIdentity(), characteristics);
-        }
-
-        @Override
-        public BiConsumer<A, T> accumulator();
-
-        @Override
-        public Supplier<A> supplier();
-
-        @Override
-        public BinaryOperator<A> combiner();
-
-        @Override
-        public Function<A, R> finisher();
-
-        @Override
-        public Set<Characteristics> characteristics();
-    }
-
     public static <T, C extends Collection<T>> Collector<T, ?, C> toCollection(Supplier<C> collectionFactory);
 
     public static <T> Collector<T, ?, List<T>> toList();
@@ -117,8 +53,6 @@ public final class Collectors {
     public static Collector<CharSequence, ?, String> joining(CharSequence delimiter);
 
     public static Collector<CharSequence, ?, String> joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix);
-
-    private static <K, V, M extends Map<K, V>> BinaryOperator<M> mapMerger(BinaryOperator<V> mergeFunction);
 
     public static <T, U, A, R> Collector<T, ?, R> mapping(Function<? super T, ? extends U> mapper, Collector<? super U, A, R> downstream);
 
@@ -140,10 +74,6 @@ public final class Collectors {
 
     public static <T> Collector<T, ?, Double> summingDouble(ToDoubleFunction<? super T> mapper);
 
-    static double[] sumWithCompensation(double[] intermediateSum, double value);
-
-    static double computeFinalSum(double[] summands);
-
     public static <T> Collector<T, ?, Double> averagingInt(ToIntFunction<? super T> mapper);
 
     public static <T> Collector<T, ?, Double> averagingLong(ToLongFunction<? super T> mapper);
@@ -151,9 +81,6 @@ public final class Collectors {
     public static <T> Collector<T, ?, Double> averagingDouble(ToDoubleFunction<? super T> mapper);
 
     public static <T> Collector<T, ?, T> reducing(T identity, BinaryOperator<T> op);
-
-    @SuppressWarnings("unchecked")
-    private static <T> Supplier<T[]> boxSupplier(T identity);
 
     public static <T> Collector<T, ?, Optional<T>> reducing(BinaryOperator<T> op);
 
@@ -198,19 +125,4 @@ public final class Collectors {
     public static <T> Collector<T, ?, LongSummaryStatistics> summarizingLong(ToLongFunction<? super T> mapper);
 
     public static <T> Collector<T, ?, DoubleSummaryStatistics> summarizingDouble(ToDoubleFunction<? super T> mapper);
-
-    private static final class Partition<T> extends AbstractMap<Boolean, T> implements Map<Boolean, T> {
-
-        final T forTrue;
-
-        final T forFalse;
-
-        Partition(T forTrue, T forFalse) {
-            this.forTrue = forTrue;
-            this.forFalse = forFalse;
-        }
-
-        @Override
-        public Set<Map.Entry<Boolean, T>> entrySet();
-    }
 }

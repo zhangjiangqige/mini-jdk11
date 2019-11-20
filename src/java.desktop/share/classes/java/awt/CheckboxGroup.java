@@ -7,10 +7,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @UsesObjectEquals
 public class CheckboxGroup implements java.io.Serializable {
 
-    Checkbox selectedCheckbox = null;
-
-    private static final long serialVersionUID = 3729780091441768983L;
-
     public CheckboxGroup() {
     }
 

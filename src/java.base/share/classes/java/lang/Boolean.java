@@ -11,26 +11,20 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 public final class Boolean implements java.io.Serializable, Comparable<Boolean> {
 
     @Interned
-    public static final Boolean TRUE = new Boolean(true);
+    public static final Boolean TRUE;
 
     @Interned
-    public static final Boolean FALSE = new Boolean(false);
+    public static final Boolean FALSE;
 
     @SuppressWarnings("unchecked")
-    public static final Class<Boolean> TYPE = (Class<Boolean>) Class.getPrimitiveClass("boolean");
+    public static final Class<Boolean> TYPE;
 
-    private final boolean value;
-
-    private static final long serialVersionUID = -3665804199014368530L;
-
-    @Deprecated(since = "9")
+    @Deprecated()
     public Boolean(boolean value) {
-        this.value = value;
     }
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public Boolean(@Nullable String s) {
-        this(parseBoolean(s));
     }
 
     @Pure

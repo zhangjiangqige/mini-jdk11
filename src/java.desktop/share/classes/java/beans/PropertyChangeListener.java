@@ -8,7 +8,4 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "guieffect" })
 @PolyUIType
 public interface PropertyChangeListener extends java.util.EventListener {
-
-    @PolyUIEffect
-    void propertyChange(@PolyUI PropertyChangeListener this, PropertyChangeEvent evt);
 }

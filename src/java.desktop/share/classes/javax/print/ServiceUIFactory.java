@@ -7,24 +7,24 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public abstract class ServiceUIFactory {
 
     @Interned
-    public static final String JCOMPONENT_UI = "javax.swing.JComponent";
+    public static final String JCOMPONENT_UI;
 
     @Interned
-    public static final String PANEL_UI = "java.awt.Panel";
+    public static final String PANEL_UI;
 
     @Interned
-    public static final String DIALOG_UI = "java.awt.Dialog";
+    public static final String DIALOG_UI;
 
     @Interned
-    public static final String JDIALOG_UI = "javax.swing.JDialog";
+    public static final String JDIALOG_UI;
 
-    public static final int ABOUT_UIROLE = 1;
+    public static final int ABOUT_UIROLE;
 
-    public static final int ADMIN_UIROLE = 2;
+    public static final int ADMIN_UIROLE;
 
-    public static final int MAIN_UIROLE = 3;
+    public static final int MAIN_UIROLE;
 
-    public static final int RESERVED_UIROLE = 99;
+    public static final int RESERVED_UIROLE;
 
     public abstract Object getUI(int role, String ui);
 

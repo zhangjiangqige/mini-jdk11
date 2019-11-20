@@ -14,36 +14,16 @@ import sun.nio.cs.StreamDecoder;
 @AnnotatedFor({ "index" })
 public class InputStreamReader extends Reader {
 
-    private final StreamDecoder sd;
-
     public InputStreamReader(InputStream in) {
-        super(in);
-        try {
-            sd = StreamDecoder.forInputStreamReader(in, this, (String) null);
-        } catch (UnsupportedEncodingException e) {
-            throw new Error(e);
-        }
     }
 
     public InputStreamReader(InputStream in, String charsetName) throws UnsupportedEncodingException {
-        super(in);
-        if (charsetName == null)
-            throw new NullPointerException("charsetName");
-        sd = StreamDecoder.forInputStreamReader(in, this, charsetName);
     }
 
     public InputStreamReader(InputStream in, Charset cs) {
-        super(in);
-        if (cs == null)
-            throw new NullPointerException("charset");
-        sd = StreamDecoder.forInputStreamReader(in, this, cs);
     }
 
     public InputStreamReader(InputStream in, CharsetDecoder dec) {
-        super(in);
-        if (dec == null)
-            throw new NullPointerException("charset decoder");
-        sd = StreamDecoder.forInputStreamReader(in, this, dec);
     }
 
     @Nullable

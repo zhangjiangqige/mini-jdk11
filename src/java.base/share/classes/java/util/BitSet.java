@@ -18,48 +18,10 @@ import java.util.stream.StreamSupport;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public class BitSet implements Cloneable, java.io.Serializable {
 
-    private static final int ADDRESS_BITS_PER_WORD = 6;
-
-    private static final int BITS_PER_WORD = 1 << ADDRESS_BITS_PER_WORD;
-
-    private static final int BIT_INDEX_MASK = BITS_PER_WORD - 1;
-
-    private static final long WORD_MASK = 0xffffffffffffffffL;
-
-    private static final ObjectStreamField[] serialPersistentFields = { new ObjectStreamField("bits", long[].class) };
-
-    private long[] words;
-
-    private transient int wordsInUse = 0;
-
-    private transient boolean sizeIsSticky = false;
-
-    private static final long serialVersionUID = 7997698588986878753L;
-
-    private static int wordIndex(int bitIndex);
-
-    private void checkInvariants();
-
-    private void recalculateWordsInUse();
-
     public BitSet() {
-        initWords(BITS_PER_WORD);
-        sizeIsSticky = false;
     }
 
     public BitSet(@NonNegative int nbits) {
-        if (nbits < 0)
-            throw new NegativeArraySizeException("nbits < 0: " + nbits);
-        initWords(nbits);
-        sizeIsSticky = true;
-    }
-
-    private void initWords(int nbits);
-
-    private BitSet(long[] words) {
-        this.words = words;
-        this.wordsInUse = words.length;
-        checkInvariants();
     }
 
     public static BitSet valueOf(long[] longs);
@@ -73,12 +35,6 @@ public class BitSet implements Cloneable, java.io.Serializable {
     public byte[] toByteArray();
 
     public long[] toLongArray();
-
-    private void ensureCapacity(int wordsRequired);
-
-    private void expandTo(int wordIndex);
-
-    private static void checkRange(int fromIndex, int toIndex);
 
     public void flip(@GuardSatisfied BitSet this, @NonNegative int bitIndex);
 
@@ -153,16 +109,8 @@ public class BitSet implements Cloneable, java.io.Serializable {
     @SideEffectFree
     public Object clone(@GuardSatisfied BitSet this);
 
-    private void trimToSize();
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException;
-
     @SideEffectFree
     public String toString(@GuardSatisfied BitSet this);
 
     public IntStream stream();
-
-    private int nextSetBit(int fromIndex, int toWordIndex);
 }

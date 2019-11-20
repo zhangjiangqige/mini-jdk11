@@ -14,14 +14,6 @@ public abstract class DatagramSocketImpl implements SocketOptions {
 
     protected FileDescriptor fd;
 
-    DatagramSocket socket;
-
-    void setDatagramSocket(DatagramSocket socket);
-
-    DatagramSocket getDatagramSocket();
-
-    int dataAvailable();
-
     protected abstract void create() throws SocketException;
 
     protected abstract void bind(int lport, InetAddress laddr) throws SocketException;
@@ -66,15 +58,6 @@ public abstract class DatagramSocketImpl implements SocketOptions {
 
     @SuppressWarnings("unchecked")
     protected <T> T getOption(SocketOption<T> name) throws IOException;
-
-    private static final Set<SocketOption<?>> dgSocketOptions;
-
-    private static final Set<SocketOption<?>> mcSocketOptions;
-
-    static {
-        dgSocketOptions = Set.of(StandardSocketOptions.SO_SNDBUF, StandardSocketOptions.SO_RCVBUF, StandardSocketOptions.SO_REUSEADDR, StandardSocketOptions.IP_TOS);
-        mcSocketOptions = Set.of(StandardSocketOptions.SO_SNDBUF, StandardSocketOptions.SO_RCVBUF, StandardSocketOptions.SO_REUSEADDR, StandardSocketOptions.IP_TOS, StandardSocketOptions.IP_MULTICAST_IF, StandardSocketOptions.IP_MULTICAST_TTL, StandardSocketOptions.IP_MULTICAST_LOOP);
-    }
 
     protected Set<SocketOption<?>> supportedOptions();
 }

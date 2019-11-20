@@ -9,23 +9,7 @@ import java.util.stream.DoubleStream;
 @AnnotatedFor({ "lock", "nullness" })
 public final class OptionalDouble {
 
-    private static final OptionalDouble EMPTY = new OptionalDouble();
-
-    private final boolean isPresent;
-
-    private final double value;
-
-    private OptionalDouble() {
-        this.isPresent = false;
-        this.value = Double.NaN;
-    }
-
     public static OptionalDouble empty();
-
-    private OptionalDouble(double value) {
-        this.isPresent = true;
-        this.value = value;
-    }
 
     public static OptionalDouble of(double value);
 

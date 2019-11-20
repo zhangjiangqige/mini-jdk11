@@ -22,35 +22,18 @@ import java.io.Serializable;
 public class JTextField extends JTextComponent implements SwingConstants {
 
     public JTextField() {
-        this(null, null, 0);
     }
 
     public JTextField(String text) {
-        this(null, text, 0);
     }
 
     public JTextField(int columns) {
-        this(null, null, columns);
     }
 
     public JTextField(String text, int columns) {
-        this(null, text, columns);
     }
 
     public JTextField(Document doc, String text, int columns) {
-        if (columns < 0) {
-            throw new IllegalArgumentException("columns less than zero.");
-        }
-        visibility = new DefaultBoundedRangeModel();
-        visibility.addChangeListener(new ScrollRepainter());
-        this.columns = columns;
-        if (doc == null) {
-            doc = createDefaultModel();
-        }
-        setDocument(doc);
-        if (text != null) {
-            setText(text);
-        }
     }
 
     @BeanProperty(bound = false)
@@ -92,14 +75,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
 
     public void setActionCommand(String command);
 
-    private Action action;
-
-    private PropertyChangeListener actionPropertyChangeListener;
-
     @BeanProperty(visualUpdate = true, description = "the Action instance connected with this ActionEvent source")
     public void setAction(Action a);
-
-    private boolean isListener(Class<?> c, ActionListener a);
 
     public Action getAction();
 
@@ -107,18 +84,7 @@ public class JTextField extends JTextComponent implements SwingConstants {
 
     protected void actionPropertyChanged(Action action, String propertyName);
 
-    private void setActionCommandFromAction(Action action);
-
     protected PropertyChangeListener createActionPropertyChangeListener(Action a);
-
-    private static class TextFieldActionPropertyChangeListener extends ActionPropertyChangeListener<JTextField> {
-
-        TextFieldActionPropertyChangeListener(JTextField tf, Action a) {
-            super(tf, a);
-        }
-
-        protected void actionPropertyChanged(JTextField textField, Action action, PropertyChangeEvent e);
-    }
 
     @BeanProperty(bound = false)
     public Action[] getActions();
@@ -134,42 +100,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
 
     public void scrollRectToVisible(Rectangle r);
 
-    boolean hasActionListener();
-
     @Interned
-    public static final String notifyAction = "notify-field-accept";
-
-    private BoundedRangeModel visibility;
-
-    private int horizontalAlignment = LEADING;
-
-    private int columns;
-
-    private int columnWidth;
-
-    private String command;
-
-    private static final Action[] defaultActions = { new NotifyAction() };
-
-    private static final String uiClassID = "TextFieldUI";
-
-    static class NotifyAction extends TextAction {
-
-        NotifyAction() {
-            super(notifyAction);
-        }
-
-        public void actionPerformed(ActionEvent e);
-
-        public boolean isEnabled();
-    }
-
-    class ScrollRepainter implements ChangeListener, Serializable {
-
-        public void stateChanged(ChangeEvent e);
-    }
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
+    public static final String notifyAction;
 
     protected String paramString();
 

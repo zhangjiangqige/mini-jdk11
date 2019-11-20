@@ -12,7 +12,7 @@ import sun.security.jca.JCAUtil;
 @UsesObjectEquals
 public abstract class SignatureSpi {
 
-    protected SecureRandom appRandom = null;
+    protected SecureRandom appRandom;
 
     protected abstract void engineInitVerify(PublicKey publicKey) throws InvalidKeyException;
 

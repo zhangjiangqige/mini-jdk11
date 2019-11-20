@@ -10,25 +10,25 @@ import java.util.Set;
 public interface ScriptEngine {
 
     @Interned
-    public static final String ARGV = "javax.script.argv";
+    public static final String ARGV;
 
     @Interned
-    public static final String FILENAME = "javax.script.filename";
+    public static final String FILENAME;
 
     @Interned
-    public static final String ENGINE = "javax.script.engine";
+    public static final String ENGINE;
 
     @Interned
-    public static final String ENGINE_VERSION = "javax.script.engine_version";
+    public static final String ENGINE_VERSION;
 
     @Interned
-    public static final String NAME = "javax.script.name";
+    public static final String NAME;
 
     @Interned
-    public static final String LANGUAGE = "javax.script.language";
+    public static final String LANGUAGE;
 
     @Interned
-    public static final String LANGUAGE_VERSION = "javax.script.language_version";
+    public static final String LANGUAGE_VERSION;
 
     public Object eval(String script, ScriptContext context) throws ScriptException;
 

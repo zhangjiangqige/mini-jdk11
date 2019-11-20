@@ -12,10 +12,6 @@ import java.util.Set;
 @UsesObjectEquals
 public abstract class SocketImpl implements SocketOptions {
 
-    Socket socket = null;
-
-    ServerSocket serverSocket = null;
-
     protected FileDescriptor fd;
 
     protected InetAddress address;
@@ -62,17 +58,7 @@ public abstract class SocketImpl implements SocketOptions {
 
     protected int getLocalPort();
 
-    void setSocket(Socket soc);
-
-    Socket getSocket();
-
-    void setServerSocket(ServerSocket soc);
-
-    ServerSocket getServerSocket();
-
     public String toString();
-
-    void reset() throws IOException;
 
     protected void setPerformancePreferences(int connectionTime, int latency, int bandwidth);
 
@@ -80,15 +66,6 @@ public abstract class SocketImpl implements SocketOptions {
 
     @SuppressWarnings("unchecked")
     protected <T> T getOption(SocketOption<T> name) throws IOException;
-
-    private static final Set<SocketOption<?>> socketOptions;
-
-    private static final Set<SocketOption<?>> serverSocketOptions;
-
-    static {
-        socketOptions = Set.of(StandardSocketOptions.SO_KEEPALIVE, StandardSocketOptions.SO_SNDBUF, StandardSocketOptions.SO_RCVBUF, StandardSocketOptions.SO_REUSEADDR, StandardSocketOptions.SO_LINGER, StandardSocketOptions.IP_TOS, StandardSocketOptions.TCP_NODELAY);
-        serverSocketOptions = Set.of(StandardSocketOptions.SO_RCVBUF, StandardSocketOptions.SO_REUSEADDR, StandardSocketOptions.IP_TOS);
-    }
 
     protected Set<SocketOption<?>> supportedOptions();
 }

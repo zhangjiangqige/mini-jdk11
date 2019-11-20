@@ -9,19 +9,11 @@ import java.util.ResourceBundle;
 @UsesObjectEquals
 public final class ComponentOrientation implements java.io.Serializable {
 
-    private static final long serialVersionUID = -4113291392143563828L;
+    public static final ComponentOrientation LEFT_TO_RIGHT;
 
-    private static final int UNK_BIT = 1;
+    public static final ComponentOrientation RIGHT_TO_LEFT;
 
-    private static final int HORIZ_BIT = 2;
-
-    private static final int LTR_BIT = 4;
-
-    public static final ComponentOrientation LEFT_TO_RIGHT = new ComponentOrientation(HORIZ_BIT | LTR_BIT);
-
-    public static final ComponentOrientation RIGHT_TO_LEFT = new ComponentOrientation(HORIZ_BIT);
-
-    public static final ComponentOrientation UNKNOWN = new ComponentOrientation(HORIZ_BIT | LTR_BIT | UNK_BIT);
+    public static final ComponentOrientation UNKNOWN;
 
     public boolean isHorizontal();
 
@@ -31,10 +23,4 @@ public final class ComponentOrientation implements java.io.Serializable {
 
     @Deprecated
     public static ComponentOrientation getOrientation(ResourceBundle bdl);
-
-    private int orientation;
-
-    private ComponentOrientation(int value) {
-        orientation = value;
-    }
 }

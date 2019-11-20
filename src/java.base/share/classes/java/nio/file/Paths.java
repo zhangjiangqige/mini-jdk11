@@ -9,9 +9,6 @@ import java.net.URI;
 @UsesObjectEquals
 public final class Paths {
 
-    private Paths() {
-    }
-
     public static Path get(String first, String... more);
 
     public static Path get(URI uri);

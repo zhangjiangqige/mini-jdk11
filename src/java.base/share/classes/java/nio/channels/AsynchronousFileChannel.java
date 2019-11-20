@@ -22,9 +22,6 @@ public abstract class AsynchronousFileChannel implements AsynchronousChannel {
 
     public static AsynchronousFileChannel open(Path file, Set<? extends OpenOption> options, ExecutorService executor, FileAttribute<?>... attrs) throws IOException;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static final FileAttribute<?>[] NO_ATTRIBUTES = new FileAttribute[0];
-
     public static AsynchronousFileChannel open(Path file, OpenOption... options) throws IOException;
 
     public abstract long size() throws IOException;

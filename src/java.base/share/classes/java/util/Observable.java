@@ -9,16 +9,11 @@ import org.checkerframework.framework.qual.CFComment;
 
 @CFComment({ "guieffect:", "@PolyUIType class Observable {", "@SafeEffect void addObserver(@PolyUI Observable this, @PolyUI Observer o);", "@SafeEffect void deleteObserver(@PolyUI Observable this, @PolyUI Observer o);", "@PolyUIEffect void notifyObservers(@PolyUI Observable this);", "@PolyUIEffect void notifyObservers(@PolyUI Observable this, Object arg);}" })
 @AnnotatedFor({ "index", "interning", "lock", "nullness" })
-@Deprecated(since = "9")
+@Deprecated()
 @UsesObjectEquals
 public class Observable {
 
-    private boolean changed = false;
-
-    private Vector<Observer> obs;
-
     public Observable() {
-        obs = new Vector<>();
     }
 
     public synchronized void addObserver(@GuardSatisfied Observable this, Observer o);

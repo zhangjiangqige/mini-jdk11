@@ -14,7 +14,6 @@ public class FilterInputStream extends InputStream {
     protected volatile InputStream in;
 
     protected FilterInputStream(@Nullable InputStream in) {
-        this.in = in;
     }
 
     @GTENegativeOne

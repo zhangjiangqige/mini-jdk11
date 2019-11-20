@@ -13,22 +13,12 @@ import org.checkerframework.framework.qual.EnsuresQualifierIf;
 @SuppressWarnings("purity")
 public final class RegexUtil {
 
-    private RegexUtil() {
-        throw new Error("do not instantiate");
-    }
-
     public static class CheckedPatternSyntaxException extends Exception {
 
-        private static final long serialVersionUID = 6266881831979001480L;
-
-        private final PatternSyntaxException pse;
-
         public CheckedPatternSyntaxException(PatternSyntaxException pse) {
-            this.pse = pse;
         }
 
         public CheckedPatternSyntaxException(String desc, String regex, @GTENegativeOne int index) {
-            this(new PatternSyntaxException(desc, regex, index));
         }
 
         public String getDescription();
@@ -82,11 +72,4 @@ public final class RegexUtil {
     @SideEffectFree
     @Regex
     public static String asRegex(String s, int groups);
-
-    @SideEffectFree
-    private static String regexErrorMessage(String s, int expectedGroups, int actualGroups);
-
-    @SuppressWarnings({ "purity", "lock" })
-    @Pure
-    private static int getGroupCount(Pattern p);
 }

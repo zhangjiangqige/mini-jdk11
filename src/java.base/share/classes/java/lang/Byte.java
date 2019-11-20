@@ -13,27 +13,15 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @AnnotatedFor({ "index", "interning", "nullness" })
 public final class Byte extends Number implements Comparable<Byte> {
 
-    public static final byte MIN_VALUE = -128;
+    public static final byte MIN_VALUE;
 
     @Positive
-    public static final byte MAX_VALUE = 127;
+    public static final byte MAX_VALUE;
 
     @SuppressWarnings("unchecked")
-    public static final Class<Byte> TYPE = (Class<Byte>) Class.getPrimitiveClass("byte");
+    public static final Class<Byte> TYPE;
 
     public static String toString(byte b);
-
-    private static class ByteCache {
-
-        private ByteCache() {
-        }
-
-        static final Byte[] cache = new Byte[-(-128) + 127 + 1];
-
-        static {
-            for (int i = 0; i < cache.length; i++) cache[i] = new Byte((byte) (i - 128));
-        }
-    }
 
     @Pure
     @HotSpotIntrinsicCandidate
@@ -58,17 +46,13 @@ public final class Byte extends Number implements Comparable<Byte> {
     @Pure
     public static Byte decode(String nm) throws NumberFormatException;
 
-    private final byte value;
-
-    @Deprecated(since = "9")
+    @Deprecated()
     @PolyIndex
     public Byte(@PolyIndex byte value) {
-        this.value = value;
     }
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public Byte(String s) throws NumberFormatException {
-        this.value = parseByte(s, 10);
     }
 
     @Pure
@@ -116,9 +100,7 @@ public final class Byte extends Number implements Comparable<Byte> {
     public static long toUnsignedLong(byte x);
 
     @Positive
-    public static final int SIZE = 8;
+    public static final int SIZE;
 
-    public static final int BYTES = SIZE / Byte.SIZE;
-
-    private static final long serialVersionUID = -7183698231559129828L;
+    public static final int BYTES;
 }

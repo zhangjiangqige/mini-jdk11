@@ -7,24 +7,10 @@ import java.io.IOException;
 @AnnotatedFor("nullness")
 public class FileSystemException extends IOException {
 
-    static final long serialVersionUID = -3055425747967319812L;
-
-    @Nullable
-    private final String file;
-
-    @Nullable
-    private final String other;
-
     public FileSystemException(@Nullable String file) {
-        super((String) null);
-        this.file = file;
-        this.other = null;
     }
 
     public FileSystemException(@Nullable String file, @Nullable String other, @Nullable String reason) {
-        super(reason);
-        this.file = file;
-        this.other = other;
     }
 
     @Nullable

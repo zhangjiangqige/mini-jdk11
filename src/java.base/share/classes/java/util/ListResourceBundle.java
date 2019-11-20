@@ -19,8 +19,4 @@ public abstract class ListResourceBundle extends ResourceBundle {
     protected Set<String> handleKeySet();
 
     protected abstract Object[][] getContents();
-
-    private synchronized void loadLookup();
-
-    private volatile Map<String, Object> lookup = null;
 }

@@ -8,9 +8,6 @@ import sun.text.normalizer.NormalizerBase;
 @UsesObjectEquals
 public final class Normalizer {
 
-    private Normalizer() {
-    }
-
     public static enum Form {
 
         NFD, NFC, NFKD, NFKC

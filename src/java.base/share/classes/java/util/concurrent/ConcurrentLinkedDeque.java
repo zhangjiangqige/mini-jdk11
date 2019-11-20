@@ -27,81 +27,11 @@ import java.util.function.Predicate;
 @AnnotatedFor({ "nullness" })
 public class ConcurrentLinkedDeque<E extends @NonNull Object> extends AbstractCollection<E> implements Deque<E>, java.io.Serializable {
 
-    private static final long serialVersionUID = 876323262645176354L;
-
-    private transient volatile Node<E> head;
-
-    private transient volatile Node<E> tail;
-
-    private static final Node<Object> PREV_TERMINATOR, NEXT_TERMINATOR;
-
-    @SuppressWarnings("unchecked")
-    Node<E> prevTerminator();
-
-    @SuppressWarnings("unchecked")
-    Node<E> nextTerminator();
-
-    static final class Node<E> {
-
-        volatile Node<E> prev;
-
-        volatile E item;
-
-        volatile Node<E> next;
-    }
-
-    static <E> Node<E> newNode(E item);
-
-    private void linkFirst(E e);
-
-    private void linkLast(E e);
-
-    private static final int HOPS = 2;
-
-    void unlink(Node<E> x);
-
-    private void unlinkFirst(Node<E> first, Node<E> next);
-
-    private void unlinkLast(Node<E> last, Node<E> prev);
-
-    private final void updateHead();
-
-    private final void updateTail();
-
-    private void skipDeletedPredecessors(Node<E> x);
-
-    private void skipDeletedSuccessors(Node<E> x);
-
-    final Node<E> succ(Node<E> p);
-
-    final Node<E> pred(Node<E> p);
-
-    Node<E> first();
-
-    Node<E> last();
-
-    private E screenNullResult(E v);
-
     public ConcurrentLinkedDeque() {
-        head = tail = new Node<E>();
     }
 
     public ConcurrentLinkedDeque(Collection<? extends E> c) {
-        Node<E> h = null, t = null;
-        for (E e : c) {
-            Node<E> newNode = newNode(Objects.requireNonNull(e));
-            if (h == null)
-                h = t = newNode;
-            else {
-                NEXT.set(t, newNode);
-                PREV.set(newNode, t);
-                t = newNode;
-            }
-        }
-        initHeadTail(h, t);
     }
-
-    private void initHeadTail(Node<E> h, Node<E> t);
 
     public void addFirst(E e);
 
@@ -171,8 +101,6 @@ public class ConcurrentLinkedDeque<E extends @NonNull Object> extends AbstractCo
 
     public String toString();
 
-    private Object[] toArrayInternal(Object[] a);
-
     @SideEffectFree
     @PolyNull
     public Object[] toArray(ConcurrentLinkedDeque<@PolyNull E> this);
@@ -186,85 +114,8 @@ public class ConcurrentLinkedDeque<E extends @NonNull Object> extends AbstractCo
 
     public Iterator<E> descendingIterator();
 
-    private abstract class AbstractItr implements Iterator<E> {
-
-        @Nullable
-        private Node<E> nextNode;
-
-        @Nullable
-        private E nextItem;
-
-        @Nullable
-        private Node<E> lastRet;
-
-        abstract Node<E> startNode();
-
-        abstract Node<E> nextNode(Node<E> p);
-
-        AbstractItr() {
-            advance();
-        }
-
-        private void advance();
-
-        public boolean hasNext();
-
-        public E next();
-
-        public void remove();
-    }
-
-    private class Itr extends AbstractItr {
-
-        Itr() {
-        }
-
-        Node<E> startNode();
-
-        Node<E> nextNode(Node<E> p);
-    }
-
-    private class DescendingItr extends AbstractItr {
-
-        DescendingItr() {
-        }
-
-        Node<E> startNode();
-
-        Node<E> nextNode(Node<E> p);
-    }
-
-    final class CLDSpliterator implements Spliterator<E> {
-
-        static final int MAX_BATCH = 1 << 25;
-
-        Node<E> current;
-
-        int batch;
-
-        boolean exhausted;
-
-        public Spliterator<E> trySplit();
-
-        public void forEachRemaining(Consumer<? super E> action);
-
-        public boolean tryAdvance(Consumer<? super E> action);
-
-        private void setCurrent(Node<E> p);
-
-        private Node<E> current();
-
-        public long estimateSize();
-
-        public int characteristics();
-    }
-
     @SideEffectFree
     public Spliterator<E> spliterator();
-
-    private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException;
-
-    private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException;
 
     public boolean removeIf(Predicate<? super E> filter);
 
@@ -272,34 +123,5 @@ public class ConcurrentLinkedDeque<E extends @NonNull Object> extends AbstractCo
 
     public boolean retainAll(Collection<?> c);
 
-    private boolean bulkRemove(Predicate<? super E> filter);
-
     public void forEach(Consumer<? super E> action);
-
-    private static final VarHandle HEAD;
-
-    private static final VarHandle TAIL;
-
-    private static final VarHandle PREV;
-
-    private static final VarHandle NEXT;
-
-    private static final VarHandle ITEM;
-
-    static {
-        PREV_TERMINATOR = new Node<Object>();
-        PREV_TERMINATOR.next = PREV_TERMINATOR;
-        NEXT_TERMINATOR = new Node<Object>();
-        NEXT_TERMINATOR.prev = NEXT_TERMINATOR;
-        try {
-            MethodHandles.Lookup l = MethodHandles.lookup();
-            HEAD = l.findVarHandle(ConcurrentLinkedDeque.class, "head", Node.class);
-            TAIL = l.findVarHandle(ConcurrentLinkedDeque.class, "tail", Node.class);
-            PREV = l.findVarHandle(Node.class, "prev", Node.class);
-            NEXT = l.findVarHandle(Node.class, "next", Node.class);
-            ITEM = l.findVarHandle(Node.class, "item", Object.class);
-        } catch (ReflectiveOperationException e) {
-            throw new ExceptionInInitializerError(e);
-        }
-    }
 }

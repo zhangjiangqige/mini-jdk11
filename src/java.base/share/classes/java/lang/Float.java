@@ -10,28 +10,28 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @AnnotatedFor({ "nullness" })
 public final class Float extends Number implements Comparable<Float> {
 
-    public static final float POSITIVE_INFINITY = 1.0f / 0.0f;
+    public static final float POSITIVE_INFINITY;
 
-    public static final float NEGATIVE_INFINITY = -1.0f / 0.0f;
+    public static final float NEGATIVE_INFINITY;
 
-    public static final float NaN = 0.0f / 0.0f;
+    public static final float NaN;
 
-    public static final float MAX_VALUE = 0x1.fffffeP+127f;
+    public static final float MAX_VALUE;
 
-    public static final float MIN_NORMAL = 0x1.0p-126f;
+    public static final float MIN_NORMAL;
 
-    public static final float MIN_VALUE = 0x0.000002P-126f;
+    public static final float MIN_VALUE;
 
-    public static final int MAX_EXPONENT = 127;
+    public static final int MAX_EXPONENT;
 
-    public static final int MIN_EXPONENT = -126;
+    public static final int MIN_EXPONENT;
 
-    public static final int SIZE = 32;
+    public static final int SIZE;
 
-    public static final int BYTES = SIZE / Byte.SIZE;
+    public static final int BYTES;
 
     @SuppressWarnings("unchecked")
-    public static final Class<Float> TYPE = (Class<Float>) Class.getPrimitiveClass("float");
+    public static final Class<Float> TYPE;
 
     @SideEffectFree
     public static String toString(float f);
@@ -57,21 +57,16 @@ public final class Float extends Number implements Comparable<Float> {
 
     public static boolean isFinite(float f);
 
-    private final float value;
-
-    @Deprecated(since = "9")
+    @Deprecated()
     public Float(float value) {
-        this.value = value;
     }
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public Float(double value) {
-        this.value = (float) value;
     }
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public Float(String s) throws NumberFormatException {
-        value = parseFloat(s);
     }
 
     @Pure
@@ -132,6 +127,4 @@ public final class Float extends Number implements Comparable<Float> {
     public static float max(float a, float b);
 
     public static float min(float a, float b);
-
-    private static final long serialVersionUID = -2671257302660747028L;
 }

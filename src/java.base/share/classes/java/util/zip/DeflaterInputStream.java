@@ -17,33 +17,13 @@ public class DeflaterInputStream extends FilterInputStream {
 
     protected final byte[] buf;
 
-    private byte[] rbuf = new byte[1];
-
-    private boolean usesDefaultDeflater = false;
-
-    private boolean reachEOF = false;
-
-    private void ensureOpen() throws IOException;
-
     public DeflaterInputStream(InputStream in) {
-        this(in, new Deflater());
-        usesDefaultDeflater = true;
     }
 
     public DeflaterInputStream(InputStream in, Deflater defl) {
-        this(in, defl, 512);
     }
 
     public DeflaterInputStream(InputStream in, Deflater defl, @Positive int bufLen) {
-        super(in);
-        if (in == null)
-            throw new NullPointerException("Null input");
-        if (defl == null)
-            throw new NullPointerException("Null deflater");
-        if (bufLen < 1)
-            throw new IllegalArgumentException("Buffer size < 1");
-        def = defl;
-        buf = new byte[bufLen];
     }
 
     public void close() throws IOException;

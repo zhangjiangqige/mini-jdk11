@@ -12,46 +12,24 @@ import jdk.internal.misc.Unsafe;
 @AnnotatedFor({ "nullness", "index" })
 public class BufferedInputStream extends FilterInputStream {
 
-    private static int DEFAULT_BUFFER_SIZE = 8192;
-
-    private static int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
-
-    private static final Unsafe U = Unsafe.getUnsafe();
-
-    private static final long BUF_OFFSET = U.objectFieldOffset(BufferedInputStream.class, "buf");
-
     protected volatile byte[] buf;
 
     protected int count;
 
     protected int pos;
 
-    protected int markpos = -1;
+    protected int markpos;
 
     protected int marklimit;
 
-    private InputStream getInIfOpen() throws IOException;
-
-    private byte[] getBufIfOpen() throws IOException;
-
     public BufferedInputStream(InputStream in) {
-        this(in, DEFAULT_BUFFER_SIZE);
     }
 
     public BufferedInputStream(InputStream in, @Positive int size) {
-        super(in);
-        if (size <= 0) {
-            throw new IllegalArgumentException("Buffer size <= 0");
-        }
-        buf = new byte[size];
     }
-
-    private void fill() throws IOException;
 
     @GTENegativeOne
     public synchronized int read() throws IOException;
-
-    private int read1(byte[] b, int off, int len) throws IOException;
 
     @GTENegativeOne
     @LTEqLengthOf({ "#1" })

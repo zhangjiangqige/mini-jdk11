@@ -10,18 +10,9 @@ import sun.security.jca.GetInstance;
 @AnnotatedFor("nullness")
 public class TrustManagerFactory {
 
-    private Provider provider;
-
-    private TrustManagerFactorySpi factorySpi;
-
-    private String algorithm;
-
     public static final String getDefaultAlgorithm();
 
     protected TrustManagerFactory(TrustManagerFactorySpi factorySpi, Provider provider, String algorithm) {
-        this.factorySpi = factorySpi;
-        this.provider = provider;
-        this.algorithm = algorithm;
     }
 
     public final String getAlgorithm();

@@ -21,23 +21,10 @@ public class ByteArrayOutputStream extends OutputStream {
     protected int count;
 
     public ByteArrayOutputStream() {
-        this(32);
     }
 
     public ByteArrayOutputStream(@NonNegative int size) {
-        if (size < 0) {
-            throw new IllegalArgumentException("Negative initial size: " + size);
-        }
-        buf = new byte[size];
     }
-
-    private void ensureCapacity(int minCapacity);
-
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-
-    private void grow(int minCapacity);
-
-    private static int hugeCapacity(int minCapacity);
 
     public synchronized void write(@PolySigned int b);
 

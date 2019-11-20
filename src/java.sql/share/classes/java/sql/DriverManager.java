@@ -19,29 +19,6 @@ import jdk.internal.reflect.Reflection;
 @UsesObjectEquals
 public class DriverManager {
 
-    private final static CopyOnWriteArrayList<DriverInfo> registeredDrivers = new CopyOnWriteArrayList<>();
-
-    private static volatile int loginTimeout = 0;
-
-    private static volatile java.io.PrintWriter logWriter = null;
-
-    private static volatile java.io.PrintStream logStream = null;
-
-    private final static Object logSync = new Object();
-
-    private final static Object lockForInitDrivers = new Object();
-
-    private static volatile boolean driversInitialized;
-
-    private static final String JDBC_DRIVERS_PROPERTY = "jdbc.drivers";
-
-    private DriverManager() {
-    }
-
-    final static SQLPermission SET_LOG_PERMISSION = new SQLPermission("setLog");
-
-    final static SQLPermission DEREGISTER_DRIVER_PERMISSION = new SQLPermission("deregisterDriver");
-
     public static java.io.PrintWriter getLogWriter();
 
     public static void setLogWriter(java.io.PrintWriter out);
@@ -71,48 +48,15 @@ public class DriverManager {
     @CallerSensitive
     public static Stream<Driver> drivers();
 
-    private static List<Driver> getDrivers(Class<?> callerClass);
-
     public static void setLoginTimeout(int seconds);
 
     public static int getLoginTimeout();
 
-    @Deprecated(since = "1.2")
+    @Deprecated()
     public static void setLogStream(java.io.PrintStream out);
 
-    @Deprecated(since = "1.2")
+    @Deprecated()
     public static java.io.PrintStream getLogStream();
 
     public static void println(String message);
-
-    private static boolean isDriverAllowed(Driver driver, Class<?> caller);
-
-    private static boolean isDriverAllowed(Driver driver, ClassLoader classLoader);
-
-    private static void ensureDriversInitialized();
-
-    private static Connection getConnection(String url, java.util.Properties info, Class<?> caller) throws SQLException;
-}
-
-class DriverInfo {
-
-    final Driver driver;
-
-    DriverAction da;
-
-    DriverInfo(Driver driver, DriverAction action) {
-        this.driver = driver;
-        da = action;
-    }
-
-    @Override
-    public boolean equals(Object other);
-
-    @Override
-    public int hashCode();
-
-    @Override
-    public String toString();
-
-    DriverAction action();
 }

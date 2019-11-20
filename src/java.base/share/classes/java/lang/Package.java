@@ -55,7 +55,7 @@ public class Package extends NamedPackage implements java.lang.reflect.Annotated
 
     @Pure
     @CallerSensitive
-    @Deprecated(since = "9")
+    @Deprecated()
     @SuppressWarnings("deprecation")
     @Nullable
     public static Package getPackage(String name);
@@ -71,8 +71,6 @@ public class Package extends NamedPackage implements java.lang.reflect.Annotated
     @SideEffectFree
     @Override
     public String toString(@GuardSatisfied Package this);
-
-    private Class<?> getPackageInfo();
 
     @Nullable
     public <A extends Annotation> A getAnnotation(Class<A> annotationClass);
@@ -93,49 +91,4 @@ public class Package extends NamedPackage implements java.lang.reflect.Annotated
     public <A extends Annotation> A[] getDeclaredAnnotationsByType(Class<A> annotationClass);
 
     public Annotation[] getDeclaredAnnotations();
-
-    Package(@DotSeparatedIdentifiers String name, String spectitle, String specversion, String specvendor, String impltitle, String implversion, String implvendor, URL sealbase, ClassLoader loader) {
-        super(Objects.requireNonNull(name), loader != null ? loader.getUnnamedModule() : BootLoader.getUnnamedModule());
-        this.versionInfo = VersionInfo.getInstance(spectitle, specversion, specvendor, impltitle, implversion, implvendor, sealbase);
-    }
-
-    Package(String name, Module module) {
-        super(name, module);
-        this.versionInfo = VersionInfo.NULL_VERSION_INFO;
-    }
-
-    static class VersionInfo {
-
-        static final VersionInfo NULL_VERSION_INFO = new VersionInfo(null, null, null, null, null, null, null);
-
-        private final String specTitle;
-
-        private final String specVersion;
-
-        private final String specVendor;
-
-        private final String implTitle;
-
-        private final String implVersion;
-
-        private final String implVendor;
-
-        private final URL sealBase;
-
-        static VersionInfo getInstance(String spectitle, String specversion, String specvendor, String impltitle, String implversion, String implvendor, URL sealbase);
-
-        private VersionInfo(String spectitle, String specversion, String specvendor, String impltitle, String implversion, String implvendor, URL sealbase) {
-            this.implTitle = impltitle;
-            this.implVersion = implversion;
-            this.implVendor = implvendor;
-            this.specTitle = spectitle;
-            this.specVersion = specversion;
-            this.specVendor = specvendor;
-            this.sealBase = sealbase;
-        }
-    }
-
-    private final VersionInfo versionInfo;
-
-    private Class<?> packageInfo;
 }

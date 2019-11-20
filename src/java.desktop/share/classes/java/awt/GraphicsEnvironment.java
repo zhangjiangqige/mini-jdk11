@@ -16,29 +16,12 @@ import sun.security.action.GetPropertyAction;
 @UsesObjectEquals
 public abstract class GraphicsEnvironment {
 
-    private static Boolean headless;
-
-    private static Boolean defaultHeadless;
-
     protected GraphicsEnvironment() {
-    }
-
-    private static final class LocalGE {
-
-        static final GraphicsEnvironment INSTANCE = createGE();
-
-        private static GraphicsEnvironment createGE();
     }
 
     public static GraphicsEnvironment getLocalGraphicsEnvironment();
 
     public static boolean isHeadless();
-
-    static String getHeadlessMessage();
-
-    private static boolean getHeadlessProperty();
-
-    static void checkHeadless() throws HeadlessException;
 
     public boolean isHeadlessInstance();
 

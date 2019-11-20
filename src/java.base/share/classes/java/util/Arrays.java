@@ -34,21 +34,6 @@ import java.util.stream.StreamSupport;
 @AnnotatedFor({ "index", "interning", "lock", "nullness", "signedness" })
 public class Arrays {
 
-    private static final int MIN_ARRAY_SORT_GRAN = 1 << 13;
-
-    private Arrays() {
-    }
-
-    static final class NaturalOrder implements Comparator<Object> {
-
-        @SuppressWarnings("unchecked")
-        public int compare(Object first, Object second);
-
-        static final NaturalOrder INSTANCE = new NaturalOrder();
-    }
-
-    static void rangeCheck(int arrayLength, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex);
-
     public static void sort(int[] a);
 
     public static void sort(int[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex);
@@ -117,36 +102,13 @@ public class Arrays {
     @SuppressWarnings("unchecked")
     public static <T> void parallelSort(T[] a, int fromIndex, int toIndex, Comparator<? super T> cmp);
 
-    static final class LegacyMergeSort {
-
-        private static final boolean userRequested = java.security.AccessController.doPrivileged(new sun.security.action.GetBooleanAction("java.util.Arrays.useLegacyMergeSort")).booleanValue();
-    }
-
     public static void sort(@PolyInterned Object[] a);
-
-    private static void legacyMergeSort(Object[] a);
 
     public static void sort(@PolyInterned Object[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex);
 
-    private static void legacyMergeSort(Object[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex);
-
-    private static final int INSERTIONSORT_THRESHOLD = 7;
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static void mergeSort(Object[] src, Object[] dest, int low, int high, int off);
-
-    private static void swap(Object[] x, int a, int b);
-
     public static <T> void sort(T[] a, @Nullable Comparator<? super T> c);
 
-    private static <T> void legacyMergeSort(T[] a, @Nullable Comparator<? super T> c);
-
     public static <T> void sort(T[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, Comparator<? super T> c);
-
-    private static <T> void legacyMergeSort(T[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, Comparator<? super T> c);
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private static void mergeSort(Object[] src, Object[] dest, int low, int high, int off, Comparator c);
 
     public static <T> void parallelPrefix(T[] array, BinaryOperator<T> op);
 
@@ -170,8 +132,6 @@ public class Arrays {
     @SearchIndexFor({ "#1" })
     public static int binarySearch(long[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, long key);
 
-    private static int binarySearch0(long[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, long key);
-
     @SearchIndexFor({ "#1" })
     public static int binarySearch(int[] a, int key);
 
@@ -179,15 +139,10 @@ public class Arrays {
     public static int binarySearch(int[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, int key);
 
     @SearchIndexFor({ "#1" })
-    private static int binarySearch0(int[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, int key);
-
-    @SearchIndexFor({ "#1" })
     public static int binarySearch(short[] a, short key);
 
     @SearchIndexFor({ "#1" })
     public static int binarySearch(short[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, short key);
-
-    private static int binarySearch0(short[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, short key);
 
     @SearchIndexFor({ "#1" })
     public static int binarySearch(char[] a, char key);
@@ -195,15 +150,11 @@ public class Arrays {
     @SearchIndexFor({ "#1" })
     public static int binarySearch(char[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, char key);
 
-    private static int binarySearch0(char[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, char key);
-
     @SearchIndexFor({ "#1" })
     public static int binarySearch(byte[] a, byte key);
 
     @SearchIndexFor({ "#1" })
     public static int binarySearch(byte[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, byte key);
-
-    private static int binarySearch0(byte[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, byte key);
 
     @SearchIndexFor({ "#1" })
     public static int binarySearch(double[] a, double key);
@@ -211,15 +162,11 @@ public class Arrays {
     @SearchIndexFor({ "#1" })
     public static int binarySearch(double[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, double key);
 
-    private static int binarySearch0(double[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, double key);
-
     @SearchIndexFor({ "#1" })
     public static int binarySearch(float[] a, float key);
 
     @SearchIndexFor({ "#1" })
     public static int binarySearch(float[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, float key);
-
-    private static int binarySearch0(float[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, float key);
 
     @SearchIndexFor({ "#1" })
     public static int binarySearch(@Nullable @PolyInterned Object[] a, @Nullable @PolyInterned Object key);
@@ -227,15 +174,11 @@ public class Arrays {
     @SearchIndexFor({ "#1" })
     public static int binarySearch(@Nullable @PolyInterned Object[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, @Nullable @PolyInterned Object key);
 
-    private static int binarySearch0(Object[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, Object key);
-
     @SearchIndexFor({ "#1" })
     public static <T> int binarySearch(T[] a, T key, @Nullable Comparator<? super T> c);
 
     @SearchIndexFor({ "#1" })
     public static <T> int binarySearch(T[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, T key, @Nullable Comparator<? super T> c);
-
-    private static <T> int binarySearch0(T[] a, @IndexOrHigh({ "#1" }) int fromIndex, @IndexOrHigh({ "#1" }) int toIndex, T key, @Nullable Comparator<? super T> c);
 
     @Pure
     public static boolean equals(@PolySigned long @Nullable [] a, @PolySigned long @Nullable [] a2);
@@ -386,76 +329,6 @@ public class Arrays {
     @SuppressWarnings("varargs")
     public static <T> List<T> asList(T... a);
 
-    private static class ArrayList<E> extends AbstractList<E> implements RandomAccess, java.io.Serializable {
-
-        private static final long serialVersionUID = -2764017481108945198L;
-
-        private final E[] a;
-
-        ArrayList(E[] array) {
-            a = Objects.requireNonNull(array);
-        }
-
-        @Override
-        @NonNegative
-        public int size();
-
-        @SideEffectFree
-        @Override
-        @PolyNull
-        public Object[] toArray(Arrays.ArrayList<@PolyNull E> this);
-
-        @SideEffectFree
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> T[] toArray(T[] a);
-
-        @Override
-        public E get(int index);
-
-        @Override
-        public E set(int index, E element);
-
-        @Override
-        public int indexOf(Object o);
-
-        @Override
-        public boolean contains(Object o);
-
-        @SideEffectFree
-        @Override
-        public Spliterator<E> spliterator();
-
-        @Override
-        public void forEach(Consumer<? super E> action);
-
-        @Override
-        public void replaceAll(UnaryOperator<E> operator);
-
-        @Override
-        public void sort(Comparator<? super E> c);
-
-        @Override
-        public Iterator<E> iterator();
-    }
-
-    private static class ArrayItr<E> implements Iterator<E> {
-
-        private int cursor;
-
-        private final E[] a;
-
-        ArrayItr(E[] a) {
-            this.a = a;
-        }
-
-        @Override
-        public boolean hasNext();
-
-        @Override
-        public E next();
-    }
-
     @Pure
     public static int hashCode(@PolySigned long @Nullable [] a);
 
@@ -486,12 +359,8 @@ public class Arrays {
     @Pure
     public static int deepHashCode(@PolyNull @PolyInterned Object @GuardSatisfied @Nullable [] a);
 
-    private static int primitiveArrayHashCode(Object a, Class<?> cl);
-
     @Pure
     public static boolean deepEquals(@PolyNull @PolyInterned Object @GuardSatisfied @Nullable [] a1, @PolyNull @PolyInterned Object @GuardSatisfied @Nullable [] a2);
-
-    static boolean deepEquals0(Object e1, Object e2);
 
     @SideEffectFree
     public static String toString(long @Nullable [] a);
@@ -522,8 +391,6 @@ public class Arrays {
 
     @SideEffectFree
     public static String deepToString(@PolyNull @PolyInterned Object @Nullable [] a);
-
-    private static void deepToString(Object[] a, StringBuilder buf, Set<Object[]> dejaVu);
 
     public static <T> void setAll(T[] array, IntFunction<? extends T> generator);
 

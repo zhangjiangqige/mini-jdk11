@@ -9,13 +9,7 @@ import java.util.Iterator;
 @UsesObjectEquals
 public abstract class CharsetProvider {
 
-    private static Void checkPermission();
-
-    private CharsetProvider(Void ignore) {
-    }
-
     protected CharsetProvider() {
-        this(checkPermission());
     }
 
     public abstract Iterator<Charset> charsets();

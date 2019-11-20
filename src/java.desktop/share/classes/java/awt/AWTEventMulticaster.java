@@ -19,8 +19,6 @@ public class AWTEventMulticaster implements ComponentListener, ContainerListener
     protected final EventListener b;
 
     protected AWTEventMulticaster(EventListener a, EventListener b) {
-        this.a = a;
-        this.b = b;
     }
 
     protected EventListener remove(EventListener oldl);
@@ -190,10 +188,6 @@ public class AWTEventMulticaster implements ComponentListener, ContainerListener
     protected void saveInternal(ObjectOutputStream s, String k) throws IOException;
 
     protected static void save(ObjectOutputStream s, String k, EventListener l) throws IOException;
-
-    private static int getListenerCount(EventListener l, Class<?> listenerType);
-
-    private static int populateListenerArray(EventListener[] a, EventListener l, int index);
 
     @SuppressWarnings("unchecked")
     public static <T extends EventListener> T[] getListeners(EventListener l, Class<T> listenerType);

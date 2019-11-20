@@ -6,8 +6,4 @@ import java.util.Objects;
 @AnnotatedFor({ "lock", "nullness" })
 @FunctionalInterface
 public interface IntConsumer {
-
-    void accept(int value);
-
-    default IntConsumer andThen(IntConsumer after);
 }

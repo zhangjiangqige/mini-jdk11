@@ -5,12 +5,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 @AnnotatedFor({ "interning", "nullness" })
-@Deprecated(since = "9", forRemoval = true)
+@Deprecated()
 @UsesObjectEquals
 public final class Compiler {
-
-    private Compiler() {
-    }
 
     public static boolean compileClass(Class<?> clazz);
 

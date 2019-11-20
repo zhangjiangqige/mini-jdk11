@@ -8,32 +8,10 @@ import sun.net.www.protocol.http.AuthenticatorKeys;
 @UsesObjectEquals
 public abstract class Authenticator {
 
-    private static volatile Authenticator theAuthenticator;
-
-    private String requestingHost;
-
-    private InetAddress requestingSite;
-
-    private int requestingPort;
-
-    private String requestingProtocol;
-
-    private String requestingPrompt;
-
-    private String requestingScheme;
-
-    private URL requestingURL;
-
-    private RequestorType requestingAuthType;
-
-    private final String key = AuthenticatorKeys.computeKey(this);
-
     public enum RequestorType {
 
         PROXY, SERVER
     }
-
-    private void reset();
 
     public static synchronized void setDefault(Authenticator a);
 
@@ -66,10 +44,4 @@ public abstract class Authenticator {
     protected URL getRequestingURL();
 
     protected RequestorType getRequestorType();
-
-    static String getKey(Authenticator a);
-
-    static {
-        AuthenticatorKeys.setAuthenticatorKeyAccess(Authenticator::getKey);
-    }
 }

@@ -8,19 +8,7 @@ import java.math.BigInteger;
 @UsesObjectEquals
 public class DSAPrivateKeySpec implements KeySpec {
 
-    private BigInteger x;
-
-    private BigInteger p;
-
-    private BigInteger q;
-
-    private BigInteger g;
-
     public DSAPrivateKeySpec(BigInteger x, BigInteger p, BigInteger q, BigInteger g) {
-        this.x = x;
-        this.p = p;
-        this.q = q;
-        this.g = g;
     }
 
     public BigInteger getX();

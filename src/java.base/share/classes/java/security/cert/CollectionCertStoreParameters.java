@@ -10,16 +10,10 @@ import java.util.Collections;
 @UsesObjectEquals
 public class CollectionCertStoreParameters implements CertStoreParameters {
 
-    private Collection<?> coll;
-
     public CollectionCertStoreParameters(Collection<?> collection) {
-        if (collection == null)
-            throw new NullPointerException();
-        coll = collection;
     }
 
     public CollectionCertStoreParameters() {
-        coll = Collections.EMPTY_SET;
     }
 
     public Collection<?> getCollection();

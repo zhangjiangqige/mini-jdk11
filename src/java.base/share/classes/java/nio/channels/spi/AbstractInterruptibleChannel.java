@@ -11,10 +11,6 @@ import sun.nio.ch.Interruptible;
 @UsesObjectEquals
 public abstract class AbstractInterruptibleChannel implements Channel, InterruptibleChannel {
 
-    private final Object closeLock = new Object();
-
-    private volatile boolean closed;
-
     protected AbstractInterruptibleChannel() {
     }
 
@@ -24,13 +20,7 @@ public abstract class AbstractInterruptibleChannel implements Channel, Interrupt
 
     public final boolean isOpen();
 
-    private Interruptible interruptor;
-
-    private volatile Thread interrupted;
-
     protected final void begin();
 
     protected final void end(boolean completed) throws AsynchronousCloseException;
-
-    static void blockedOn(Interruptible intr);
 }

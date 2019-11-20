@@ -20,6 +20,4 @@ public class Stack<E> extends Vector<E> {
     public boolean empty();
 
     public synchronized int search(Object o);
-
-    private static final long serialVersionUID = 1224463164541339165L;
 }

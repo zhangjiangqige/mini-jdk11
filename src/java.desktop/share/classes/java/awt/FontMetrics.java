@@ -12,21 +12,9 @@ import java.text.CharacterIterator;
 @UsesObjectEquals
 public abstract class FontMetrics implements java.io.Serializable {
 
-    static {
-        Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-    }
-
-    private static final FontRenderContext DEFAULT_FRC = new FontRenderContext(null, false, false);
-
     protected Font font;
 
-    private static final long serialVersionUID = 1681126225205050147L;
-
     protected FontMetrics(Font font) {
-        this.font = font;
     }
 
     public Font getFont();
@@ -83,9 +71,5 @@ public abstract class FontMetrics implements java.io.Serializable {
 
     public Rectangle2D getMaxCharBounds(Graphics context);
 
-    private FontRenderContext myFRC(Graphics context);
-
     public String toString();
-
-    private static native void initIDs();
 }

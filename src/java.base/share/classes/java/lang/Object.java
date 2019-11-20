@@ -17,12 +17,6 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @PolyUIType
 public class Object {
 
-    private static native void registerNatives();
-
-    static {
-        registerNatives();
-    }
-
     @HotSpotIntrinsicCandidate
     public Object() {
     }
@@ -59,6 +53,6 @@ public class Object {
 
     public final void wait(@UnknownInitialization Object this, long timeoutMillis, @NonNegative int nanos) throws InterruptedException;
 
-    @Deprecated(since = "9")
+    @Deprecated()
     protected void finalize() throws Throwable;
 }

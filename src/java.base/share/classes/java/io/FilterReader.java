@@ -13,8 +13,6 @@ public abstract class FilterReader extends Reader {
     protected Reader in;
 
     protected FilterReader(Reader in) {
-        super(in);
-        this.in = in;
     }
 
     public int read() throws IOException;

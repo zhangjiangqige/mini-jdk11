@@ -9,14 +9,7 @@ import java.net.*;
 @UsesObjectEquals
 public abstract class RMISocketFactory implements RMIClientSocketFactory, RMIServerSocketFactory {
 
-    private static RMISocketFactory factory = null;
-
-    private static RMISocketFactory defaultSocketFactory;
-
-    private static RMIFailureHandler handler = null;
-
     public RMISocketFactory() {
-        super();
     }
 
     public abstract Socket createSocket(String host, int port) throws IOException;

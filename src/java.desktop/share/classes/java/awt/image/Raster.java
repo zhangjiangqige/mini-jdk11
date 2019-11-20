@@ -38,13 +38,6 @@ public class Raster {
 
     protected Raster parent;
 
-    private static native void initIDs();
-
-    static {
-        ColorModel.loadLibraries();
-        initIDs();
-    }
-
     public static WritableRaster createInterleavedRaster(int dataType, int w, int h, int bands, Point location);
 
     public static WritableRaster createInterleavedRaster(int dataType, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, Point location);
@@ -72,37 +65,12 @@ public class Raster {
     public static WritableRaster createWritableRaster(SampleModel sm, DataBuffer db, Point location);
 
     protected Raster(SampleModel sampleModel, Point origin) {
-        this(sampleModel, sampleModel.createDataBuffer(), new Rectangle(origin.x, origin.y, sampleModel.getWidth(), sampleModel.getHeight()), origin, null);
     }
 
     protected Raster(SampleModel sampleModel, DataBuffer dataBuffer, Point origin) {
-        this(sampleModel, dataBuffer, new Rectangle(origin.x, origin.y, sampleModel.getWidth(), sampleModel.getHeight()), origin, null);
     }
 
     protected Raster(SampleModel sampleModel, DataBuffer dataBuffer, Rectangle aRegion, Point sampleModelTranslate, Raster parent) {
-        if ((sampleModel == null) || (dataBuffer == null) || (aRegion == null) || (sampleModelTranslate == null)) {
-            throw new NullPointerException("SampleModel, dataBuffer, aRegion and " + "sampleModelTranslate cannot be null");
-        }
-        this.sampleModel = sampleModel;
-        this.dataBuffer = dataBuffer;
-        minX = aRegion.x;
-        minY = aRegion.y;
-        width = aRegion.width;
-        height = aRegion.height;
-        if (width <= 0 || height <= 0) {
-            throw new RasterFormatException("negative or zero " + ((width <= 0) ? "width" : "height"));
-        }
-        if ((minX + width) < minX) {
-            throw new RasterFormatException("overflow condition for X coordinates of Raster");
-        }
-        if ((minY + height) < minY) {
-            throw new RasterFormatException("overflow condition for Y coordinates of Raster");
-        }
-        sampleModelTranslateX = sampleModelTranslate.x;
-        sampleModelTranslateY = sampleModelTranslate.y;
-        numBands = sampleModel.getNumBands();
-        numDataElements = sampleModel.getNumDataElements();
-        this.parent = parent;
     }
 
     public Raster getParent();

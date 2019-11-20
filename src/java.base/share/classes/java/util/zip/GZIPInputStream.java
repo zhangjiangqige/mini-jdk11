@@ -15,22 +15,14 @@ import java.io.EOFException;
 @AnnotatedFor({ "index" })
 public class GZIPInputStream extends InflaterInputStream {
 
-    protected CRC32 crc = new CRC32();
+    protected CRC32 crc;
 
     protected boolean eos;
 
-    private boolean closed = false;
-
-    private void ensureOpen() throws IOException;
-
     public GZIPInputStream(InputStream in, @Positive int size) throws IOException {
-        super(in, new Inflater(true), size);
-        usesDefaultInflater = true;
-        readHeader(in);
     }
 
     public GZIPInputStream(InputStream in) throws IOException {
-        this(in, 512);
     }
 
     @GTENegativeOne
@@ -39,29 +31,5 @@ public class GZIPInputStream extends InflaterInputStream {
 
     public void close() throws IOException;
 
-    public static final int GZIP_MAGIC = 0x8b1f;
-
-    private static final int FTEXT = 1;
-
-    private static final int FHCRC = 2;
-
-    private static final int FEXTRA = 4;
-
-    private static final int FNAME = 8;
-
-    private static final int FCOMMENT = 16;
-
-    private int readHeader(InputStream this_in) throws IOException;
-
-    private boolean readTrailer() throws IOException;
-
-    private long readUInt(InputStream in) throws IOException;
-
-    private int readUShort(InputStream in) throws IOException;
-
-    private int readUByte(InputStream in) throws IOException;
-
-    private byte[] tmpbuf = new byte[128];
-
-    private void skipBytes(InputStream in, int n) throws IOException;
+    public static final int GZIP_MAGIC;
 }

@@ -18,63 +18,14 @@ import static java.util.zip.ZipConstants64.*;
 @UsesObjectEquals
 public class ZipEntry implements ZipConstants, Cloneable {
 
-    String name;
+    public static final int STORED;
 
-    long xdostime = -1;
-
-    FileTime mtime;
-
-    FileTime atime;
-
-    FileTime ctime;
-
-    long crc = -1;
-
-    long size = -1;
-
-    long csize = -1;
-
-    int method = -1;
-
-    int flag = 0;
-
-    byte[] extra;
-
-    String comment;
-
-    public static final int STORED = 0;
-
-    public static final int DEFLATED = 8;
-
-    static final long DOSTIME_BEFORE_1980 = (1 << 21) | (1 << 16);
-
-    private static final long UPPER_DOSTIME_BOUND = 128L * 365 * 24 * 60 * 60 * 1000;
+    public static final int DEFLATED;
 
     public ZipEntry(String name) {
-        Objects.requireNonNull(name, "name");
-        if (name.length() > 0xFFFF) {
-            throw new IllegalArgumentException("entry name too long");
-        }
-        this.name = name;
     }
 
     public ZipEntry(ZipEntry e) {
-        Objects.requireNonNull(e, "entry");
-        name = e.name;
-        xdostime = e.xdostime;
-        mtime = e.mtime;
-        atime = e.atime;
-        ctime = e.ctime;
-        crc = e.crc;
-        size = e.size;
-        csize = e.csize;
-        method = e.method;
-        flag = e.flag;
-        extra = e.extra;
-        comment = e.comment;
-    }
-
-    ZipEntry() {
     }
 
     public String getName();
@@ -117,8 +68,6 @@ public class ZipEntry implements ZipConstants, Cloneable {
     public int getMethod();
 
     public void setExtra(byte[] extra);
-
-    void setExtra0(byte[] extra, boolean doZIP64);
 
     @Pure
     public byte @Nullable [] getExtra();

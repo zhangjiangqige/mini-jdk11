@@ -29,15 +29,7 @@ public abstract class OpenListResourceBundle extends ResourceBundle {
 
     protected abstract Object[][] getContents();
 
-    void loadLookupTablesIfNecessary();
-
-    private void loadLookup();
-
     protected <K, V> Map<K, V> createMap(int size);
 
     protected <E> Set<E> createSet();
-
-    private volatile Map<String, Object> lookup;
-
-    private volatile Set<String> keyset;
 }

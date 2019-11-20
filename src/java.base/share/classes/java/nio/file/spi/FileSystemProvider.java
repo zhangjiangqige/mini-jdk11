@@ -53,22 +53,8 @@ import sun.nio.ch.FileChannelImpl;
 @UsesObjectEquals
 public abstract class FileSystemProvider {
 
-    private static final Object lock = new Object();
-
-    private static volatile List<FileSystemProvider> installedProviders;
-
-    private static boolean loadingProviders = false;
-
-    private static Void checkPermission();
-
-    private FileSystemProvider(Void ignore) {
-    }
-
     protected FileSystemProvider() {
-        this(checkPermission());
     }
-
-    private static List<FileSystemProvider> loadInstalledProviders();
 
     public static List<FileSystemProvider> installedProviders();
 
@@ -83,8 +69,6 @@ public abstract class FileSystemProvider {
     public FileSystem newFileSystem(Path path, Map<String, ?> env) throws IOException;
 
     public InputStream newInputStream(Path path, OpenOption... options) throws IOException;
-
-    private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS = Set.of(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 
     public OutputStream newOutputStream(Path path, OpenOption... options) throws IOException;
 

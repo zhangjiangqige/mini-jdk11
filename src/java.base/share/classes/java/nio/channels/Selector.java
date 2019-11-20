@@ -38,8 +38,6 @@ public abstract class Selector implements Closeable {
 
     public int selectNow(Consumer<SelectionKey> action) throws IOException;
 
-    private int doSelect(Consumer<SelectionKey> action, long timeout) throws IOException;
-
     public abstract Selector wakeup();
 
     public abstract void close() throws IOException;

@@ -59,17 +59,6 @@ public class Desktop {
         MOVE_TO_TRASH
     }
 
-    private DesktopPeer peer;
-
-    private Desktop() {
-        Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-        if (defaultToolkit instanceof SunToolkit) {
-            peer = ((SunToolkit) defaultToolkit).createDesktopPeer(this);
-        }
-    }
-
-    private void checkEventsProcessingPermission();
-
     @SafeEffect
     public static synchronized Desktop getDesktop();
 
@@ -78,12 +67,6 @@ public class Desktop {
 
     @SafeEffect
     public boolean isSupported(Action action);
-
-    private static void checkFileValidation(File file);
-
-    private void checkActionSupport(Action actionType);
-
-    private void checkAWTPermission();
 
     @SafeEffect
     public void open(File file) throws IOException;
@@ -102,12 +85,6 @@ public class Desktop {
 
     @SafeEffect
     public void mail(URI mailtoURI) throws IOException;
-
-    private void checkExec() throws SecurityException;
-
-    private void checkRead() throws SecurityException;
-
-    private void checkQuitPermission();
 
     public void addAppEventListener(final SystemEventListener listener);
 

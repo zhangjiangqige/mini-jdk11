@@ -12,10 +12,7 @@ import java.util.concurrent.TimeUnit;
 @UsesObjectEquals
 public abstract class AsynchronousChannelGroup {
 
-    private final AsynchronousChannelProvider provider;
-
     protected AsynchronousChannelGroup(AsynchronousChannelProvider provider) {
-        this.provider = provider;
     }
 
     public final AsynchronousChannelProvider provider();

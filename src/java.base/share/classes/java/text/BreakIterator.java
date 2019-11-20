@@ -20,7 +20,7 @@ public abstract class BreakIterator implements Cloneable {
     public Object clone();
 
     @IntVal({ -1 })
-    public static final int DONE = -1;
+    public static final int DONE;
 
     @GTENegativeOne
     public abstract int first();
@@ -54,17 +54,6 @@ public abstract class BreakIterator implements Cloneable {
 
     public abstract void setText(CharacterIterator newText);
 
-    private static final int CHARACTER_INDEX = 0;
-
-    private static final int WORD_INDEX = 1;
-
-    private static final int LINE_INDEX = 2;
-
-    private static final int SENTENCE_INDEX = 3;
-
-    @SuppressWarnings("unchecked")
-    private static final SoftReference<BreakIteratorCache>[] iterCache = (SoftReference<BreakIteratorCache>[]) new SoftReference<?>[4];
-
     public static BreakIterator getWordInstance();
 
     public static BreakIterator getWordInstance(Locale locale);
@@ -81,27 +70,5 @@ public abstract class BreakIterator implements Cloneable {
 
     public static BreakIterator getSentenceInstance(Locale locale);
 
-    private static BreakIterator getBreakInstance(Locale locale, int type);
-
-    private static BreakIterator createBreakInstance(Locale locale, int type);
-
-    private static BreakIterator createBreakInstance(LocaleProviderAdapter adapter, Locale locale, int type);
-
     public static synchronized Locale[] getAvailableLocales();
-
-    private static final class BreakIteratorCache {
-
-        private BreakIterator iter;
-
-        private Locale locale;
-
-        BreakIteratorCache(Locale locale, BreakIterator iter) {
-            this.locale = locale;
-            this.iter = (BreakIterator) iter.clone();
-        }
-
-        Locale getLocale();
-
-        BreakIterator createBreakInstance();
-    }
 }

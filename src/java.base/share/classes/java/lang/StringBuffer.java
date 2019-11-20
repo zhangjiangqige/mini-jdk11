@@ -14,29 +14,19 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @AnnotatedFor({ "lock", "nullness", "index" })
 public final class StringBuffer extends AbstractStringBuilder implements java.io.Serializable, Comparable<StringBuffer>, CharSequence {
 
-    private transient String toStringCache;
-
-    static final long serialVersionUID = 3388685877147921107L;
-
     @HotSpotIntrinsicCandidate
     public StringBuffer() {
-        super(16);
     }
 
     @HotSpotIntrinsicCandidate
     public StringBuffer(@NonNegative int capacity) {
-        super(capacity);
     }
 
     @HotSpotIntrinsicCandidate
     public StringBuffer(String str) {
-        super(str.length() + 16);
-        append(str);
     }
 
     public StringBuffer(CharSequence seq) {
-        this(seq.length() + 16);
-        append(seq);
     }
 
     @Override
@@ -89,9 +79,6 @@ public final class StringBuffer extends AbstractStringBuilder implements java.io
     public synchronized StringBuffer append(@Nullable String str);
 
     public synchronized StringBuffer append(@Nullable StringBuffer sb);
-
-    @Override
-    synchronized StringBuffer append(AbstractStringBuilder asb);
 
     @Override
     public synchronized StringBuffer append(@Nullable CharSequence s);
@@ -209,12 +196,4 @@ public final class StringBuffer extends AbstractStringBuilder implements java.io
     @Override
     @HotSpotIntrinsicCandidate
     public synchronized String toString(@GuardSatisfied StringBuffer this);
-
-    private static final java.io.ObjectStreamField[] serialPersistentFields = { new java.io.ObjectStreamField("value", char[].class), new java.io.ObjectStreamField("count", Integer.TYPE), new java.io.ObjectStreamField("shared", Boolean.TYPE) };
-
-    private synchronized void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException;
-
-    private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException;
-
-    synchronized void getBytes(byte[] dst, int dstBegin, byte coder);
 }

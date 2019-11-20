@@ -20,14 +20,8 @@ import java.util.Map.Entry;
 @UsesObjectEquals
 public class PropertyChangeSupport implements Serializable {
 
-    private PropertyChangeListenerMap map = new PropertyChangeListenerMap();
-
     @SafeEffect
     public PropertyChangeSupport(@PolyUI Object sourceBean) {
-        if (sourceBean == null) {
-            throw new NullPointerException();
-        }
-        source = sourceBean;
     }
 
     @PolyUIEffect
@@ -62,8 +56,6 @@ public class PropertyChangeSupport implements Serializable {
     @PolyUIEffect
     public void firePropertyChange(@PolyUI PropertyChangeSupport this, PropertyChangeEvent event);
 
-    private static void fire(PropertyChangeListener[] listeners, PropertyChangeEvent event);
-
     @PolyUIEffect
     public void fireIndexedPropertyChange(@PolyUI PropertyChangeSupport this, String propertyName, int index, Object oldValue, Object newValue);
 
@@ -75,27 +67,4 @@ public class PropertyChangeSupport implements Serializable {
 
     @PolyUIEffect
     public boolean hasListeners(@PolyUI PropertyChangeSupport this, String propertyName);
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
-
-    private Object source;
-
-    private static final ObjectStreamField[] serialPersistentFields = { new ObjectStreamField("children", Hashtable.class), new ObjectStreamField("source", Object.class), new ObjectStreamField("propertyChangeSupportSerializedDataVersion", Integer.TYPE) };
-
-    static final long serialVersionUID = 6401253773779951803L;
-
-    private static final class PropertyChangeListenerMap extends ChangeListenerMap<PropertyChangeListener> {
-
-        private static final PropertyChangeListener[] EMPTY = {};
-
-        @Override
-        protected PropertyChangeListener[] newArray(int length);
-
-        @Override
-        protected PropertyChangeListener newProxy(String name, PropertyChangeListener listener);
-
-        public PropertyChangeListener extract(PropertyChangeListener listener);
-    }
 }

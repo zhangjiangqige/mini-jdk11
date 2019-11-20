@@ -9,13 +9,11 @@ import java.util.Arrays;
 @UsesObjectEquals
 public class GridBagLayout implements LayoutManager2, java.io.Serializable {
 
-    static final int EMPIRICMULTIPLIER = 2;
+    protected static final int MAXGRIDSIZE;
 
-    protected static final int MAXGRIDSIZE = 512;
+    protected static final int MINSIZE;
 
-    protected static final int MINSIZE = 1;
-
-    protected static final int PREFERREDSIZE = 2;
+    protected static final int PREFERREDSIZE;
 
     protected Hashtable<Component, GridBagConstraints> comptable;
 
@@ -31,11 +29,7 @@ public class GridBagLayout implements LayoutManager2, java.io.Serializable {
 
     public double[] rowWeights;
 
-    private Component componentAdjusting;
-
     public GridBagLayout() {
-        comptable = new Hashtable<Component, GridBagConstraints>();
-        defaultConstraints = new GridBagConstraints();
     }
 
     public void setConstraints(Component comp, GridBagConstraints constraints);
@@ -43,8 +37,6 @@ public class GridBagLayout implements LayoutManager2, java.io.Serializable {
     public GridBagConstraints getConstraints(Component comp);
 
     protected GridBagConstraints lookupConstraints(Component comp);
-
-    private void removeConstraints(Component comp);
 
     public Point getLayoutOrigin();
 
@@ -78,33 +70,17 @@ public class GridBagLayout implements LayoutManager2, java.io.Serializable {
 
     protected GridBagLayoutInfo getLayoutInfo(Container parent, int sizeflag);
 
-    private long[] preInitMaximumArraySizes(Container parent);
-
     protected GridBagLayoutInfo GetLayoutInfo(Container parent, int sizeflag);
-
-    private boolean calculateBaseline(Component c, GridBagConstraints constraints, Dimension size);
 
     protected void adjustForGravity(GridBagConstraints constraints, Rectangle r);
 
     protected void AdjustForGravity(GridBagConstraints constraints, Rectangle r);
 
-    private void alignOnBaseline(GridBagConstraints cons, Rectangle r, int cellY, int cellHeight);
-
-    private void alignAboveBaseline(GridBagConstraints cons, Rectangle r, int cellY, int cellHeight);
-
-    private void alignBelowBaseline(GridBagConstraints cons, Rectangle r, int cellY, int cellHeight);
-
-    private void centerVertically(GridBagConstraints cons, Rectangle r, int cellHeight);
-
     protected Dimension getMinSize(Container parent, GridBagLayoutInfo info);
 
     protected Dimension GetMinSize(Container parent, GridBagLayoutInfo info);
 
-    transient boolean rightToLeft = false;
-
     protected void arrangeGrid(Container parent);
 
     protected void ArrangeGrid(Container parent);
-
-    static final long serialVersionUID = 8838754796412211005L;
 }

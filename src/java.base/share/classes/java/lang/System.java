@@ -66,22 +66,11 @@ import sun.security.util.SecurityConstants;
 @UsesObjectEquals
 public final class System {
 
-    private static native void registerNatives();
+    public static final InputStream in;
 
-    static {
-        registerNatives();
-    }
+    public static final PrintStream out;
 
-    private System() {
-    }
-
-    public static final InputStream in = null;
-
-    public static final PrintStream out = null;
-
-    public static final PrintStream err = null;
-
-    private static volatile SecurityManager security;
+    public static final PrintStream err;
 
     public static void setIn(InputStream in);
 
@@ -89,25 +78,13 @@ public final class System {
 
     public static void setErr(PrintStream err);
 
-    private static volatile Console cons;
-
     @Nullable
     public static Console console();
 
     @Nullable
     public static Channel inheritedChannel() throws IOException;
 
-    private static void checkIO();
-
-    private static native void setIn0(InputStream in);
-
-    private static native void setOut0(PrintStream out);
-
-    private static native void setErr0(PrintStream err);
-
     public static void setSecurityManager(@Nullable final SecurityManager s);
-
-    private static synchronized void setSecurityManager0(final SecurityManager s);
 
     @Nullable
     public static SecurityManager getSecurityManager();
@@ -126,15 +103,9 @@ public final class System {
     @HotSpotIntrinsicCandidate
     public static native int identityHashCode(@GuardSatisfied @Nullable Object x);
 
-    private static Properties props;
-
-    private static native Properties initProperties(Properties props);
-
     public static Properties getProperties();
 
     public static String lineSeparator();
-
-    private static String lineSeparator;
 
     public static void setProperties(@Nullable Properties props);
 
@@ -151,8 +122,6 @@ public final class System {
 
     @Nullable
     public static String clearProperty(String key);
-
-    private static void checkKey(String key);
 
     @Nullable
     public static String getenv(String name);
@@ -171,19 +140,9 @@ public final class System {
             ERROR(1000),
             OFF(Integer.MAX_VALUE);
 
-            private final int severity;
+            public final String getName();
 
-            private Level(int severity) {
-                this.severity = severity;
-            }
-
-            public final String getName() {
-                return name();
-            }
-
-            public final int getSeverity() {
-                return severity;
-            }
+            public final int getSeverity();
         }
 
         public String getName();
@@ -209,26 +168,14 @@ public final class System {
 
     public static abstract class LoggerFinder {
 
-        static final RuntimePermission LOGGERFINDER_PERMISSION = new RuntimePermission("loggerFinder");
-
         protected LoggerFinder() {
-            this(checkPermission());
         }
-
-        private LoggerFinder(Void unused) {
-        }
-
-        private static Void checkPermission();
 
         public abstract Logger getLogger(String name, Module module);
 
         public Logger getLocalizedLogger(String name, ResourceBundle bundle, Module module);
 
         public static LoggerFinder getLoggerFinder();
-
-        private static volatile LoggerFinder service;
-
-        static LoggerFinder accessProvider();
     }
 
     @CallerSensitive
@@ -251,18 +198,4 @@ public final class System {
     public static void loadLibrary(String libname);
 
     public static native String mapLibraryName(String libname);
-
-    private static PrintStream newPrintStream(FileOutputStream fos, String enc);
-
-    private static void logInitException(boolean printToStderr, boolean printStackTrace, String msg, Throwable e);
-
-    private static void initPhase1();
-
-    static ModuleLayer bootLayer;
-
-    private static int initPhase2(boolean printToStderr, boolean printStackTrace);
-
-    private static void initPhase3();
-
-    private static void setJavaLangAccess();
 }

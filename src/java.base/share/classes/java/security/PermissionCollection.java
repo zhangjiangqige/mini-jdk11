@@ -10,10 +10,6 @@ import java.util.stream.StreamSupport;
 @UsesObjectEquals
 public abstract class PermissionCollection implements java.io.Serializable {
 
-    private static final long serialVersionUID = -6727011328946861783L;
-
-    private volatile boolean readOnly;
-
     public abstract void add(Permission permission);
 
     public abstract boolean implies(Permission permission);

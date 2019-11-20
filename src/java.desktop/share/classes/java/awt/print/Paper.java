@@ -8,22 +8,7 @@ import java.awt.geom.Rectangle2D;
 @UsesObjectEquals
 public class Paper implements Cloneable {
 
-    private static final int INCH = 72;
-
-    private static final double LETTER_WIDTH = 8.5 * INCH;
-
-    private static final double LETTER_HEIGHT = 11 * INCH;
-
-    private double mHeight;
-
-    private double mWidth;
-
-    private Rectangle2D mImageableArea;
-
     public Paper() {
-        mHeight = LETTER_HEIGHT;
-        mWidth = LETTER_WIDTH;
-        mImageableArea = new Rectangle2D.Double(INCH, INCH, mWidth - 2 * INCH, mHeight - 2 * INCH);
     }
 
     public Object clone();

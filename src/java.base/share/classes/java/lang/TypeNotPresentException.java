@@ -8,14 +8,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "nullness", "signature" })
 public class TypeNotPresentException extends RuntimeException {
 
-    private static final long serialVersionUID = -5101214195716534496L;
-
-    private String typeName;
-
     @SideEffectFree
     public TypeNotPresentException(@FullyQualifiedName String typeName, @Nullable Throwable cause) {
-        super("Type " + typeName + " not present", cause);
-        this.typeName = typeName;
     }
 
     @FullyQualifiedName

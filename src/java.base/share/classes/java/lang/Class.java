@@ -76,23 +76,6 @@ import sun.reflect.misc.ReflectUtil;
 @Interned
 public final class Class<@UnknownKeyFor T> implements java.io.Serializable, GenericDeclaration, Type, AnnotatedElement {
 
-    private static final int ANNOTATION = 0x00002000;
-
-    private static final int ENUM = 0x00004000;
-
-    private static final int SYNTHETIC = 0x00001000;
-
-    private static native void registerNatives();
-
-    static {
-        registerNatives();
-    }
-
-    private Class(ClassLoader loader, Class<?> arrayComponentType) {
-        classLoader = loader;
-        componentType = arrayComponentType;
-    }
-
     @SideEffectFree
     public String toString(@GuardSatisfied Class<T> this);
 
@@ -104,19 +87,13 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @CallerSensitive
     public static Class<?> forName(@ClassGetName String name, boolean initialize, @Nullable ClassLoader loader) throws ClassNotFoundException;
 
-    private static native Class<?> forName0(String name, boolean initialize, ClassLoader loader, Class<?> caller) throws ClassNotFoundException;
-
     @CallerSensitive
     public static Class<?> forName(Module module, String name);
 
     @CallerSensitive
-    @Deprecated(since = "9")
+    @Deprecated()
     @NonNull
     public T newInstance() throws InstantiationException, IllegalAccessException;
-
-    private transient volatile Constructor<T> cachedConstructor;
-
-    private transient volatile Class<?> newInstanceCallerCache;
 
     @EnsuresNonNullIf(expression = { "#1" }, result = true)
     @Pure
@@ -152,23 +129,12 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @Interned
     public String getName();
 
-    @ClassGetName
-    private transient String name;
-
-    private native String getName0();
-
     @CallerSensitive
     @ForceInline
     @Nullable
     public ClassLoader getClassLoader();
 
-    ClassLoader getClassLoader0();
-
     public Module getModule();
-
-    private transient Module module;
-
-    private final ClassLoader classLoader;
 
     @SuppressWarnings("unchecked")
     public TypeVariable<Class<T>>[] getTypeParameters();
@@ -188,14 +154,8 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @DotSeparatedIdentifiers
     public String getPackageName();
 
-    private transient String packageName;
-
     @SideEffectFree
     public Class<?>[] getInterfaces(@GuardSatisfied Class<T> this);
-
-    private Class<?>[] getInterfaces(boolean cloneArray);
-
-    private native Class<?>[] getInterfaces0();
 
     public Type[] getGenericInterfaces();
 
@@ -203,55 +163,15 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @Nullable
     public Class<?> getComponentType(@GuardSatisfied Class<T> this);
 
-    private final Class<?> componentType;
-
     @Pure
     @HotSpotIntrinsicCandidate
     public native int getModifiers(@GuardSatisfied Class<T> this);
 
     public native Object @Nullable [] getSigners();
 
-    native void setSigners(Object[] signers);
-
     @CallerSensitive
     @Nullable
     public Method getEnclosingMethod() throws SecurityException;
-
-    private native Object[] getEnclosingMethod0();
-
-    private EnclosingMethodInfo getEnclosingMethodInfo();
-
-    private static final class EnclosingMethodInfo {
-
-        private final Class<?> enclosingClass;
-
-        private final String name;
-
-        private final String descriptor;
-
-        static void validate(Object[] enclosingInfo);
-
-        EnclosingMethodInfo(Object[] enclosingInfo) {
-            validate(enclosingInfo);
-            this.enclosingClass = (Class<?>) enclosingInfo[0];
-            this.name = (String) enclosingInfo[1];
-            this.descriptor = (String) enclosingInfo[2];
-        }
-
-        boolean isPartial();
-
-        boolean isConstructor();
-
-        boolean isMethod();
-
-        Class<?> getEnclosingClass();
-
-        String getName();
-
-        String getDescriptor();
-    }
-
-    private static Class<?> toClass(Type o);
 
     @CallerSensitive
     @Nullable
@@ -261,8 +181,6 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @Nullable
     public Class<?> getDeclaringClass() throws SecurityException;
 
-    private native Class<?> getDeclaringClass0();
-
     @Pure
     @CallerSensitive
     @Nullable
@@ -271,15 +189,11 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @ClassGetSimpleName
     public String getSimpleName();
 
-    private String getSimpleName0();
-
     public String getTypeName();
 
     @Nullable
     @ClassGetSimpleName
     public String getCanonicalName();
-
-    private String getCanonicalName0();
 
     @Pure
     public boolean isAnonymousClass(@GuardSatisfied Class<T> this);
@@ -289,16 +203,6 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
 
     @Pure
     public boolean isMemberClass(@GuardSatisfied Class<T> this);
-
-    private String getSimpleBinaryName();
-
-    private native String getSimpleBinaryName0();
-
-    private boolean isTopLevelClass();
-
-    private boolean isLocalOrAnonymousClass();
-
-    private boolean hasEnclosingMethodInfo();
 
     @CallerSensitive
     public Class<?>[] getClasses();
@@ -341,8 +245,6 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @CallerSensitive
     public Method getDeclaredMethod(String name, Class<?>... parameterTypes) throws NoSuchMethodException, SecurityException;
 
-    List<Method> getDeclaredPublicMethods(String name, Class<?>... parameterTypes);
-
     @CallerSensitive
     public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes) throws NoSuchMethodException, SecurityException;
 
@@ -354,172 +256,20 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
     @Nullable
     public URL getResource(String name);
 
-    private boolean isOpenToCaller(String name, Class<?> caller);
-
-    private static java.security.ProtectionDomain allPermDomain;
-
     public java.security.ProtectionDomain getProtectionDomain();
 
-    private native java.security.ProtectionDomain getProtectionDomain0();
-
-    static native Class<?> getPrimitiveClass(String name);
-
-    private void checkMemberAccess(SecurityManager sm, int which, Class<?> caller, boolean checkProxyInterfaces);
-
-    private void checkPackageAccess(SecurityManager sm, final ClassLoader ccl, boolean checkProxyInterfaces);
-
-    private String resolveName(String name);
-
-    private static class Atomic {
-
-        private static final Unsafe unsafe = Unsafe.getUnsafe();
-
-        private static final long reflectionDataOffset = unsafe.objectFieldOffset(Class.class, "reflectionData");
-
-        private static final long annotationTypeOffset = unsafe.objectFieldOffset(Class.class, "annotationType");
-
-        private static final long annotationDataOffset = unsafe.objectFieldOffset(Class.class, "annotationData");
-
-        static <T> boolean casReflectionData(Class<?> clazz, SoftReference<ReflectionData<T>> oldData, SoftReference<ReflectionData<T>> newData);
-
-        static <T> boolean casAnnotationType(Class<?> clazz, AnnotationType oldType, AnnotationType newType);
-
-        static <T> boolean casAnnotationData(Class<?> clazz, AnnotationData oldData, AnnotationData newData);
-    }
-
-    private static class ReflectionData<T> {
-
-        volatile Field[] declaredFields;
-
-        volatile Field[] publicFields;
-
-        volatile Method[] declaredMethods;
-
-        volatile Method[] publicMethods;
-
-        volatile Constructor<T>[] declaredConstructors;
-
-        volatile Constructor<T>[] publicConstructors;
-
-        volatile Field[] declaredPublicFields;
-
-        volatile Method[] declaredPublicMethods;
-
-        volatile Class<?>[] interfaces;
-
-        String simpleName;
-
-        String canonicalName;
-
-        static final String NULL_SENTINEL = new String();
-
-        final int redefinedCount;
-
-        ReflectionData(int redefinedCount) {
-            this.redefinedCount = redefinedCount;
-        }
-    }
-
-    private transient volatile SoftReference<ReflectionData<T>> reflectionData;
-
-    private transient volatile int classRedefinedCount;
-
-    private ReflectionData<T> reflectionData();
-
-    private ReflectionData<T> newReflectionData(SoftReference<ReflectionData<T>> oldReflectionData, int classRedefinedCount);
-
-    private native String getGenericSignature0();
-
-    private transient volatile ClassRepository genericInfo;
-
-    private GenericsFactory getFactory();
-
-    private ClassRepository getGenericInfo();
-
-    native byte[] getRawAnnotations();
-
-    native byte[] getRawTypeAnnotations();
-
-    static byte[] getExecutableTypeAnnotationBytes(Executable ex);
-
-    native ConstantPool getConstantPool();
-
-    private Field[] privateGetDeclaredFields(boolean publicOnly);
-
-    private Field[] privateGetPublicFields();
-
-    private static void addAll(Collection<Field> c, Field[] o);
-
-    private Constructor<T>[] privateGetDeclaredConstructors(boolean publicOnly);
-
-    private Method[] privateGetDeclaredMethods(boolean publicOnly);
-
-    private Method[] privateGetPublicMethods();
-
-    private static Field searchFields(Field[] fields, String name);
-
-    private Field getField0(String name);
-
-    private static Method searchMethods(Method[] methods, String name, Class<?>[] parameterTypes);
-
-    private static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
-
-    private Method getMethod0(String name, Class<?>[] parameterTypes);
-
-    private PublicMethods.MethodList getMethodsRecursive(String name, Class<?>[] parameterTypes, boolean includeStatic);
-
-    private Constructor<T> getConstructor0(Class<?>[] parameterTypes, int which) throws NoSuchMethodException;
-
-    private static boolean arrayContentsEq(Object[] a1, Object[] a2);
-
-    private static Field[] copyFields(Field[] arg);
-
-    private static Method[] copyMethods(Method[] arg);
-
-    private static <U> Constructor<U>[] copyConstructors(Constructor<U>[] arg);
-
-    private native Field[] getDeclaredFields0(boolean publicOnly);
-
-    private native Method[] getDeclaredMethods0(boolean publicOnly);
-
-    private native Constructor<T>[] getDeclaredConstructors0(boolean publicOnly);
-
-    private native Class<?>[] getDeclaredClasses0();
-
-    private String methodToString(String name, Class<?>[] argTypes);
-
-    private static final long serialVersionUID = 3206093459760846163L;
-
-    private static final ObjectStreamField[] serialPersistentFields = new ObjectStreamField[0];
-
     public boolean desiredAssertionStatus();
-
-    private static native boolean desiredAssertionStatus0(Class<?> clazz);
 
     @Pure
     public boolean isEnum(@GuardSatisfied Class<T> this);
 
-    private static ReflectionFactory getReflectionFactory();
-
-    private static ReflectionFactory reflectionFactory;
-
     @NonNull
     public T @Nullable [] getEnumConstants();
-
-    T[] getEnumConstantsShared();
-
-    private transient volatile T[] enumConstants;
-
-    Map<String, @NonNull T> enumConstantDirectory();
-
-    private transient volatile Map<String, T> enumConstantDirectory;
 
     @SuppressWarnings("unchecked")
     @HotSpotIntrinsicCandidate
     @PolyNull
     public T cast(@PolyNull Object obj);
-
-    private String cannotCastMsg(Object obj);
 
     @SuppressWarnings("unchecked")
     public <U> Class<? extends U> asSubclass(Class<U> clazz);
@@ -546,51 +296,14 @@ public final class Class<@UnknownKeyFor T> implements java.io.Serializable, Gene
 
     public Annotation[] getDeclaredAnnotations();
 
-    private static class AnnotationData {
-
-        final Map<Class<? extends Annotation>, Annotation> annotations;
-
-        final Map<Class<? extends Annotation>, Annotation> declaredAnnotations;
-
-        final int redefinedCount;
-
-        AnnotationData(Map<Class<? extends Annotation>, Annotation> annotations, Map<Class<? extends Annotation>, Annotation> declaredAnnotations, int redefinedCount) {
-            this.annotations = annotations;
-            this.declaredAnnotations = declaredAnnotations;
-            this.redefinedCount = redefinedCount;
-        }
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    private transient volatile AnnotationData annotationData;
-
-    private AnnotationData annotationData();
-
-    private AnnotationData createAnnotationData(int classRedefinedCount);
-
-    @SuppressWarnings("UnusedDeclaration")
-    private transient volatile AnnotationType annotationType;
-
-    boolean casAnnotationType(AnnotationType oldType, AnnotationType newType);
-
-    AnnotationType getAnnotationType();
-
-    Map<Class<? extends Annotation>, Annotation> getDeclaredAnnotationMap();
-
-    transient ClassValue.ClassValueMap classValueMap;
-
     public AnnotatedType getAnnotatedSuperclass();
 
     public AnnotatedType[] getAnnotatedInterfaces();
-
-    private native Class<?> getNestHost0();
 
     @CallerSensitive
     public Class<?> getNestHost();
 
     public boolean isNestmateOf(Class<?> c);
-
-    private native Class<?>[] getNestMembers0();
 
     @CallerSensitive
     public Class<?>[] getNestMembers();

@@ -13,18 +13,11 @@ import sun.datatransfer.DataFlavorUtil;
 @UsesObjectEquals
 public class Clipboard {
 
-    String name;
-
     protected ClipboardOwner owner;
 
     protected Transferable contents;
 
-    private Set<FlavorListener> flavorListeners;
-
-    private Set<DataFlavor> currentDataFlavors;
-
     public Clipboard(String name) {
-        this.name = name;
     }
 
     public String getName();
@@ -44,8 +37,4 @@ public class Clipboard {
     public synchronized void removeFlavorListener(FlavorListener listener);
 
     public synchronized FlavorListener[] getFlavorListeners();
-
-    private void fireFlavorsChanged();
-
-    private Set<DataFlavor> getAvailableDataFlavorSet();
 }

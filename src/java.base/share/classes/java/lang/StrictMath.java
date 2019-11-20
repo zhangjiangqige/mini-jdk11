@@ -10,16 +10,9 @@ import jdk.internal.HotSpotIntrinsicCandidate;
 @UsesObjectEquals
 public final class StrictMath {
 
-    private StrictMath() {
-    }
+    public static final double E;
 
-    public static final double E = 2.7182818284590452354;
-
-    public static final double PI = 3.14159265358979323846;
-
-    private static final double DEGREES_TO_RADIANS = 0.017453292519943295;
-
-    private static final double RADIANS_TO_DEGREES = 57.29577951308232;
+    public static final double PI;
 
     public static native double sin(double a);
 
@@ -54,8 +47,6 @@ public final class StrictMath {
 
     public static double floor(double a);
 
-    private static double floorOrCeil(double a, double negativeBoundary, double positiveBoundary, double sign);
-
     public static double rint(double a);
 
     public static native double atan2(double y, double x);
@@ -65,11 +56,6 @@ public final class StrictMath {
     public static int round(float a);
 
     public static long round(double a);
-
-    private static final class RandomNumberGeneratorHolder {
-
-        static final Random randomNumberGenerator = new Random();
-    }
 
     public static double random();
 

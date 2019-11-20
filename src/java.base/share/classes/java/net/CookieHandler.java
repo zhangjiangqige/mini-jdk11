@@ -11,8 +11,6 @@ import sun.security.util.SecurityConstants;
 @UsesObjectEquals
 public abstract class CookieHandler {
 
-    private static CookieHandler cookieHandler;
-
     public static synchronized CookieHandler getDefault();
 
     public static synchronized void setDefault(CookieHandler cHandler);

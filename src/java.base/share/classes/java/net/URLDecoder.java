@@ -12,8 +12,6 @@ import java.util.Objects;
 @UsesObjectEquals
 public class URLDecoder {
 
-    static String dfltEncName = URLEncoder.dfltEncName;
-
     @Deprecated
     public static String decode(String s);
 

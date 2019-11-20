@@ -8,28 +8,10 @@ import java.util.stream.Collector;
 @AnnotatedFor({ "lock", "nullness" })
 public class IntSummaryStatistics implements IntConsumer {
 
-    private long count;
-
-    private long sum;
-
-    private int min = Integer.MAX_VALUE;
-
-    private int max = Integer.MIN_VALUE;
-
     public IntSummaryStatistics() {
     }
 
     public IntSummaryStatistics(long count, int min, int max, long sum) throws IllegalArgumentException {
-        if (count < 0L) {
-            throw new IllegalArgumentException("Negative count value");
-        } else if (count > 0L) {
-            if (min > max)
-                throw new IllegalArgumentException("Minimum greater than maximum");
-            this.count = count;
-            this.sum = sum;
-            this.min = min;
-            this.max = max;
-        }
     }
 
     @Override

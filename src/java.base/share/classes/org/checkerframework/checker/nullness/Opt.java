@@ -11,10 +11,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Opt {
 
-    private Opt() {
-        throw new AssertionError("shouldn't be instantiated");
-    }
-
     public static <T extends @NonNull Object> T get(T primary);
 
     @EnsuresNonNullIf(expression = "#1", result = true)

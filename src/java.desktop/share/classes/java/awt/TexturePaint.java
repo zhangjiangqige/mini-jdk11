@@ -11,22 +11,7 @@ import java.awt.image.ColorModel;
 @UsesObjectEquals
 public class TexturePaint implements Paint {
 
-    BufferedImage bufImg;
-
-    double tx;
-
-    double ty;
-
-    double sx;
-
-    double sy;
-
     public TexturePaint(BufferedImage txtr, Rectangle2D anchor) {
-        this.bufImg = txtr;
-        this.tx = anchor.getX();
-        this.ty = anchor.getY();
-        this.sx = anchor.getWidth() / bufImg.getWidth();
-        this.sy = anchor.getHeight() / bufImg.getHeight();
     }
 
     public BufferedImage getImage();

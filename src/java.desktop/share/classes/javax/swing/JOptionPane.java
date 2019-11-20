@@ -41,70 +41,68 @@ import sun.awt.AWTAccessor;
 @SuppressWarnings("serial")
 public class JOptionPane extends JComponent implements Accessible {
 
-    private static final String uiClassID = "OptionPaneUI";
+    public static final Object UNINITIALIZED_VALUE;
 
-    public static final Object UNINITIALIZED_VALUE = "uninitializedValue";
+    public static final int DEFAULT_OPTION;
 
-    public static final int DEFAULT_OPTION = -1;
+    public static final int YES_NO_OPTION;
 
-    public static final int YES_NO_OPTION = 0;
+    public static final int YES_NO_CANCEL_OPTION;
 
-    public static final int YES_NO_CANCEL_OPTION = 1;
+    public static final int OK_CANCEL_OPTION;
 
-    public static final int OK_CANCEL_OPTION = 2;
+    public static final int YES_OPTION;
 
-    public static final int YES_OPTION = 0;
+    public static final int NO_OPTION;
 
-    public static final int NO_OPTION = 1;
+    public static final int CANCEL_OPTION;
 
-    public static final int CANCEL_OPTION = 2;
+    public static final int OK_OPTION;
 
-    public static final int OK_OPTION = 0;
+    public static final int CLOSED_OPTION;
 
-    public static final int CLOSED_OPTION = -1;
+    public static final int ERROR_MESSAGE;
 
-    public static final int ERROR_MESSAGE = 0;
+    public static final int INFORMATION_MESSAGE;
 
-    public static final int INFORMATION_MESSAGE = 1;
+    public static final int WARNING_MESSAGE;
 
-    public static final int WARNING_MESSAGE = 2;
+    public static final int QUESTION_MESSAGE;
 
-    public static final int QUESTION_MESSAGE = 3;
-
-    public static final int PLAIN_MESSAGE = -1;
+    public static final int PLAIN_MESSAGE;
 
     @Interned
-    public static final String ICON_PROPERTY = "icon";
+    public static final String ICON_PROPERTY;
 
     @Interned
-    public static final String MESSAGE_PROPERTY = "message";
+    public static final String MESSAGE_PROPERTY;
 
     @Interned
-    public static final String VALUE_PROPERTY = "value";
+    public static final String VALUE_PROPERTY;
 
     @Interned
-    public static final String OPTIONS_PROPERTY = "options";
+    public static final String OPTIONS_PROPERTY;
 
     @Interned
-    public static final String INITIAL_VALUE_PROPERTY = "initialValue";
+    public static final String INITIAL_VALUE_PROPERTY;
 
     @Interned
-    public static final String MESSAGE_TYPE_PROPERTY = "messageType";
+    public static final String MESSAGE_TYPE_PROPERTY;
 
     @Interned
-    public static final String OPTION_TYPE_PROPERTY = "optionType";
+    public static final String OPTION_TYPE_PROPERTY;
 
     @Interned
-    public static final String SELECTION_VALUES_PROPERTY = "selectionValues";
+    public static final String SELECTION_VALUES_PROPERTY;
 
     @Interned
-    public static final String INITIAL_SELECTION_VALUE_PROPERTY = "initialSelectionValue";
+    public static final String INITIAL_SELECTION_VALUE_PROPERTY;
 
     @Interned
-    public static final String INPUT_VALUE_PROPERTY = "inputValue";
+    public static final String INPUT_VALUE_PROPERTY;
 
     @Interned
-    public static final String WANTS_INPUT_PROPERTY = "wantsInput";
+    public static final String WANTS_INPUT_PROPERTY;
 
     protected transient Icon icon;
 
@@ -162,10 +160,6 @@ public class JOptionPane extends JComponent implements Accessible {
 
     public JDialog createDialog(String title) throws HeadlessException;
 
-    private JDialog createDialog(Component parentComponent, String title, int style) throws HeadlessException;
-
-    private void initDialog(final JDialog dialog, int style, Component parentComponent);
-
     public static void showInternalMessageDialog(Component parentComponent, Object message);
 
     public static void showInternalMessageDialog(Component parentComponent, Object message, String title, int messageType);
@@ -180,8 +174,6 @@ public class JOptionPane extends JComponent implements Accessible {
 
     public static int showInternalConfirmDialog(Component parentComponent, Object message, String title, int optionType, int messageType, Icon icon);
 
-    private static boolean checkFrameForComponent(Component parentComponent);
-
     public static int showInternalOptionDialog(Component parentComponent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue);
 
     public static String showInternalInputDialog(Component parentComponent, Object message);
@@ -194,50 +186,31 @@ public class JOptionPane extends JComponent implements Accessible {
 
     public static Frame getFrameForComponent(Component parentComponent) throws HeadlessException;
 
-    static Window getWindowForComponent(Component parentComponent) throws HeadlessException;
-
     public static JDesktopPane getDesktopPaneForComponent(Component parentComponent);
-
-    private static final Object sharedFrameKey = JOptionPane.class;
 
     public static void setRootFrame(Frame newRootFrame);
 
     public static Frame getRootFrame() throws HeadlessException;
 
     public JOptionPane() {
-        this("JOptionPane message");
     }
 
     public JOptionPane(Object message) {
-        this(message, PLAIN_MESSAGE);
     }
 
     public JOptionPane(Object message, int messageType) {
-        this(message, messageType, DEFAULT_OPTION);
     }
 
     public JOptionPane(Object message, int messageType, int optionType) {
-        this(message, messageType, optionType, null);
     }
 
     public JOptionPane(Object message, int messageType, int optionType, Icon icon) {
-        this(message, messageType, optionType, icon, null);
     }
 
     public JOptionPane(Object message, int messageType, int optionType, Icon icon, Object[] options) {
-        this(message, messageType, optionType, icon, options, null);
     }
 
     public JOptionPane(Object message, int messageType, int optionType, Icon icon, Object[] options, Object initialValue) {
-        this.message = message;
-        this.options = options == null ? null : Arrays.copyOf(options, options.length);
-        this.initialValue = initialValue;
-        this.icon = icon;
-        setMessageType(messageType);
-        setOptionType(optionType);
-        value = UNINITIALIZED_VALUE;
-        inputValue = UNINITIALIZED_VALUE;
-        updateUI();
     }
 
     @BeanProperty(hidden = true, description = "The UI object that implements the optionpane's LookAndFeel")
@@ -278,14 +251,10 @@ public class JOptionPane extends JComponent implements Accessible {
     @BeanProperty(preferred = true, description = "The option pane's message type.")
     public void setMessageType(int newType);
 
-    private static void checkMessageType(int newType);
-
     public int getMessageType();
 
     @BeanProperty(preferred = true, description = "The option pane's option type.")
     public void setOptionType(int newType);
-
-    private static void checkOptionType(int newType);
 
     public int getOptionType();
 
@@ -313,12 +282,6 @@ public class JOptionPane extends JComponent implements Accessible {
     public boolean getWantsInput();
 
     public void selectInitialValue();
-
-    private static int styleFromMessageType(int messageType);
-
-    private void writeObject(ObjectOutputStream s) throws IOException;
-
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException;
 
     protected String paramString();
 

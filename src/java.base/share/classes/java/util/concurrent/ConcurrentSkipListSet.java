@@ -21,30 +21,16 @@ import java.util.Spliterator;
 @AnnotatedFor({ "nullness" })
 public class ConcurrentSkipListSet<E extends @NonNull Object> extends AbstractSet<E> implements NavigableSet<E>, Cloneable, java.io.Serializable {
 
-    private static final long serialVersionUID = -2479143111061671589L;
-
-    private final ConcurrentNavigableMap<E, Object> m;
-
     public ConcurrentSkipListSet() {
-        m = new ConcurrentSkipListMap<E, Object>();
     }
 
     public ConcurrentSkipListSet(@Nullable Comparator<? super E> comparator) {
-        m = new ConcurrentSkipListMap<E, Object>(comparator);
     }
 
     public ConcurrentSkipListSet(Collection<? extends E> c) {
-        m = new ConcurrentSkipListMap<E, Object>();
-        addAll(c);
     }
 
     public ConcurrentSkipListSet(SortedSet<E> s) {
-        m = new ConcurrentSkipListMap<E, Object>(s.comparator());
-        addAll(s);
-    }
-
-    ConcurrentSkipListSet(ConcurrentNavigableMap<E, Object> m) {
-        this.m = m;
     }
 
     @SideEffectFree
@@ -111,6 +97,4 @@ public class ConcurrentSkipListSet<E extends @NonNull Object> extends AbstractSe
     @SuppressWarnings({ "unchecked" })
     @SideEffectFree
     public Spliterator<E> spliterator();
-
-    private void setMap(ConcurrentNavigableMap<E, Object> map);
 }

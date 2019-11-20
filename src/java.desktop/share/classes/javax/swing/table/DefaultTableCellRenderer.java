@@ -16,24 +16,10 @@ import sun.swing.SwingUtilities2;
 @SuppressWarnings("serial")
 public class DefaultTableCellRenderer extends JLabel implements TableCellRenderer, Serializable {
 
-    private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-
-    private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-
-    protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
-
-    private Color unselectedForeground;
-
-    private Color unselectedBackground;
+    protected static Border noFocusBorder;
 
     public DefaultTableCellRenderer() {
-        super();
-        setOpaque(true);
-        setBorder(getNoFocusBorder());
-        setName("Table.cellRenderer");
     }
-
-    private Border getNoFocusBorder();
 
     public void setForeground(Color c);
 

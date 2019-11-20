@@ -12,31 +12,3 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-@AnnotatedFor({ "interning" })
-@UsesObjectEquals
-abstract class ChangeListenerMap<L extends EventListener> {
-
-    private Map<String, L[]> map;
-
-    protected abstract L[] newArray(int length);
-
-    protected abstract L newProxy(String name, L listener);
-
-    public final synchronized void add(String name, L listener);
-
-    public final synchronized void remove(String name, L listener);
-
-    public final synchronized L[] get(String name);
-
-    public final void set(String name, L[] listeners);
-
-    public final synchronized L[] getListeners();
-
-    public final L[] getListeners(String name);
-
-    public final synchronized boolean hasListeners(String name);
-
-    public final Set<Entry<String, L[]>> getEntries();
-
-    public abstract L extract(L listener);
-}

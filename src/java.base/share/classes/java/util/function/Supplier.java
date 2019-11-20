@@ -6,6 +6,4 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({ "lock", "nullness" })
 @FunctionalInterface
 public interface Supplier<T> {
-
-    T get(@GuardSatisfied Supplier<T> this);
 }

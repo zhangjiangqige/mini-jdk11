@@ -15,26 +15,6 @@ import sun.security.x509.X500Name;
 @UsesObjectEquals
 public class X509CRLSelector implements CRLSelector {
 
-    static {
-        CertPathHelperImpl.initialize();
-    }
-
-    private static final Debug debug = Debug.getInstance("certpath");
-
-    private HashSet<Object> issuerNames;
-
-    private HashSet<X500Principal> issuerX500Principals;
-
-    private BigInteger minCRL;
-
-    private BigInteger maxCRL;
-
-    private Date dateAndTime;
-
-    private X509Certificate certChecking;
-
-    private long skew = 0;
-
     public X509CRLSelector() {
     }
 
@@ -48,21 +28,11 @@ public class X509CRLSelector implements CRLSelector {
 
     public void addIssuerName(byte[] name) throws IOException;
 
-    private void addIssuerNameInternal(Object name, X500Principal principal);
-
-    private static HashSet<Object> cloneAndCheckIssuerNames(Collection<?> names) throws IOException;
-
-    private static HashSet<Object> cloneIssuerNames(Collection<Object> names);
-
-    private static HashSet<X500Principal> parseIssuerNames(Collection<Object> names) throws IOException;
-
     public void setMinCRLNumber(BigInteger minCRL);
 
     public void setMaxCRLNumber(BigInteger maxCRL);
 
     public void setDateAndTime(Date dateAndTime);
-
-    void setDateAndTime(Date dateAndTime, long skew);
 
     public void setCertificateChecking(X509Certificate cert);
 

@@ -26,25 +26,11 @@ import sun.awt.AWTAccessor.MouseEventAccessor;
 @UIType
 public class SwingUtilities implements SwingConstants {
 
-    private static boolean canAccessEventQueue = false;
-
-    private static boolean eventQueueTested = false;
-
-    private static boolean suppressDropSupport;
-
-    private static boolean checkedSuppressDropSupport;
-
-    private static boolean getSuppressDropTarget();
-
-    static void installSwingDropTargetAsNecessary(Component c, TransferHandler t);
-
     public static final boolean isRectangleContainingRectangle(Rectangle a, Rectangle b);
 
     public static Rectangle getLocalBounds(Component aComponent);
 
     public static Window getWindowAncestor(Component c);
-
-    static Point convertScreenLocationToParent(Container parent, int x, int y);
 
     public static Point convertPoint(Component source, Point aPoint, Component destination);
 
@@ -77,8 +63,6 @@ public class SwingUtilities implements SwingConstants {
 
     public static Rectangle[] computeDifference(Rectangle rectA, Rectangle rectB);
 
-    private static boolean checkMouseButton(MouseEvent anEvent, int mouseButton, int mouseButtonDownMask);
-
     public static boolean isLeftMouseButton(MouseEvent anEvent);
 
     public static boolean isMiddleMouseButton(MouseEvent anEvent);
@@ -91,17 +75,11 @@ public class SwingUtilities implements SwingConstants {
 
     public static String layoutCompoundLabel(FontMetrics fm, String text, Icon icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, Rectangle viewR, Rectangle iconR, Rectangle textR, int textIconGap);
 
-    private static String layoutCompoundLabelImpl(JComponent c, FontMetrics fm, String text, Icon icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, Rectangle viewR, Rectangle iconR, Rectangle textR, int textIconGap);
-
     public static void paintComponent(Graphics g, Component c, Container p, int x, int y, int w, int h);
 
     public static void paintComponent(Graphics g, Component c, Container p, Rectangle r);
 
-    private static CellRendererPane getCellRendererPane(Component c, Container p);
-
     public static void updateComponentTreeUI(Component c);
-
-    private static void updateComponentTreeUI0(Component c);
 
     @SafeEffect
     public static void invokeLater(@UI Runnable doRun);
@@ -129,12 +107,8 @@ public class SwingUtilities implements SwingConstants {
     @SuppressWarnings("deprecation")
     public static Component getRoot(Component c);
 
-    static JComponent getPaintingOrigin(JComponent c);
-
     @SuppressWarnings("deprecation")
     public static boolean processKeyBindings(KeyEvent event);
-
-    static boolean isValidKeyEventForKeyBindings(KeyEvent e);
 
     public static boolean notifyAction(Action action, KeyStroke ks, KeyEvent event, Object sender, int modifiers);
 
@@ -146,65 +120,9 @@ public class SwingUtilities implements SwingConstants {
 
     public static ActionMap getUIActionMap(JComponent component);
 
-    private static final Object sharedOwnerFrameKey = new StringBuffer("SwingUtilities.sharedOwnerFrame");
-
-    @SuppressWarnings("serial")
-    static class SharedOwnerFrame extends Frame implements WindowListener {
-
-        public void addNotify();
-
-        void installListeners();
-
-        public void windowClosed(WindowEvent e);
-
-        public void windowOpened(WindowEvent e);
-
-        public void windowClosing(WindowEvent e);
-
-        public void windowIconified(WindowEvent e);
-
-        public void windowDeiconified(WindowEvent e);
-
-        public void windowActivated(WindowEvent e);
-
-        public void windowDeactivated(WindowEvent e);
-
-        @SuppressWarnings("deprecation")
-        public void show();
-
-        public void dispose();
-    }
-
-    static Frame getSharedOwnerFrame() throws HeadlessException;
-
-    static WindowListener getSharedOwnerFrameShutdownListener() throws HeadlessException;
-
-    static Object appContextGet(Object key);
-
-    static void appContextPut(Object key, Object value);
-
-    static void appContextRemove(Object key);
-
-    static Class<?> loadSystemClass(String className) throws ClassNotFoundException;
-
-    static boolean isLeftToRight(Component c);
-
-    private SwingUtilities() {
-        throw new Error("SwingUtilities is just a container for static methods");
-    }
-
-    static boolean doesIconReferenceImage(Icon icon, Image image);
-
-    static int findDisplayedMnemonicIndex(String text, int mnemonic);
-
     public static Rectangle calculateInnerArea(JComponent c, Rectangle r);
-
-    static void updateRendererOrEditorUI(Object rendererOrEditor);
 
     public static Container getUnwrappedParent(Component component);
 
     public static Component getUnwrappedView(JViewport viewport);
-
-    @SuppressWarnings("deprecation")
-    static Container getValidateRoot(Container c, boolean visibleOnly);
 }

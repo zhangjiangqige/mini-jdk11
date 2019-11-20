@@ -21,98 +21,16 @@ import java.util.Arrays;
 @AnnotatedFor({ "index" })
 public abstract class ColorModel implements Transparency {
 
-    private long pData;
-
     protected int pixel_bits;
 
-    int[] nBits;
-
-    int transparency = Transparency.TRANSLUCENT;
-
-    boolean supportsAlpha = true;
-
-    boolean isAlphaPremultiplied = false;
-
-    int numComponents = -1;
-
-    int numColorComponents = -1;
-
-    ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_sRGB);
-
-    int colorSpaceType = ColorSpace.TYPE_RGB;
-
-    int maxBits;
-
-    boolean is_sRGB = true;
-
     protected int transferType;
-
-    private static boolean loaded = false;
-
-    static void loadLibraries();
-
-    private static native void initIDs();
-
-    static {
-        loadLibraries();
-        initIDs();
-    }
-
-    private static ColorModel RGBdefault;
 
     public static ColorModel getRGBdefault();
 
     public ColorModel(@Positive int bits) {
-        pixel_bits = bits;
-        if (bits < 1) {
-            throw new IllegalArgumentException("Number of bits must be > 0");
-        }
-        numComponents = 4;
-        numColorComponents = 3;
-        maxBits = bits;
-        transferType = ColorModel.getDefaultTransferType(bits);
     }
 
     protected ColorModel(@Positive int pixel_bits, @NonNegative int[] bits, ColorSpace cspace, boolean hasAlpha, boolean isAlphaPremultiplied, int transparency, int transferType) {
-        colorSpace = cspace;
-        colorSpaceType = cspace.getType();
-        numColorComponents = cspace.getNumComponents();
-        numComponents = numColorComponents + (hasAlpha ? 1 : 0);
-        supportsAlpha = hasAlpha;
-        if (bits.length < numComponents) {
-            throw new IllegalArgumentException("Number of color/alpha " + "components should be " + numComponents + " but length of bits array is " + bits.length);
-        }
-        if (transparency < Transparency.OPAQUE || transparency > Transparency.TRANSLUCENT) {
-            throw new IllegalArgumentException("Unknown transparency: " + transparency);
-        }
-        if (supportsAlpha == false) {
-            this.isAlphaPremultiplied = false;
-            this.transparency = Transparency.OPAQUE;
-        } else {
-            this.isAlphaPremultiplied = isAlphaPremultiplied;
-            this.transparency = transparency;
-        }
-        nBits = Arrays.copyOf(bits, numComponents);
-        this.pixel_bits = pixel_bits;
-        if (pixel_bits <= 0) {
-            throw new IllegalArgumentException("Number of pixel bits must " + "be > 0");
-        }
-        maxBits = 0;
-        for (int i = 0; i < bits.length; i++) {
-            if (bits[i] < 0) {
-                throw new IllegalArgumentException("Number of bits must be >= 0");
-            }
-            if (maxBits < bits[i]) {
-                maxBits = bits[i];
-            }
-        }
-        if (maxBits == 0) {
-            throw new IllegalArgumentException("There must be at least " + "one component with > 0 " + "pixel bits.");
-        }
-        if (cspace != ColorSpace.getInstance(ColorSpace.CS_sRGB)) {
-            is_sRGB = false;
-        }
-        this.transferType = transferType;
     }
 
     public final boolean hasAlpha();
@@ -198,48 +116,10 @@ public abstract class ColorModel implements Transparency {
 
     public boolean isCompatibleSampleModel(SampleModel sm);
 
-    @Deprecated(since = "9")
+    @Deprecated()
     public void finalize();
 
     public WritableRaster getAlphaRaster(WritableRaster raster);
 
     public String toString();
-
-    static int getDefaultTransferType(int pixel_bits);
-
-    static byte[] l8Tos8 = null;
-
-    static byte[] s8Tol8 = null;
-
-    static byte[] l16Tos8 = null;
-
-    static short[] s8Tol16 = null;
-
-    static Map<ICC_ColorSpace, byte[]> g8Tos8Map = null;
-
-    static Map<ICC_ColorSpace, byte[]> lg16Toog8Map = null;
-
-    static Map<ICC_ColorSpace, byte[]> g16Tos8Map = null;
-
-    static Map<ICC_ColorSpace, short[]> lg16Toog16Map = null;
-
-    static boolean isLinearRGBspace(ColorSpace cs);
-
-    static boolean isLinearGRAYspace(ColorSpace cs);
-
-    static byte[] getLinearRGB8TosRGB8LUT();
-
-    static byte[] getsRGB8ToLinearRGB8LUT();
-
-    static byte[] getLinearRGB16TosRGB8LUT();
-
-    static short[] getsRGB8ToLinearRGB16LUT();
-
-    static byte[] getGray8TosRGB8LUT(ICC_ColorSpace grayCS);
-
-    static byte[] getLinearGray16ToOtherGray8LUT(ICC_ColorSpace grayCS);
-
-    static byte[] getGray16TosRGB8LUT(ICC_ColorSpace grayCS);
-
-    static short[] getLinearGray16ToOtherGray16LUT(ICC_ColorSpace grayCS);
 }

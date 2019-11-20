@@ -19,35 +19,9 @@ import sun.swing.text.UndoableEditLockSupport;
 public abstract class AbstractDocument implements Document, Serializable {
 
     protected AbstractDocument(Content data) {
-        this(data, StyleContext.getDefaultStyleContext());
     }
 
     protected AbstractDocument(Content data, AttributeContext context) {
-        this.data = data;
-        this.context = context;
-        bidiRoot = new BidiRootElement();
-        if (defaultI18NProperty == null) {
-            String o = java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<String>() {
-
-                public String run() {
-                    return System.getProperty(I18NProperty);
-                }
-            });
-            if (o != null) {
-                defaultI18NProperty = Boolean.valueOf(o);
-            } else {
-                defaultI18NProperty = Boolean.FALSE;
-            }
-        }
-        putProperty(I18NProperty, defaultI18NProperty);
-        writeLock();
-        try {
-            Element[] p = new Element[1];
-            p[0] = new BidiElement(bidiRoot, 0, 1, 0);
-            bidiRoot.replace(0, 0, p);
-        } finally {
-            writeUnlock();
-        }
     }
 
     public Dictionary<Object, Object> getDocumentProperties();
@@ -94,13 +68,9 @@ public abstract class AbstractDocument implements Document, Serializable {
 
     public void remove(int offs, int len) throws BadLocationException;
 
-    void handleRemove(int offs, int len) throws BadLocationException;
-
     public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException;
 
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException;
-
-    private void handleInsertString(int offs, String str, AttributeSet a) throws BadLocationException;
 
     public String getText(int offset, int length) throws BadLocationException;
 
@@ -116,11 +86,7 @@ public abstract class AbstractDocument implements Document, Serializable {
 
     public abstract Element getDefaultRootElement();
 
-    private DocumentFilter.FilterBypass getFilterBypass();
-
     public Element getBidiRootElement();
-
-    static boolean isLeftToRight(Document doc, int p0, int p1);
 
     public abstract Element getParagraphElement(int pos);
 
@@ -131,10 +97,6 @@ public abstract class AbstractDocument implements Document, Serializable {
     protected void removeUpdate(DefaultDocumentEvent chng);
 
     protected void postRemoveUpdate(DefaultDocumentEvent chng);
-
-    void updateBidi(DefaultDocumentEvent chng);
-
-    private byte[] calculateBidiLevels(int firstPStart, int lastPEnd);
 
     public void dump(PrintStream out);
 
@@ -154,57 +116,24 @@ public abstract class AbstractDocument implements Document, Serializable {
 
     public final synchronized void readUnlock();
 
-    @SuppressWarnings("unchecked")
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
+    protected EventListenerList listenerList;
 
-    private transient int numReaders;
-
-    private transient Thread currWriter;
-
-    private transient int numWriters;
-
-    private transient boolean notifyingListeners;
-
-    private static Boolean defaultI18NProperty;
-
-    private Dictionary<Object, Object> documentProperties = null;
-
-    protected EventListenerList listenerList = new EventListenerList();
-
-    private Content data;
-
-    private AttributeContext context;
-
-    private transient BranchElement bidiRoot;
-
-    private DocumentFilter documentFilter;
-
-    private transient DocumentFilter.FilterBypass filterBypass;
-
-    private static final String BAD_LOCK_STATE = "document lock failure";
-
-    protected static final String BAD_LOCATION = "document location failure";
+    protected static final String BAD_LOCATION;
 
     @Interned
-    public static final String ParagraphElementName = "paragraph";
+    public static final String ParagraphElementName;
 
     @Interned
-    public static final String ContentElementName = "content";
+    public static final String ContentElementName;
 
     @Interned
-    public static final String SectionElementName = "section";
+    public static final String SectionElementName;
 
     @Interned
-    public static final String BidiElementName = "bidi level";
+    public static final String BidiElementName;
 
     @Interned
-    public static final String ElementNameAttribute = "$ename";
-
-    static final String I18NProperty = "i18n";
-
-    static final Object MultiByteProperty = "multiByte";
-
-    static final String AsyncLoadPriority = "load priority";
+    public static final String ElementNameAttribute;
 
     public interface Content {
 
@@ -242,14 +171,7 @@ public abstract class AbstractDocument implements Document, Serializable {
     public abstract class AbstractElement implements Element, MutableAttributeSet, Serializable, TreeNode {
 
         public AbstractElement(Element parent, AttributeSet a) {
-            this.parent = parent;
-            attributes = getAttributeContext().getEmptySet();
-            if (a != null) {
-                addAttributes(a);
-            }
         }
-
-        private void indent(PrintWriter out, int n);
 
         public void dump(PrintStream psOut, int indentAmount);
 
@@ -283,8 +205,6 @@ public abstract class AbstractDocument implements Document, Serializable {
 
         public void setResolveParent(AttributeSet parent);
 
-        private void checkForIllegalCast();
-
         public Document getDocument();
 
         public Element getParentElement();
@@ -316,24 +236,12 @@ public abstract class AbstractDocument implements Document, Serializable {
         public abstract boolean getAllowsChildren();
 
         public abstract Enumeration<TreeNode> children();
-
-        private void writeObject(ObjectOutputStream s) throws IOException;
-
-        private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
-
-        private Element parent;
-
-        private transient AttributeSet attributes;
     }
 
     @SuppressWarnings("serial")
     public class BranchElement extends AbstractElement {
 
         public BranchElement(Element parent, AttributeSet a) {
-            super(parent, a);
-            children = new AbstractElement[1];
-            nchildren = 0;
-            lastIndex = -1;
         }
 
         public Element positionToElement(int pos);
@@ -359,27 +267,12 @@ public abstract class AbstractDocument implements Document, Serializable {
         public boolean getAllowsChildren();
 
         public Enumeration<TreeNode> children();
-
-        private AbstractElement[] children;
-
-        private int nchildren;
-
-        private int lastIndex;
     }
 
     @SuppressWarnings("serial")
     public class LeafElement extends AbstractElement {
 
         public LeafElement(Element parent, AttributeSet a, int offs0, int offs1) {
-            super(parent, a);
-            try {
-                p0 = createPosition(offs0);
-                p1 = createPosition(offs1);
-            } catch (BadLocationException e) {
-                p0 = null;
-                p1 = null;
-                throw new StateInvariantError("Can't create Position references");
-            }
         }
 
         public String toString();
@@ -402,46 +295,11 @@ public abstract class AbstractDocument implements Document, Serializable {
 
         @Override
         public Enumeration<TreeNode> children();
-
-        private void writeObject(ObjectOutputStream s) throws IOException;
-
-        private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException;
-
-        private transient Position p0;
-
-        private transient Position p1;
-    }
-
-    class BidiRootElement extends BranchElement {
-
-        BidiRootElement() {
-            super(null, null);
-        }
-
-        public String getName();
-    }
-
-    class BidiElement extends LeafElement {
-
-        BidiElement(Element parent, int start, int end, int level) {
-            super(parent, new SimpleAttributeSet(), start, end);
-            addAttribute(StyleConstants.BidiLevel, Integer.valueOf(level));
-        }
-
-        public String getName();
-
-        int getLevel();
-
-        boolean isLeftToRight();
     }
 
     public class DefaultDocumentEvent extends CompoundEdit implements DocumentEvent {
 
         public DefaultDocumentEvent(int offs, int len, DocumentEvent.EventType type) {
-            super();
-            offset = offs;
-            length = len;
-            this.type = type;
         }
 
         public String toString();
@@ -469,106 +327,11 @@ public abstract class AbstractDocument implements Document, Serializable {
         public Document getDocument();
 
         public DocumentEvent.ElementChange getChange(Element elem);
-
-        private int offset;
-
-        private int length;
-
-        private Hashtable<Element, ElementChange> changeLookup;
-
-        private DocumentEvent.EventType type;
-    }
-
-    static class DefaultDocumentEventUndoableWrapper implements UndoableEdit, UndoableEditLockSupport {
-
-        final DefaultDocumentEvent dde;
-
-        public DefaultDocumentEventUndoableWrapper(DefaultDocumentEvent dde) {
-            this.dde = dde;
-        }
-
-        @Override
-        public void undo() throws CannotUndoException;
-
-        @Override
-        public boolean canUndo();
-
-        @Override
-        public void redo() throws CannotRedoException;
-
-        @Override
-        public boolean canRedo();
-
-        @Override
-        public void die();
-
-        @Override
-        public boolean addEdit(UndoableEdit anEdit);
-
-        @Override
-        public boolean replaceEdit(UndoableEdit anEdit);
-
-        @Override
-        public boolean isSignificant();
-
-        @Override
-        public String getPresentationName();
-
-        @Override
-        public String getUndoPresentationName();
-
-        @Override
-        public String getRedoPresentationName();
-
-        @Override
-        public void lockEdit();
-
-        @Override
-        public void unlockEdit();
-    }
-
-    class UndoRedoDocumentEvent implements DocumentEvent {
-
-        private DefaultDocumentEvent src = null;
-
-        private EventType type = null;
-
-        public UndoRedoDocumentEvent(DefaultDocumentEvent src, boolean isUndo) {
-            this.src = src;
-            if (isUndo) {
-                if (src.getType().equals(EventType.INSERT)) {
-                    type = EventType.REMOVE;
-                } else if (src.getType().equals(EventType.REMOVE)) {
-                    type = EventType.INSERT;
-                } else {
-                    type = src.getType();
-                }
-            } else {
-                type = src.getType();
-            }
-        }
-
-        public DefaultDocumentEvent getSource();
-
-        public int getOffset();
-
-        public int getLength();
-
-        public Document getDocument();
-
-        public DocumentEvent.EventType getType();
-
-        public DocumentEvent.ElementChange getChange(Element elem);
     }
 
     public static class ElementEdit extends AbstractUndoableEdit implements DocumentEvent.ElementChange {
 
         public ElementEdit(Element e, int index, Element[] removed, Element[] added) {
-            super();
-            this.e = e;
-            this.index = index;
-            this.removed = removed;
-            this.added = added;
         }
 
         public Element getElement();
@@ -582,24 +345,5 @@ public abstract class AbstractDocument implements Document, Serializable {
         public void redo() throws CannotRedoException;
 
         public void undo() throws CannotUndoException;
-
-        private Element e;
-
-        private int index;
-
-        private Element[] removed;
-
-        private Element[] added;
-    }
-
-    private class DefaultFilterBypass extends DocumentFilter.FilterBypass {
-
-        public Document getDocument();
-
-        public void remove(int offset, int length) throws BadLocationException;
-
-        public void insertString(int offset, String string, AttributeSet attr) throws BadLocationException;
-
-        public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException;
     }
 }

@@ -21,25 +21,15 @@ import java.lang.Double;
 @UsesObjectEquals
 public abstract class Preferences {
 
-    private static final PreferencesFactory factory = factory();
+    public static final int MAX_KEY_LENGTH;
 
-    private static PreferencesFactory factory();
+    public static final int MAX_VALUE_LENGTH;
 
-    private static PreferencesFactory factory1();
-
-    public static final int MAX_KEY_LENGTH = 80;
-
-    public static final int MAX_VALUE_LENGTH = 8 * 1024;
-
-    public static final int MAX_NAME_LENGTH = 80;
+    public static final int MAX_NAME_LENGTH;
 
     public static Preferences userNodeForPackage(Class<?> c);
 
     public static Preferences systemNodeForPackage(Class<?> c);
-
-    private static String nodeName(Class<?> c);
-
-    private static Permission prefsPerm = new RuntimePermission("preferences");
 
     public static Preferences userRoot();
 

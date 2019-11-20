@@ -42,8 +42,8 @@ public interface Document {
     public void render(Runnable r);
 
     @Interned
-    public static final String StreamDescriptionProperty = "stream";
+    public static final String StreamDescriptionProperty;
 
     @Interned
-    public static final String TitleProperty = "title";
+    public static final String TitleProperty;
 }
