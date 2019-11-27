@@ -1,3 +1,4 @@
+// This class should be kept in sync with plume.RegexUtil.
 package org.checkerframework.checker.regex;
 
 import java.util.regex.Pattern;

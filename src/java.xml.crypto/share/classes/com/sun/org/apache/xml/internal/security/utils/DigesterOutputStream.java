@@ -1,3 +1,7 @@
+/*
+ * reserved comment block
+ * DO NOT REMOVE OR ALTER!
+ */
 package com.sun.org.apache.xml.internal.security.utils;
 
 import org.checkerframework.checker.signedness.qual.PolySigned;

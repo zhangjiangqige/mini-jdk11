@@ -1,7 +1,32 @@
+/*
+ * Copyright (c) 1997, 2018, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
 package java.security;
 
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -13,12 +38,13 @@ import javax.security.auth.DestroyFailedException;
 import javax.security.auth.callback.*;
 import sun.security.util.Debug;
 
-@AnnotatedFor({ "interning" })
+@AnnotatedFor({ "interning", "nullness" })
 @UsesObjectEquals
 public class KeyStore {
 
     public static interface LoadStoreParameter {
 
+        @Nullable
         public ProtectionParameter getProtectionParameter();
     }
 
@@ -27,17 +53,19 @@ public class KeyStore {
 
     public static class PasswordProtection implements ProtectionParameter, javax.security.auth.Destroyable {
 
-        public PasswordProtection(char[] password) {
+        public PasswordProtection(char @Nullable [] password) {
         }
 
-        public PasswordProtection(char[] password, String protectionAlgorithm, AlgorithmParameterSpec protectionParameters) {
+        public PasswordProtection(char @Nullable [] password, String protectionAlgorithm, @Nullable AlgorithmParameterSpec protectionParameters) {
         }
 
+        @Nullable
         public String getProtectionAlgorithm();
 
+        @Nullable
         public AlgorithmParameterSpec getProtectionParameters();
 
-        public synchronized char[] getPassword();
+        public synchronized char @Nullable [] getPassword();
 
         public synchronized void destroy() throws DestroyFailedException;
 
@@ -131,12 +159,15 @@ public class KeyStore {
 
     public final String getType();
 
+    @Nullable
     public final Key getKey(String alias, char[] password) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException;
 
-    public final Certificate[] getCertificateChain(String alias) throws KeyStoreException;
+    public final Certificate @Nullable [] getCertificateChain(String alias) throws KeyStoreException;
 
+    @Nullable
     public final Certificate getCertificate(String alias) throws KeyStoreException;
 
+    @Nullable
     public final Date getCreationDate(String alias) throws KeyStoreException;
 
     public final void setKeyEntry(String alias, Key key, char[] password, Certificate[] chain) throws KeyStoreException;
@@ -157,25 +188,27 @@ public class KeyStore {
 
     public final boolean isCertificateEntry(String alias) throws KeyStoreException;
 
+    @Nullable
     public final String getCertificateAlias(Certificate cert) throws KeyStoreException;
 
     public final void store(OutputStream stream, char[] password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException;
 
-    public final void store(LoadStoreParameter param) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException;
+    public final void store(@Nullable LoadStoreParameter param) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException;
 
-    public final void load(InputStream stream, char[] password) throws IOException, NoSuchAlgorithmException, CertificateException;
+    public final void load(@Nullable InputStream stream, char @Nullable [] password) throws IOException, NoSuchAlgorithmException, CertificateException;
 
-    public final void load(LoadStoreParameter param) throws IOException, NoSuchAlgorithmException, CertificateException;
+    public final void load(@Nullable LoadStoreParameter param) throws IOException, NoSuchAlgorithmException, CertificateException;
 
-    public final Entry getEntry(String alias, ProtectionParameter protParam) throws NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException;
+    @Nullable
+    public final Entry getEntry(String alias, @Nullable ProtectionParameter protParam) throws NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException;
 
-    public final void setEntry(String alias, Entry entry, ProtectionParameter protParam) throws KeyStoreException;
+    public final void setEntry(String alias, Entry entry, @Nullable ProtectionParameter protParam) throws KeyStoreException;
 
     public final boolean entryInstanceOf(String alias, Class<? extends KeyStore.Entry> entryClass) throws KeyStoreException;
 
-    public static final KeyStore getInstance(File file, char[] password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException;
+    public static final KeyStore getInstance(File file, char @Nullable [] password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException;
 
-    public static final KeyStore getInstance(File file, LoadStoreParameter param) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException;
+    public static final KeyStore getInstance(File file, @Nullable LoadStoreParameter param) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException;
 
     public abstract static class Builder {
 
@@ -188,10 +221,10 @@ public class KeyStore {
 
         public static Builder newInstance(final KeyStore keyStore, final ProtectionParameter protectionParameter);
 
-        public static Builder newInstance(String type, Provider provider, File file, ProtectionParameter protection);
+        public static Builder newInstance(String type, @Nullable Provider provider, File file, ProtectionParameter protection);
 
         public static Builder newInstance(File file, ProtectionParameter protection);
 
-        public static Builder newInstance(final String type, final Provider provider, final ProtectionParameter protection);
+        public static Builder newInstance(final String type, @Nullable final Provider provider, final ProtectionParameter protection);
     }
 }
